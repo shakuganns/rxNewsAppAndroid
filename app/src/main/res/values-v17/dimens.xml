@@ -1,0 +1,25 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">8dp</dimen>
+    <dimen name="action_bar_padding">30dp</dimen>
+    <dimen name="UserName">24dp</dimen>
+    <dimen name="icon_width">25dp</dimen>
+    <dimen name="icon_height">25dp</dimen>
+    <dimen name="icon_text_size">18dp</dimen>
+    <dimen name="icon_bottom_size">16dp</dimen>
+    <dimen name="news_imga_width">96dp</dimen>
+    <dimen name="news_imga_height">66dp</dimen>
+    <dimen name="sling_margin_main">60dp</dimen>
+    <dimen name="news_content_title">24dp</dimen>
+    <dimen name="news_content_tag">12dp</dimen>
+    <dimen name="news_head_image_info">16dp</dimen>
+    <dimen name="news_content_image_width">480dp</dimen>
+    <dimen name="news_content_image_height">200dp</dimen>
+    <dimen name="shawdow_width">15dp</dimen>
+    <dimen name="action_bar_right_margin">16dp</dimen>
+    <dimen name="progress_width">50dp</dimen>
+    <dimen name="progress_height">50dp</dimen>
+    <dimen name="margin_action_bar">16dp</dimen>
+    <dimen name="sliding_menu_width">200dp</dimen>
+</resources>

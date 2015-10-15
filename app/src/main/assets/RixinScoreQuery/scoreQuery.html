@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>日新成绩查询</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="scss/style.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
+</head>
+<body>
+    <!-- <div class="container">
+        <div class="score">
+            <ul class="info">
+                <li class="info-left table-head bottom-border right-border">姓名</li>
+                <li class="info-right table-cell bottom-border"><input name="Name" type="text" class="name-input" placeholder="输入你的姓名(｢･ω･)｢"></li>
+                <li class="info-left table-head bottom-border right-border">学号</li>
+                <li class="info-right table-cell bottom-border"><input name="StudentID" type="text" class="student-id-input" placeholder="输入你的学号(｢･ω･)｢"></li>
+                <li class="term-select-head table-head bottom-border right-border">学期</li>
+                <li class="term-select-cell table-cell bottom-border select-correct">
+                    <select name="choose" id="choose" class="term-select">
+                        <option value="2013.1">2013-2014学年 第一学期</option>
+                        <option value="2013.2">2013-2014学年 第二学期</option>
+                        <option value="2014.1" selected="selected">2014-2015学年 第一学期</option>
+                        <option value="2014.2">2014-2015学年 第二学期</option>
+                        <option value="2015.1">2015-2016学年 第一学期</option>
+                        <option value="2015.2">2015-2016学年 第二学期</option>
+                    </select>
+                </li>
+            </ul>
+            <ul class="show">
+            </ul>
+            <button id="get-score">不开心，我还要再查</button>
+        </div>
+    </div> -->
+    <div class="row">
+        <div class="col s12">
+            <div class="input-field col s12">
+                <i class="material-icons prefix">person</i>
+                <input id="student_name" type="text" class="validate" value="藍夢洋">
+                <label for="student_name">姓名</label>
+            </div>
+            <div class="input-field col s12">
+                <i class="material-icons prefix">style</i>
+                <input id="student_id" type="text" class="validate" value="20132110010101">
+                <label for="student_id">學號</label>
+            </div>
+            <div class="input-field col s12">
+                <select>
+                    <option value="2012.1">2012-2013学年 第一学期</option>
+                    <option value="2012.2">2012-2013学年 第二学期</option>
+                    <option value="2013.1">2013-2014学年 第一学期</option>
+                    <option value="2013.2">2013-2014学年 第二学期</option>
+                    <option value="2014.1" selected>2014-2015学年 第一学期</option>
+                    <option value="2014.2">2014-2015学年 第二学期</option>
+                    <option value="2015.1">2015-2016学年 第一学期</option>
+                    <option value="2015.2">2015-2016学年 第二学期</option>
+                </select>
+                <label>學期</label>
+            </div>
+            <ul class="collection with-header">
+                <li class="collection-header"><h6 class="teal-text text-darken-2">成績明細</h6></li>
+            </ul>
+        </div>
+    </div>
+    <!-- <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery.select.js"></script> -->
+    <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
+    <script type="text/javascript" src="js/scoreQuery.js"></script>
+</body>
+</html>

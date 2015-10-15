@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:background="#EEEEEE"
+    android:layout_height="wrap_content">
+
+    <ecjtu.net.demon.view.EditTextPreIme
+        android:textCursorDrawable="@null"
+        android:paddingRight="8dp"
+        android:paddingLeft="8dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_weight="1"
+        android:background="@drawable/shape_corner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="120dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="4dp"
+        android:hint="输入评论内容(/= _ =)/~┴┴"
+        android:textColorHint="#DDDDDD"
+        android:textSize="16dp"
+        android:textColor="#222"
+        android:id="@+id/commentText" />
+
+    <Button
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/shape_corner"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="20dp"
+        android:text="提交"
+        android:textColor="#CCCCCC"
+        android:id="@+id/submitBtn" />
+</LinearLayout>

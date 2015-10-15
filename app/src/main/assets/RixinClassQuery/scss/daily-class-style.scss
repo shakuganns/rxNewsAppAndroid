@@ -1,0 +1,146 @@
+@charset "utf-8";
+
+/* RixinClassQuery_Daily
+ * @author            Phantrax
+ * @version           1.0.0
+ * @last-time         2015.8.20
+ *
+ */
+
+
+/* 文件载入
+ ---------------------------------------------------------- */
+@import  "./style/data";                    /* 变量文件 */
+@import  "./style/font";					/* Web 字体 */
+@import  "./style/mixin";                   /* 混入文件 */
+@import  "./style/animation";				/* CSS3 动画 */
+@import  "./reset";                  		/* CSS Reset */
+@import  "./csshake";                 		/* css hake */
+
+
+/* 页面
+ ---------------------------------------------------------- */
+* {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+html {
+  font-size: 625%;
+}
+
+body {
+  font-size: .14rem;
+}
+
+.class-num {
+    min-width: 3rem;
+    padding: 0 6px;
+    border-right: 1px solid #DDD;
+    text-align: center;
+    font-size: 1rem;
+    line-height: inherit;
+    color: #bbb;
+    position: absolute;
+    left: 0px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+// .top-border {
+// 	border-top: .01rem dashed $theme-color;
+// }
+// .right-border {
+// 	border-right: .01rem dashed $theme-color;
+// }
+// .bottom-border {
+// 	border-bottom: .01rem dashed $theme-color;
+// }
+// .left-border {
+// 	border-left: .01rem dashed $theme-color;
+// }
+//
+// .container {
+// 	width: 100%;
+// }
+//
+// .title {
+// 	text-align: center;
+// 	font: .14rem/.36rem Microsoft Yahei Light, Microsoft Yahei, Heiti, sans-serif;
+// }
+//
+// .month, .day {
+// 	color: #f90;
+// }
+//
+// .daily-class {
+// 	width: 100%;
+// 	font: .14rem/.36rem Microsoft Yahei Light, Microsoft Yahei, Heiti, sans-serif;
+// }
+//
+// .timeline {
+// 	position: relative;
+// 	-webkit-box-sizing: content-box;
+// 	-moz-box-sizing: content-box;
+// 	box-sizing: content-box;
+// }
+//
+//
+// .class-num {
+// 	position: absolute;
+// 	left: 0;
+// 	width: .48rem;
+// 	height: 50%;
+// 	-webkit-box-sizing: content-box;
+// 	-moz-box-sizing: content-box;
+// 	box-sizing: content-box;
+//
+// 	border-right: .01rem dashed $theme-color;
+//
+// 	text-align: center;
+// 	font: .14rem/.48rem Microsoft Yahei Light, Microsoft Yahei, Heiti, sans-serif;
+// 	color: $theme-color;
+// }
+//
+// .top-num {
+// 	top: -.01rem;
+// 	border-top: .01rem solid $theme-color;
+// }
+// .bottom-num {
+// 	top: .47rem;
+// 	border-top: .01rem dashed $theme-color;
+// 	border-bottom: .01rem solid $theme-color;
+// }
+//
+// .class-name {
+// 	margin-left: .48rem;
+// 	padding: 0 0 0 .12rem;
+// 	height: .96rem;
+// 	font: .14rem/.96rem Microsoft Yahei Light, Microsoft Yahei, Heiti, sans-serif;
+// }
+//
+// .no-class {
+// 	color: #c3c3c3;
+// }
+//
+//
+// .timeline ul {
+// 	display: inline-block;
+// 	position: absolute;
+// 	top: 0;
+// 	right: 0;
+// 	width: 1.0rem;
+// }
+//
+// .timeline ul li {
+// 	float: left;
+// 	display: inline-block;
+// 	width: 100%;
+// 	height: .24rem;
+// 	padding-left: .24rem;
+// 	font: .14rem/.24rem Microsoft Yahei Light, Microsoft Yahei, Heiti, sans-serif;
+// }

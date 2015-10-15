@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="日小新服务">
+        <menu>
+            <item
+                android:id="@+id/score"
+                android:icon="@drawable/score"
+                android:title="成绩查询"/>
+            <item
+                android:id="@+id/classquery"
+                android:icon="@drawable/classquery"
+                android:title="课表查询"/>
+            <item
+                android:id="@+id/yktquery"
+                android:icon="@drawable/ecard"
+                android:title="一卡通查询"/>
+            <item
+                android:id="@+id/bookquery"
+                android:icon="@drawable/book"
+                android:title="图书馆查询"/>
+        </menu>
+    </item>
+    <group>
+        <item
+            android:id="@+id/setting"
+            android:title="设置"/>
+        <item
+            android:id="@+id/scran"
+            android:title="扫一扫"/>
+    </group>
+
+</menu>

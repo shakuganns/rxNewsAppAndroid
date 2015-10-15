@@ -1,0 +1,14 @@
+<resources>
+    <string name="title_activity_login">LOGIN</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Student ID（请输入学号）</string>
+    <string name="prompt_password">Password（默认密码为身份证后六位）</string>
+    <string name="action_sign_in">LOGIN</string>
+    <string name="action_sign_in_short">登入</string>
+
+    <string name="error_invalid_email">输入内容不合法</string>
+    <string name="error_invalid_password">密码太短</string>
+    <string name="error_incorrect_password">验证失败</string>
+    <string name="error_field_required">必填</string>
+</resources>

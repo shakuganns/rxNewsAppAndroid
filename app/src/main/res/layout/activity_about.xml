@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleTextAppearance="@style/TransparentText"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="230dp"
+                android:background="@color/action_bar_background"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:layout_marginTop="24dp"
+                    android:src="@drawable/logo_about"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="－ 日小新 －"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    tools:text="Version 1.0.0"/>
+            </LinearLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@android:color/transparent"
+                app:layout_collapseMode="pin"/>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:background="@color/md_grey_100"
+            android:orientation="vertical">
+
+            <TextView
+                android:textColor="#888888"
+                android:text="介绍"
+                android:layout_marginBottom="4dp"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:background="@drawable/bg_card_nopic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_marginBottom="10dp"
+                    android:textColor="#000000"
+                    android:text="@string/introduce"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent" />
+
+                <TextView
+                    android:textColor="#000000"
+                    android:text="@string/introduce2"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginTop="12dp"
+                android:background="@color/md_grey_500"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:layout_marginTop="12dp"
+                android:text="开发人员"
+                android:textColor="@color/md_grey_600"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:background="@drawable/bg_card_nopic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ecjtu.net.demon.view.CycleImageView
+                        android:layout_marginTop="2dp"
+                        android:src="@drawable/homker"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/head1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="homker"
+                        android:textColor="@color/md_grey_800"
+                        android:id="@+id/name"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/head1"
+                        android:layout_toEndOf="@+id/head1"
+                        android:layout_marginLeft="21dp"
+                        android:layout_marginStart="21dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="主要Android开发"
+                        android:textColor="@color/md_grey_600"
+                        android:id="@+id/info"
+                        android:layout_below="@+id/name"
+                        android:layout_alignLeft="@+id/name"
+                        android:layout_alignStart="@+id/name" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ecjtu.net.demon.view.CycleImageView
+                        android:layout_marginTop="2dp"
+                        android:src="@drawable/yiwei"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/head2" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="一为"
+                        android:textColor="@color/md_grey_800"
+                        android:id="@+id/name2"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/head2"
+                        android:layout_toEndOf="@+id/head2"
+                        android:layout_marginLeft="21dp"
+                        android:layout_marginStart="21dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="后台的大大"
+                        android:textColor="@color/md_grey_600"
+                        android:id="@+id/info2"
+                        android:layout_below="@+id/name2"
+                        android:layout_alignLeft="@+id/name2"
+                        android:layout_alignStart="@+id/name2" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ecjtu.net.demon.view.CycleImageView
+                        android:layout_marginTop="2dp"
+                        android:src="@drawable/diandian"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/head3" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="点点"
+                        android:textColor="@color/md_grey_800"
+                        android:id="@+id/name3"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/head3"
+                        android:layout_toEndOf="@+id/head3"
+                        android:layout_marginLeft="21dp"
+                        android:layout_marginStart="21dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="主要UI设计"
+                        android:textColor="@color/md_grey_600"
+                        android:id="@+id/info3"
+                        android:layout_below="@+id/name3"
+                        android:layout_alignLeft="@+id/name3"
+                        android:layout_alignStart="@+id/name3" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ecjtu.net.demon.view.CycleImageView
+                        android:layout_marginTop="2dp"
+                        android:src="@drawable/shakugan"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/head4" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Shakugan"
+                        android:textColor="@color/md_grey_800"
+                        android:id="@+id/name4"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/head4"
+                        android:layout_toEndOf="@+id/head4"
+                        android:layout_marginLeft="21dp"
+                        android:layout_marginStart="21dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="@string/introduce3"
+                        android:textColor="@color/md_grey_600"
+                        android:id="@+id/info4"
+                        android:layout_below="@+id/name4"
+                        android:layout_alignLeft="@+id/name4"
+                        android:layout_alignStart="@+id/name4" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ecjtu.net.demon.view.CycleImageView
+                        android:layout_marginTop="2dp"
+                        android:src="@drawable/yaoyao"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/head7" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="摇摇"
+                        android:textColor="@color/md_grey_800"
+                        android:id="@+id/name7"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/head7"
+                        android:layout_toEndOf="@+id/head7"
+                        android:layout_marginLeft="21dp"
+                        android:layout_marginStart="21dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="WEB前端开发"
+                        android:textColor="@color/md_grey_600"
+                        android:id="@+id/info7"
+                        android:layout_below="@+id/name7"
+                        android:layout_alignLeft="@+id/name7"
+                        android:layout_alignStart="@+id/name7" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ecjtu.net.demon.view.CycleImageView
+                        android:layout_marginTop="2dp"
+                        android:src="@drawable/zaozhe"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/head5" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="皂哲"
+                        android:textColor="@color/md_grey_800"
+                        android:id="@+id/name5"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/head5"
+                        android:layout_toEndOf="@+id/head5"
+                        android:layout_marginLeft="21dp"
+                        android:layout_marginStart="21dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="有女票的后台程序员"
+                        android:textColor="@color/md_grey_600"
+                        android:id="@+id/info5"
+                        android:layout_below="@+id/name5"
+                        android:layout_alignLeft="@+id/name5"
+                        android:layout_alignStart="@+id/name5" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ecjtu.net.demon.view.CycleImageView
+                        android:layout_marginTop="2dp"
+                        android:src="@drawable/loli"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/head6" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="萝莉"
+                        android:textColor="@color/md_grey_800"
+                        android:id="@+id/name6"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/head6"
+                        android:layout_toEndOf="@+id/head6"
+                        android:layout_marginLeft="21dp"
+                        android:layout_marginStart="21dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="设计设计～～"
+                        android:textColor="@color/md_grey_600"
+                        android:id="@+id/info6"
+                        android:layout_below="@+id/name6"
+                        android:layout_alignLeft="@+id/name6"
+                        android:layout_alignStart="@+id/name6" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginTop="12dp"
+                android:background="@color/md_grey_500"/>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.design.widget.CoordinatorLayout>

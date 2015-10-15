@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="ecjtu.net.demon.activitys.webview">
+    <item
+        android:id="@+id/share"
+        android:orderInCategory="100"
+        android:title="@string/action_share"
+        app:showAsAction="never" />
+    <!--<item-->
+        <!--android:id="@+id/action_refresh"-->
+        <!--android:icon="@drawable/rx_action_refresh"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="刷新"-->
+        <!--app:showAsAction="always" />-->
+</menu>

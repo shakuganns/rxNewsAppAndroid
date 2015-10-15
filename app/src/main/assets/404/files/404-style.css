@@ -1,0 +1,103 @@
+@charset: "UTF-8";
+
+/*           CSS Reset           */
+/*
+ * http://meyerweb.com/eric/tools/css/reset/    v2.0 | 20110126
+ * License: none (public domain)
+ */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summarytime, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline; }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+  display: block; }
+
+body {
+  line-height: 1; }
+
+ol, ul {
+  list-style: none; }
+
+blockquote, q {
+  quotes: none; }
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+a:link, a:visited, a:hover, a:active {
+  text-decoration: none; }
+
+/*        body       */
+#header{
+  width:100%;
+  height:434px;
+  background-color:#efe0c3;
+}
+  #head{
+    height:434px;
+    width:640px;
+    background:url(../images/img.png) 0 0 no-repeat;
+    margin:0 auto;
+  }
+
+#content{
+  width:640px;
+  min-height:718px;
+  text-align:center;/*在IE的居中兼容*/
+  margin:0 auto;
+}
+  #sorry{
+    width:216px;
+    height:63px;
+    background:url(../images/img.png) 0 -434px no-repeat;
+    margin:74px auto 0;
+  }
+  #reason{
+    width:550px;
+    height:35px;
+    background:url(../images/img.png) 0 -498px no-repeat;
+    margin:32px auto 0;
+  }
+  #suggest{
+    width:200px;
+    height:33px;
+    background:url(../images/img.png) -216px -464px no-repeat;
+    margin:107px auto 0;
+  }
+  #links{
+    width:384px;
+    height:133px;
+    margin:54px auto 0;    
+  }
+    #links a{
+      display:inline-block;
+      width:100%;
+      height:100%;
+      color:transparent;      
+    }
+    #swzl{
+      position:relative;
+      float:left;
+      width:133px;
+      height:133px;
+      background:url(../images/img.png) -133px -534px no-repeat;
+    }
+    #aboutus{
+      position:relative;
+      float:left;
+      width:133px;
+      height:133px;
+      margin-left:118px;
+      background:url(../images/img.png) 0 -534px no-repeat;
+    }

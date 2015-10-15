@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="rightPadding" format="dimension"></attr>
+
+    <declare-styleable name="slidingMenu">
+        <attr name="rightPadding"></attr>
+    </declare-styleable>
+
+
+    <attr name="titleText" format="string"></attr>
+    <attr name="titleTextSize" format="dimension"></attr>
+    <attr name="titleTextColor" format="color"></attr>
+    <attr name="leftButtonBackground" format="reference|color"></attr>
+    <attr name="rightButtonBackground" format="reference|color"></attr>
+
+    <declare-styleable name="topBar">
+        <attr name="titleText"></attr>
+        <attr name="titleTextSize"></attr>
+        <attr name="titleTextColor"></attr>
+        <attr name="leftButtonBackground"></attr>
+        <attr name="rightButtonBackground"></attr>
+    </declare-styleable>
+
+    <attr name="image_width" format="dimension|reference"></attr>
+    <attr name="image_height" format="dimension|reference"></attr>
+    <attr name="image_margin" format="dimension"></attr>
+    <attr name="textColor" format="color"></attr>
+    <attr name="textSize" format="dimension"></attr>
+
+    <declare-styleable name="articleView">
+        <attr name="image_width" />
+        <attr name="image_height" />
+        <attr name="image_margin" />
+        <attr name="textColor" />
+        <attr name="textSize" />
+    </declare-styleable>
+
+    <declare-styleable name="PullToZoomView">
+        <attr name="headerView" format="reference" />
+        <attr name="contentView" format="reference" />
+        <attr name="zoomView" format="reference" />
+        <attr name="isHeaderParallax" format="boolean" />
+    </declare-styleable>
+
+</resources>

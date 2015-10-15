@@ -1,0 +1,19 @@
+<resources>
+    <!-- Base application theme. -->
+
+    <style name="AppTheme.DrawerArrowToggle" parent="Base.Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@android:color/white</item>
+    </style>
+
+    <style name="NewTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="drawerArrowStyle">@style/AppTheme.DrawerArrowToggle</item>
+    </style>
+
+    <style name="TransparentText">
+        <item name="android:textColor">#00000000</item>
+    </style>
+    <style name="GreyText">
+        <item name="android:textColor">#666666</item>
+    </style>
+
+</resources>
