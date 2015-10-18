@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/md_grey_50"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/tool_bar"/>
+
+    <TextView
+        android:id="@+id/size_text"
+        android:gravity="right"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="16dp"
+        android:textColor="@color/md_grey_600"
+        android:textSize="14dp"
+        android:text="最多输入100个字符"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_marginTop="10dp"
+        android:background="@color/md_grey_500"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <EditText
+        android:textColor="@color/md_black_1000"
+        android:gravity="start"
+        android:padding="4dp"
+        android:id="@+id/commentText"
+        android:background="@color/white"
+        android:maxLength="100"
+        android:layout_width="match_parent"
+        android:minHeight="200dp"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:background="@color/md_grey_500"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <Button
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        android:background="@color/action_bar_background"
+        android:text="提交"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

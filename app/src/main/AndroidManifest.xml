@@ -223,6 +223,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activitys.NewMain" />
         </activity>
+        <activity
+            android:name=".activitys.SubCommentsActivity"
+            android:label="SubCommentsActivity"
+            android:parentActivityName=".activitys.Setting">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activitys.Setting" />
+        </activity>
     </application>
 
 </manifest>

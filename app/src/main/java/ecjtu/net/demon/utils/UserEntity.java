@@ -1,6 +1,14 @@
 package ecjtu.net.demon.utils;
 
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.util.Log;
+
 import java.io.Serializable;
+import java.util.Arrays;
+
+import ecjtu.net.demon.activitys.LoginActivity;
+import ecjtu.net.demon.activitys.NewMain;
 
 
 /**
@@ -12,11 +20,18 @@ public class UserEntity implements Serializable {
     private String userName;  //用户名
     private String studentID; //学号
     private String password;  //密码
-    private String headImage; //头像图片
+    private String headImagePath; //头像图片
     private String sex;
     private String token ; //token
 
     public UserEntity() {
+    }
+
+    public void updataToken() {
+        Log.i("tag",studentID+"&"+password);
+        HttpHelper.password = password;
+        UserLoginTask mAuthTask = new UserLoginTask(studentID,password);
+        mAuthTask.execute();
     }
 
     public String getToken(){
@@ -43,14 +58,6 @@ public class UserEntity implements Serializable {
         this.password = password;
     }
 
-    public String getHeadImage() {
-        return headImage;
-    }
-
-    public void setHeadImage(String headImage) {
-        this.headImage = headImage;
-    }
-
     public String getStudentID() {
         return studentID;
     }
@@ -65,6 +72,58 @@ public class UserEntity implements Serializable {
 
     public void setSex(String sex) {
         this.sex = sex;
+    }
+
+    public String getHeadImagePath() {
+        return headImagePath;
+    }
+
+    public void setHeadImagePath(String headImagePath) {
+        this.headImagePath = headImagePath;
+    }
+
+
+    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+
+        private final String mEmail;
+        private final String mPassword;
+
+        UserLoginTask(String email, String password) {
+            mEmail = email;
+            mPassword = password;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            Log.i("TAG","updata token!");
+                HttpHelper httpHelper = new HttpHelper();
+                String token = httpHelper.passwordcheck(mEmail, mPassword, LoginActivity.url);
+                if (token != null) {
+                    Log.i("TAG","updata token successed!");
+                    UserEntity userEntity = httpHelper.getUserContent(mEmail, token, LoginActivity.url);
+                    SharedPreUtil.getInstance().putUser(userEntity);
+                    return true;
+                } else {
+                    Log.i("TAG","updata token failed!");
+                    return false;
+                }
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+
+
+            if (success) {
+
+            } else {
+
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+
+        }
     }
 }
 

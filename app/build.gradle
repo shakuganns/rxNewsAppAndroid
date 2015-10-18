@@ -23,7 +23,6 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile files('libs/core.jar')
-    compile files('libs/android-async-http-1.4.5.jar')
     compile files('libs/lib.jar')
     compile 'com.github.chrisbanes.photoview:library:1.2.3'
     compile 'com.github.johnkil.android-progressfragment:progressfragment:1.4.0'
@@ -34,6 +33,7 @@ dependencies {
     compile 'com.android.support:design:22.2.1'
     compile 'com.android.support:support-v4:23.0.1'
     compile files('libs/jpush-sdk-release1.8.2.jar')
+    compile 'com.loopj.android:android-async-http:1.4.9'
 }
 
 repositories {

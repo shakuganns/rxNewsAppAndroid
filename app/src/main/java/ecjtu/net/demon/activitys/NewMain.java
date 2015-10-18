@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -27,25 +26,25 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
-import org.apache.http.Header;
+
+import cz.msebera.android.httpclient.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import cn.jpush.android.api.JPushInterface;
 import ecjtu.net.demon.R;
 import ecjtu.net.demon.adapter.MainAdapter;
 import ecjtu.net.demon.fragment.CollageNificationFragment;
@@ -63,7 +62,7 @@ public class NewMain extends AppCompatActivity {
 
     private boolean isExit = false;
     public static UserEntity userEntity;
-    public static boolean isUserInit = false;
+    public static boolean isUserInited = false;
     private String studentID;
     private String userName;
     private CycleImageView headImage;
@@ -81,6 +80,7 @@ public class NewMain extends AppCompatActivity {
     private TushuoFragment tushoFragment;
     private boolean[] isInit = {true,true,true};
     private Toolbar toolbar;
+    private DisplayImageOptions options;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
 
@@ -113,12 +113,30 @@ public class NewMain extends AppCompatActivity {
                 slidingMenuClickListen(R.id.UserImage);
             }
         });
+
+        userEntity = SharedPreUtil.getInstance().getUser();
+        if (!TextUtils.isEmpty(userEntity.getStudentID())) {
+            userEntity.updataToken();
+        }
+
+        ImageLoaderConfiguration configuration = ImageLoaderConfiguration
+                .createDefault(this);
+
+        //Initialize ImageLoader with configuration.
+        ImageLoader.getInstance().init(configuration);
+
+        options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.head_iamge)
+                .showImageOnFail(R.drawable.head_iamge)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .build();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (!isUserInit) {
+        if (!isUserInited) {
             initUserInfo();
             TextView userNameView = (TextView) findViewById(R.id.UserName);
             TextView studentIdView = (TextView) findViewById(R.id.studentId);
@@ -130,6 +148,10 @@ public class NewMain extends AppCompatActivity {
                     headImage = (CycleImageView) findViewById(R.id.UserImage);
                     headImage.setImageDrawable(Drawable.createFromPath(getApplicationContext()
                             .getExternalFilesDir("headImage") + "/" + studentID + ".png"));
+                } else if(userEntity.getHeadImagePath() == "") {
+
+                } else {
+                    ImageLoader.getInstance().displayImage("http://"+userEntity.getHeadImagePath(),headImage,options);
                 }
             } else {
                 userNameView.setText(R.string.UserName);
@@ -145,8 +167,14 @@ public class NewMain extends AppCompatActivity {
                     }
                 });
             }
-            isUserInit = true;
+            isUserInited = true;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SharedPreUtil.getInstance().putUser(userEntity);
     }
 
     private void findView() {
@@ -215,7 +243,6 @@ public class NewMain extends AppCompatActivity {
         if (!TextUtils.isEmpty(userEntity.getStudentID())) {
             studentID = userEntity.getStudentID();
             userName = userEntity.getUserName();
-//            headImageUrl = userEntity.getHeadImage();
         }
         else {
             studentID = null;
@@ -313,7 +340,7 @@ public class NewMain extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setClass(NewMain.this, activity);
         intent.putExtra("string", string);
-        intent.putExtra("data",data);
+        intent.putExtra("data", data);
         startActivityForResult(intent, requestCode);
     }
 
@@ -419,6 +446,7 @@ public class NewMain extends AppCompatActivity {
 
     private void checkVersionAsync(){
         HttpAsync.get(VersionUrl, new JsonHttpResponseHandler() {
+
             @Override
             public void onStart() {
                 Log.i("tag", "it start");
@@ -448,6 +476,7 @@ public class NewMain extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
 //                ToastMsg.builder.display("更新请求失败", duration);
                 //Toast.makeText(Setting.this, "网络请求失败", Toast.LENGTH_SHORT).show();
             }
@@ -507,10 +536,49 @@ public class NewMain extends AppCompatActivity {
         if (requestCode == 12 && resultCode == Activity.RESULT_OK) {
             headImage.setImageDrawable(Drawable.createFromPath(getApplicationContext()
                       .getExternalFilesDir("headImage") + "/" + studentID + ".png"));
+            uplaodHeadImage();
             Log.i("TAG", "settingHead----->");
             Log.i("tag", "file://" + getApplicationContext()
                     .getExternalFilesDir("headImage") + "/" + studentID + ".png");
         }
+    }
+
+    public void uplaodHeadImage() {
+        File file = new File(getApplicationContext().getExternalFilesDir("headImage") + "/" + studentID + ".png");
+        RequestParams params = new RequestParams();
+        params.put("token",userEntity.getToken());
+        try {
+            params.put("avatar",file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        Log.i("TAG", String.valueOf(file.exists()));
+
+        HttpAsync.post("http://user.ecjtu.net/api/user/"+studentID+"/avatar",params,new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    if(response.getBoolean("result") == false) {
+                        userEntity.updataToken();
+                        ToastMsg.builder.display("上传头像失败，请重试～", duration);
+                    } else {
+                        userEntity.setHeadImagePath(response.getString("avatar"));
+                        ToastMsg.builder.display("上传头像成功", duration);
+                        Log.i("TAG",String.valueOf(response));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                ToastMsg.builder.display("上传头像失败", duration);
+                Log.i("TAG", String.valueOf(responseString));
+                Log.i("TAG", String.valueOf(statusCode));
+            }
+        });
     }
 
 }

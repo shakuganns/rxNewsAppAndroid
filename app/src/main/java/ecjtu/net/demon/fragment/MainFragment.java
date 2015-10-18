@@ -11,14 +11,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.devspark.progressfragment.ProgressFragment;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-import org.apache.http.Header;
+import cz.msebera.android.httpclient.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -165,6 +168,7 @@ public class MainFragment extends ProgressFragment {
             }
             if (cache == null) {
                 HttpAsync.get(url, new JsonHttpResponseHandler() {
+
                     @Override
                     public void onStart() {
                         ToastMsg.builder.display("正在加载...", duration);
@@ -227,6 +231,9 @@ public class MainFragment extends ProgressFragment {
                     JSONArray normal_articles = normal_article.getJSONArray("articles");
                     if (normal_article.getInt("count") == 0) {
                         isbottom = true;
+                        TextView bottom = (TextView) mContentView.findViewById(R.id.pull_to_refresh_loadmore_text);
+                        ProgressBar bottomProgressBar = (ProgressBar) mContentView.findViewById(R.id.pull_to_refresh_load_progress);
+
                         ToastMsg.builder.display("到底啦~！", duration);
                     }
                     else {

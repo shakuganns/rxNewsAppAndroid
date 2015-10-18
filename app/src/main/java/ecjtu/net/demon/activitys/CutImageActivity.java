@@ -60,6 +60,7 @@ public class CutImageActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     saveFile(cutImageView.clipBitmap());
+                    saveFileJPG(cutImageView.clipBitmap());
                     setResult(Activity.RESULT_OK);
                     onBackPressed();
                 } catch (IOException e) {
@@ -84,6 +85,16 @@ public class CutImageActivity extends AppCompatActivity {
         bos.flush();
         bos.close();
     }
+
+    public void saveFileJPG(Bitmap bm) throws IOException {
+        File myCaptureFile = new File(getApplicationContext()
+                .getExternalFilesDir("headImage") + "/" + getIntent().getStringExtra("string") + ".jpg");
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(myCaptureFile));
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+        bos.flush();
+        bos.close();
+    }
+
 
     public Bitmap drawableToBitmap(Drawable drawable) {
         bitmap = Bitmap.createBitmap(

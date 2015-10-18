@@ -46,7 +46,7 @@ import ecjtu.net.demon.utils.UserEntity;
 public class LoginActivity extends BaseActivity implements LoaderCallbacks<Cursor> {
 
 
-    private final static String url = "http://user.ecjtu.net/api/";
+    public final static String url = "http://user.ecjtu.net/api/";
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -301,6 +301,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                 HttpHelper httpHelper = new HttpHelper();
                 String token = httpHelper.passwordcheck(mEmail, mPassword, url);
                 if (token != null) {
+                    HttpHelper.password = mPassword;
                     UserEntity userEntity = httpHelper.getUserContent(mEmail, token, url);
                     SharedPreUtil.getInstance().putUser(userEntity);
                     return true;
@@ -322,7 +323,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
             if (success) {
                 Intent intent = new Intent();
                 intent.setClass(LoginActivity.this, Setting.class);
-                NewMain.isUserInit = false;
+                NewMain.isUserInited = false;
                 startActivity(intent);
                 finish();
             } else {

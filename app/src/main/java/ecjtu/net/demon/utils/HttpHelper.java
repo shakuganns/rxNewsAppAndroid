@@ -56,6 +56,7 @@ public class HttpHelper {
     private HttpURLConnection connection = null;
     private InputStreamReader in = null;
     private ACache newsListCache;
+    public static String password;
 
     public HttpHelper() {
 
@@ -383,9 +384,11 @@ public class HttpHelper {
                 person = jsonObject.getJSONObject("user");
                 userEntity.setStudentID(person.getString("student_id"));
                 userEntity.setToken(token);
+                userEntity.setPassword(password);
+                userEntity.setHeadImagePath("avatar");
                 userEntity.setUserName(person.getString("Name"));
                 userEntity.setSex(person.getString("Sex"));
-                //userEntity.setHeadImage(person.getString("url"));
+                userEntity.setHeadImagePath(person.getString("avatar"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }

@@ -27,7 +27,7 @@ import android.widget.SimpleAdapter;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-import org.apache.http.Header;
+import cz.msebera.android.httpclient.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -110,7 +110,7 @@ public class Setting extends BaseActivity {
             @Override
             public void onClick(View v) {
                 SharedPreUtil.getInstance().DeleteUser();
-                NewMain.isUserInit = false;
+                NewMain.isUserInited = false;
                 turn2mianActivity(null);
             }
         });
@@ -165,11 +165,15 @@ public class Setting extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
+                    case 0:
+                        turn2ActivityWithUrl(SubCommentsActivity.class,null);
+                        break;
                     case 1:
                         checkVersionAsync();
                         break;
                     case 2:
                         turn2ActivityWithUrl(AboutActivity.class,null);
+                        break;
                 }
             }
         });
@@ -205,6 +209,7 @@ public class Setting extends BaseActivity {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode,headers,response);
                 try {
                     int versionCode = response.getInt("version_code");
                     md5 = response.getString("md5");
@@ -263,7 +268,7 @@ public class Setting extends BaseActivity {
     private List<Map<String, Object>> getAboutData() throws Exception {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("notes", "消息通知");
+        map.put("notes", "意见反馈");
         map.put("information",">");
         list.add(map);
 
@@ -322,7 +327,6 @@ public class Setting extends BaseActivity {
     }
 
     public String getUserId() {
-
         return userEntity.getStudentID();
     }
 
@@ -346,7 +350,7 @@ public class Setting extends BaseActivity {
         if (requestCode == 12 && resultCode == Activity.RESULT_OK) {
             headImage.setImageDrawable(Drawable.createFromPath(getApplicationContext()
                     .getExternalFilesDir("headImage") + "/" + getUserId() + ".png"));
-            NewMain.isUserInit = false;
+            NewMain.isUserInited = false;
             Log.i("TAG", "settingHead----->");
             Log.i("tag", "file://" + getApplicationContext()
                     .getExternalFilesDir("headImage") + "/" + getUserId() + ".png");

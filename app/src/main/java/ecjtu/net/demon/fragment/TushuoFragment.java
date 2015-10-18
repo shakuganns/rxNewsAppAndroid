@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import com.devspark.progressfragment.ProgressFragment;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-import org.apache.http.Header;
+import cz.msebera.android.httpclient.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
