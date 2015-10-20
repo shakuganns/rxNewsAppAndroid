@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
     defaultConfig {
         applicationId 'ecjtu.net.demon'
         minSdkVersion 15
-        targetSdkVersion 21
-        versionCode 13
+        targetSdkVersion 22
+        versionCode 15
         versionName "0.2.3.2"
     }
     buildTypes {
@@ -24,16 +24,16 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile files('libs/core.jar')
     compile files('libs/lib.jar')
-    compile 'com.github.chrisbanes.photoview:library:1.2.3'
     compile 'com.github.johnkil.android-progressfragment:progressfragment:1.4.0'
-    compile 'com.android.support:recyclerview-v7:22.2.1'
-    compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
-    compile 'com.android.support:cardview-v7:23.0.1'
-    compile 'com.android.support:design:22.2.1'
-    compile 'com.android.support:support-v4:23.0.1'
     compile files('libs/jpush-sdk-release1.8.2.jar')
     compile 'com.loopj.android:android-async-http:1.4.9'
+    compile 'com.github.chrisbanes.photoview:library:1.2.4'
+    compile 'com.android.support:recyclerview-v7:22.2.1'
+    compile 'com.android.support:appcompat-v7:22.2.1'
+    compile 'com.android.support:design:22.2.1'
+    compile 'com.android.support:cardview-v7:22.2.1'
+    compile 'com.android.support:support-v4:22.2.1'
 }
 
 repositories {
@@ -41,7 +41,6 @@ repositories {
 }
 
 dependencies {
-    compile 'com.google.android.gms:play-services:7.0.0'
-    compile 'com.android.support:appcompat-v7:22.0.0'
+    compile 'com.google.android.gms:play-services:8.1.0'
 }
 

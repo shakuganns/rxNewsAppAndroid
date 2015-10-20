@@ -4,6 +4,7 @@
  * @last-time         2015.8.20
  */
 
+var id = "20142110010101"; // window.interface.getStudentId()
 
 $(document).ready(function(){
 
@@ -36,9 +37,7 @@ $(document).ready(function(){
         weekday;
     date.getDay() === 0 ? weekday = 7: weekday = date.getDay();
     // console.log(date, weekday);
-
     weekday = 2;
-    var id = "20142110010101"; // window.interface.getStudentId()
 
 
     // $(".month").text(date.getMonth()+1);
@@ -72,6 +71,11 @@ $(document).ready(function(){
 
     })
 })
+
+window.onload = function(){  
+     id = window.interface.getStudentId();
+	alert("get int from java:”+id);
+}  
 
 function classStrSlice (str) {
     var ClassStrSliceObj = {

@@ -369,7 +369,7 @@ public class HttpHelper {
      * @return
      */
     public UserEntity getUserContent(String studentID,String token,String url) {
-        Log.i("tag", "it works");
+        Log.i("tag", "getUserContent works");
         JSONObject person = null;
         boolean status = false;
         UserEntity userEntity = new UserEntity();

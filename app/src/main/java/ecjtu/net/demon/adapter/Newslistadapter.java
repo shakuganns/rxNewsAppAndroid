@@ -172,7 +172,6 @@ public class Newslistadapter extends BaseAdapter {
             listItemView.title = (TextView) convertView.findViewById(R.id.news_title);
             listItemView.info = (TextView) convertView.findViewById(R.id.news_info);
             listItemView.click = (TextView) convertView.findViewById(R.id.click);
-            listItemView.articleID = (TextView) convertView.findViewById(R.id.articleID);
             convertView.setTag(listItemView);
         } else listItemView = (ListItemView) convertView.getTag();
         String url = (String) listItem.get(position - 1).get("thumb");
@@ -181,7 +180,6 @@ public class Newslistadapter extends BaseAdapter {
         listItemView.title.setText(listItem.get(position - 1).get("title") + String.valueOf(listItem.get(position - 1).get("id")));
         listItemView.info.setText((String) listItem.get(position - 1).get("info"));
         listItemView.click.setText((String) listItem.get(position - 1).get("click"));
-        listItemView.articleID.setText( String.valueOf(listItem.get(position - 1).get("id")));
 
         return convertView;
     }

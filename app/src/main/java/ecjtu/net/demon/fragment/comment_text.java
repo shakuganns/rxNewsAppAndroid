@@ -67,14 +67,12 @@ public class comment_text extends Fragment {
 
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                            super.onSuccess(statusCode, headers, response);
                             commentText.setText("");
                             ToastMsg.builder.display("提交成功～～～", 300);
                         }
 
                         @Override
                         public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                            super.onFailure(statusCode, headers, responseString, throwable);
                             ToastMsg.builder.display("提交失败～～～" + statusCode, 300);
                         }
                     });

@@ -26,12 +26,14 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import cz.msebera.android.httpclient.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,7 +59,7 @@ public class Setting extends BaseActivity {
     private String userName;
     private String updateUrl = "http://app.ecjtu.net/";
     private String VersionUrl = "http://app.ecjtu.net/api/v1/version";
-    private int duration = 300;
+    private int duration = 500;
     private String md5 = null;
 
 
@@ -209,7 +211,7 @@ public class Setting extends BaseActivity {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode,headers,response);
+                super.onSuccess(statusCode, headers, response);
                 try {
                     int versionCode = response.getInt("version_code");
                     md5 = response.getString("md5");
@@ -351,10 +353,50 @@ public class Setting extends BaseActivity {
             headImage.setImageDrawable(Drawable.createFromPath(getApplicationContext()
                     .getExternalFilesDir("headImage") + "/" + getUserId() + ".png"));
             NewMain.isUserInited = false;
+            uplaodHeadImage();
             Log.i("TAG", "settingHead----->");
             Log.i("tag", "file://" + getApplicationContext()
                     .getExternalFilesDir("headImage") + "/" + getUserId() + ".png");
         }
+    }
+
+    public void uplaodHeadImage() {
+        File file = new File(getApplicationContext().getExternalFilesDir("headImage") + "/" + userEntity.getStudentID() + ".png");
+        RequestParams params = new RequestParams();
+        params.put("token",userEntity.getToken());
+        try {
+            params.put("avatar",file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        Log.i("TAG", String.valueOf(file.exists()));
+
+        HttpAsync.post("http://user.ecjtu.net/api/user/"+userEntity.getStudentID()+"/avatar",params,new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    if(response.getBoolean("result") == false) {
+                        userEntity.updataToken();
+                        ToastMsg.builder.display("上传头像失败，请重试～", duration);
+                    } else {
+                        userEntity.setHeadImagePath(response.getString("avatar"));
+                        SharedPreUtil.getInstance().putUser(userEntity);
+                        ToastMsg.builder.display("上传头像成功", duration);
+                        Log.i("TAG",String.valueOf(response));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                ToastMsg.builder.display("头像上传失败，网络有点不给力呀～", duration);
+                Log.i("TAG", String.valueOf(responseString));
+                Log.i("TAG", String.valueOf(statusCode));
+            }
+        });
     }
 
     private void turn2ActivityWithStringForResult(Class activity, String string,String data,int requestCode) {

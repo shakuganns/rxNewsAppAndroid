@@ -1,14 +1,11 @@
 package ecjtu.net.demon.utils;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 import ecjtu.net.demon.activitys.LoginActivity;
-import ecjtu.net.demon.activitys.NewMain;
 
 
 /**

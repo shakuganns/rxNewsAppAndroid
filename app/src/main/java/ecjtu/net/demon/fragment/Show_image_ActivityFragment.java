@@ -1,9 +1,20 @@
 package ecjtu.net.demon.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +23,18 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import ecjtu.net.demon.R;
 import ecjtu.net.demon.activitys.Tusho_show_card_activity;
 import ecjtu.net.demon.adapter.tushuShowCardAdapter;
+import ecjtu.net.demon.utils.ToastMsg;
 import uk.co.senab.photoview.PhotoView;
 
 /**
@@ -60,7 +78,6 @@ public class Show_image_ActivityFragment extends Fragment {
         viewPager.setCurrentItem(tushuShowCardAdapter.position);
     }
 
-
     private ArrayList<String> getcontent() {
         content = Tusho_show_card_activity.urlList;
         return content;
@@ -87,11 +104,34 @@ public class Show_image_ActivityFragment extends Fragment {
         }
 
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            PhotoView photoView = new PhotoView(container.getContext());
+        public Object instantiateItem(ViewGroup container, final int position) {
+            final PhotoView photoView = new PhotoView(container.getContext());
+            photoView.setTag(position);
             ImageLoader.getInstance().displayImage(urls.get(position), photoView, options);
             uri[position] = ImageLoader.getInstance().getDiskCache().get(urls.get(position)).getPath();
             container.addView(photoView);
+            photoView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Log.i("tag","long click~~");
+                    new AlertDialog.Builder(getActivity())
+                            .setItems(new String[]{"保存到相册"}, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    try {
+                                        MediaStore.Images.Media.insertImage(getActivity().getContentResolver(),
+                                                ImageLoader.getInstance().getDiskCache().get(urls.get(position)).getAbsolutePath()
+                                                , "", "");
+                                        ToastMsg.builder.display("保存成功～",500);
+                                    } catch (FileNotFoundException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            })
+                            .show();
+                    return false;
+                }
+            });
             return photoView;
         }
 

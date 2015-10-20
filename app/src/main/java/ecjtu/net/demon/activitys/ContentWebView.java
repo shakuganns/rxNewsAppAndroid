@@ -70,7 +70,6 @@ public class ContentWebView extends BaseActivity {
                 super.onReceivedTitle(view, title);
             }
         });
-        webView.addJavascriptInterface(new JavaScriptInterface(), "interface");
         WebSettings ws = webView.getSettings();
         ws.setJavaScriptEnabled(true);
         ws.setJavaScriptCanOpenWindowsAutomatically(true);
@@ -85,7 +84,7 @@ public class ContentWebView extends BaseActivity {
         ws.setAppCacheEnabled(true);
         ws.setDatabaseEnabled(true);
         ws.setRenderPriority(WebSettings.RenderPriority.HIGH);
-
+        webView.addJavascriptInterface(new JavaScriptInterface(), "interface");
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {

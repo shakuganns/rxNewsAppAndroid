@@ -135,8 +135,7 @@ public class CutImageActivity extends AppCompatActivity {
         return inSampleSize;
     }
 
-    private Bitmap getDiskBitmap(String pathString)
-    {
+    private Bitmap getDiskBitmap(String pathString) {
         try
         {
             File file = new File(pathString);

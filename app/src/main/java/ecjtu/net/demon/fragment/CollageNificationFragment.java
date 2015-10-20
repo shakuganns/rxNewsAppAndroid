@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.devspark.progressfragment.ProgressFragment;
@@ -168,7 +170,10 @@ public class CollageNificationFragment extends ProgressFragment {
                     try {
                         if (response.getInt("count") == 0) {
                             isBottom = true;
-                            ToastMsg.builder.display("到底啦~！", duration);
+                            TextView bottom = (TextView) mContentView.findViewById(R.id.pull_to_refresh_loadmore_text);
+                            ProgressBar bottomProgressBar = (ProgressBar) mContentView.findViewById(R.id.pull_to_refresh_load_progress);
+                            bottomProgressBar.setVisibility(View.GONE);
+                            bottom.setText("已经到底啦～");
                         }
                         else {
                             JSONArray list = response.getJSONArray("articles");

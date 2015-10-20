@@ -564,6 +564,7 @@ public class NewMain extends AppCompatActivity {
                         ToastMsg.builder.display("上传头像失败，请重试～", duration);
                     } else {
                         userEntity.setHeadImagePath(response.getString("avatar"));
+                        SharedPreUtil.getInstance().putUser(userEntity);
                         ToastMsg.builder.display("上传头像成功", duration);
                         Log.i("TAG",String.valueOf(response));
                     }
@@ -574,7 +575,7 @@ public class NewMain extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                ToastMsg.builder.display("上传头像失败", duration);
+                ToastMsg.builder.display("头像上传失败，网络有点不给力呀～", duration);
                 Log.i("TAG", String.valueOf(responseString));
                 Log.i("TAG", String.valueOf(statusCode));
             }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -82,21 +83,18 @@ public class RixinNewsAdapter extends RecyclerView.Adapter {
         public TextView title;
         public TextView info;
         public TextView click;
-        public TextView articleID;
 
-        public ItemViewHolder(View itemView) {
+        public ItemViewHolder(final View itemView) {
             super(itemView);
             image = (ImageView) itemView.findViewById(R.id.news_image);
             title = (TextView) itemView.findViewById(R.id.news_title);
             info = (TextView) itemView.findViewById(R.id.news_info);
             click = (TextView) itemView.findViewById(R.id.click);
-            articleID = (TextView) itemView.findViewById(R.id.articleID);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    TextView articleIDText = (TextView) view.findViewById(R.id.articleID);
-                    String articleID = (String) articleIDText.getText();
+                    String articleID = (String) itemView.getTag();
                     String articleUrl = "http://app.ecjtu.net/api/v1/article/" + articleID + "/view";
                     turn2Activity(webview.class, articleUrl,articleID);
                 }
@@ -193,14 +191,14 @@ public class RixinNewsAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if(holder instanceof ItemViewHolder) {
-            Log.i("TAG","-----------"+position+"----------");
+            Log.i("TAG", "-----------" + position + "----------");
             String url = (String) listItem.get(position - 1).get("thumb");
             ((ItemViewHolder)holder).image.setImageResource(R.drawable.thumb_default);
             ((ItemViewHolder)holder).title.setText((String) listItem.get(position - 1).get("title"));
             ((ItemViewHolder)holder).info.setText((String) listItem.get(position - 1).get("info"));
-            ((ItemViewHolder)holder).click.setText((String) listItem.get(position - 1).get("click"));
-            ((ItemViewHolder)holder).articleID.setText(String.valueOf(listItem.get(position - 1).get("id")));
-            ImageLoader.getInstance().displayImage(url, ((ItemViewHolder)holder).image, options);
+            ((ItemViewHolder)holder).click.setText(listItem.get(position - 1).get("click")+"点击");
+            ((ItemViewHolder)holder).itemView.setTag(String.valueOf(listItem.get(position - 1).get("id")));
+            ImageLoader.getInstance().displayImage(url, ((ItemViewHolder) holder).image, options);
         }
         if(holder instanceof HeadViewHolder) {
             if(!isInit) {
