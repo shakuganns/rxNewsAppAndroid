@@ -103,11 +103,10 @@ public class New_login extends Activity {
 
     public void propertyValuesHolder(View view) {
         Log.i("tag","动画已经被执行");
-        PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("alpha", 0f, 1f);
-        PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("scaleX", 0, 1f);
-        PropertyValuesHolder pvhZ = PropertyValuesHolder.ofFloat("scaleY", 0, 1f);
-        PropertyValuesHolder pvhH = PropertyValuesHolder.ofFloat("y", site.getY() + 500f, site.getY() + 350f);
-        Animator objectAnimator =  ObjectAnimator.ofPropertyValuesHolder(view, pvhX, pvhY, pvhZ, pvhH).setDuration(2000);
+        PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("alpha", 1f, 1f);
+        PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("scaleX", 1f, 1f);
+        PropertyValuesHolder pvhZ = PropertyValuesHolder.ofFloat("scaleY", 1f, 1f);
+        Animator objectAnimator =  ObjectAnimator.ofPropertyValuesHolder(view, pvhX, pvhY, pvhZ).setDuration(3000);
         objectAnimator.start();
         objectAnimator.addListener(new Animator.AnimatorListener() {
             @Override

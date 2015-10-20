@@ -23,7 +23,6 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile files('libs/core.jar')
-    compile files('libs/lib.jar')
     compile 'com.github.johnkil.android-progressfragment:progressfragment:1.4.0'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
     compile files('libs/jpush-sdk-release1.8.2.jar')
@@ -39,8 +38,3 @@ dependencies {
 repositories {
     jcenter()
 }
-
-dependencies {
-    compile 'com.google.android.gms:play-services:8.1.0'
-}
-

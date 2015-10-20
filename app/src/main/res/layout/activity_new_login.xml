@@ -8,12 +8,23 @@
     >
 
     <ImageView
+        android:paddingBottom="40dp"
         android:id="@+id/site"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
         android:layout_gravity="center"
         android:src="@drawable/welcome_logo"
         android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:textColor="@color/md_grey_600"
+        android:layout_marginBottom="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Copyright (c) 2015年 Rixin. All rights reserved."
+        android:id="@+id/textView"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
