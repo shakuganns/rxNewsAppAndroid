@@ -25,6 +25,9 @@ import cn.jpush.android.api.JPushInterface;
 import ecjtu.net.demon.R;
 import ecjtu.net.demon.utils.SharedPreUtil;
 
+/**
+ *欢迎界面
+ **/
 
 public class New_login extends Activity {
 

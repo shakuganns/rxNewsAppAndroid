@@ -28,6 +28,7 @@ import ecjtu.net.demon.view.CutImageView;
 
 /**
  * Created by shakugan on 15/9/15.
+ * 头像裁剪
  */
 public class CutImageActivity extends AppCompatActivity {
 
@@ -77,6 +78,10 @@ public class CutImageActivity extends AppCompatActivity {
         bitmap = null;
     }
 
+    /**
+     * 保存图片到本地
+     */
+
     public void saveFile(Bitmap bm) throws IOException {
         File myCaptureFile = new File(getApplicationContext()
                 .getExternalFilesDir("headImage") + "/" + getIntent().getStringExtra("string") + ".png");
@@ -85,6 +90,7 @@ public class CutImageActivity extends AppCompatActivity {
         bos.flush();
         bos.close();
     }
+
 
     public void saveFileJPG(Bitmap bm) throws IOException {
         File myCaptureFile = new File(getApplicationContext()
@@ -115,6 +121,10 @@ public class CutImageActivity extends AppCompatActivity {
 
         return bitmap;
     }
+
+    /**
+     * 计算压缩比例
+     */
 
     public int calculateInSampleSize(BitmapFactory.Options options,
                                             int reqWidth, int reqHeight) {

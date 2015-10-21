@@ -32,6 +32,10 @@ import android.view.SurfaceView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+  *二维码扫描 Created by Shakugan
+  **/
+
 public class CaptureActivity extends Activity implements Callback {
 
 	private CaptureActivityHandler handler;

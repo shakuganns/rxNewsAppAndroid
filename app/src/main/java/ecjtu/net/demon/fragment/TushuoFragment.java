@@ -2,7 +2,6 @@ package ecjtu.net.demon.fragment;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,17 +18,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import ecjtu.net.demon.R;
-import ecjtu.net.demon.adapter.Newslistadapter;
 import ecjtu.net.demon.adapter.TushuoAdapter;
 import ecjtu.net.demon.utils.ACache;
 import ecjtu.net.demon.utils.HttpAsync;
 import ecjtu.net.demon.utils.ToastMsg;
-import ecjtu.net.demon.view.RefreshLayout;
 
 /**
  * Created by homker on 2015/5/5.
@@ -233,6 +229,10 @@ public class TushuoFragment extends ProgressFragment {
             }
             return arrayList;
         }
+
+    /**
+     * Unix时间戳转换
+     */
 
     public String TimeStamp2Date(String timestampString, String formats){
         Long timestamp = Long.parseLong(timestampString)*1000;

@@ -75,7 +75,7 @@ public class Show_image_ActivityFragment extends Fragment {
         tushuoImageAdapeter = new TushuoImageAdapeter();
         tushuoImageAdapeter.setContent(getcontent());
         viewPager.setAdapter(tushuoImageAdapeter);
-        viewPager.setCurrentItem(tushuShowCardAdapter.position);
+        viewPager.setCurrentItem(tushuShowCardAdapter.position); //设置当前图片为点击图片
     }
 
     private ArrayList<String> getcontent() {
@@ -102,6 +102,10 @@ public class Show_image_ActivityFragment extends Fragment {
         public boolean isViewFromObject(View view, Object object) {
             return view == object;
         }
+
+        /**
+         * 生成viewpager item视图
+         */
 
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {

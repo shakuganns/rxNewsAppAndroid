@@ -35,7 +35,7 @@ import ecjtu.net.demon.view.rxRefreshLayout;
 
 public class MainFragment extends ProgressFragment {
 
-    private View mContentView;
+    private View mContentView;   //内容视图
     private static final int duration = 100;
     private final static String url = "http://app.ecjtu.net/api/v1/index";
     private RixinNewsAdapter rixinNewsAdapter;
@@ -43,7 +43,7 @@ public class MainFragment extends ProgressFragment {
     private LinearLayoutManager linearLayoutManager;
     private rxRefreshLayout refreshLayout = null;
     private HashMap<String, Object> list = new HashMap<>();
-    private boolean isbottom;
+    private boolean isbottom;  //是否还有更多的数据
     private int lastVisibleItem;
 
     @Nullable
@@ -51,7 +51,7 @@ public class MainFragment extends ProgressFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         mContentView = inflater.inflate(R.layout.activity_main, container, false);
-        return inflater.inflate(R.layout.fragment_loading, container, false);
+        return inflater.inflate(R.layout.fragment_loading, container, false);   //返回loading视图
     }
 
     @Override
@@ -59,7 +59,7 @@ public class MainFragment extends ProgressFragment {
         super.onActivityCreated(savedInstanceState);
         setContentView(mContentView);
         setEmptyText(R.string.empty);
-        setContentShown(false);
+        setContentShown(false);  //设置内容视图不显示
         isbottom = false;
         linearLayoutManager = new LinearLayoutManager(getActivity());
         newslist = (RecyclerView) getView().findViewById(R.id.newslist);
@@ -139,6 +139,13 @@ public class MainFragment extends ProgressFragment {
         }
         startActivity(intent);
     }
+
+    /**
+     * 数据请求方法
+     * @param lastId api请求参数
+     * @param isInit 是否初始化数据
+     *
+     */
 
     public HashMap<String,Object> setNewslist(String url, final String lastId,final boolean isInit, final boolean isRefresh) {
         isbottom = false;

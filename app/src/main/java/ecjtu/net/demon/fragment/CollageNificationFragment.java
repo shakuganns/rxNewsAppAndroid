@@ -128,7 +128,6 @@ public class CollageNificationFragment extends ProgressFragment {
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        super.onSuccess(statusCode, headers, response);
                         if (lastId == null) {//只缓存最新的内容列表
                             tushuoListCache.remove("CNList");
                             tushuoListCache.put("CNList", response, 7 * ACache.TIME_DAY);
@@ -147,7 +146,6 @@ public class CollageNificationFragment extends ProgressFragment {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        super.onFailure(statusCode, headers, responseString, throwable);
                         ToastMsg.builder.display("网络环境好像不是很好呀~！", duration);
                     }
 

@@ -177,6 +177,11 @@ public class ContentWebView extends BaseActivity {
         }
     }
 
+
+    /**
+     * web页面调用借口类
+     */
+
     final class JavaScriptInterface {
 
         JavaScriptInterface() {
