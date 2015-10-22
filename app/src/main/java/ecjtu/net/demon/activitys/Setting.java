@@ -27,6 +27,9 @@ import android.widget.SimpleAdapter;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import cz.msebera.android.httpclient.Header;
 import org.json.JSONException;
@@ -61,6 +64,7 @@ public class Setting extends BaseActivity {
     private String VersionUrl = "http://app.ecjtu.net/api/v1/version";
     private int duration = 500;
     private String md5 = null;
+    private DisplayImageOptions options;
 
 
     private void showNoticeDialog()
@@ -104,6 +108,19 @@ public class Setting extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.setting);
+        ImageLoaderConfiguration configuration = ImageLoaderConfiguration
+                .createDefault(this);
+
+        //Initialize ImageLoader with configuration.
+        ImageLoader.getInstance().init(configuration);
+
+        options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.head_iamge)
+                .showImageOnFail(R.drawable.head_iamge)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .build();
+
         initAcitonBar();
         userEntity = SharedPreUtil.getInstance().getUser();
         userName = userEntity.getUserName();
@@ -124,6 +141,10 @@ public class Setting extends BaseActivity {
         if (file.exists()) {
             headImage.setImageDrawable(Drawable.createFromPath(getApplicationContext()
                     .getExternalFilesDir("headImage") + "/" + getUserId() + ".png"));
+        } else if(userEntity.getHeadImagePath() == "") {
+
+        } else {
+            ImageLoader.getInstance().displayImage("http://"+userEntity.getHeadImagePath(),headImage,options);
         }
         headImage.setOnClickListener(new View.OnClickListener() {
             @Override
