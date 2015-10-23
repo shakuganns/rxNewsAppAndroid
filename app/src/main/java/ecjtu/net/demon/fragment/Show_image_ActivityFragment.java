@@ -14,10 +14,12 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toolbar;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -32,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import ecjtu.net.demon.R;
+import ecjtu.net.demon.activitys.Show_image_Activity;
 import ecjtu.net.demon.activitys.Tusho_show_card_activity;
 import ecjtu.net.demon.adapter.tushuShowCardAdapter;
 import ecjtu.net.demon.utils.ToastMsg;
@@ -76,6 +79,17 @@ public class Show_image_ActivityFragment extends Fragment {
         tushuoImageAdapeter.setContent(getcontent());
         viewPager.setAdapter(tushuoImageAdapeter);
         viewPager.setCurrentItem(tushuShowCardAdapter.position); //设置当前图片为点击图片
+        viewPager.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActionBar toolbar = ((Show_image_Activity)getActivity()).getSupportActionBar();
+                if (toolbar.isShowing()) {
+                    toolbar.hide();
+                } else {
+                    toolbar.show();
+                }
+            }
+        });
     }
 
     private ArrayList<String> getcontent() {

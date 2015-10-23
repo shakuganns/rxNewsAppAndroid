@@ -21,11 +21,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.transition.Explode;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.TextView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -84,7 +86,6 @@ public class NewMain extends AppCompatActivity {
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
 
-
     public void initFragment() {
         mainFragment = new MainFragment();
         collageNificationFragment = new CollageNificationFragment();
@@ -94,7 +95,6 @@ public class NewMain extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        SharedPreUtil.initSharedPreference(getApplicationContext());
 //        View main_view = LayoutInflater.from(this).inflate(R.layout.drawlayout, null);
 //        main_view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
 //        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -113,7 +113,7 @@ public class NewMain extends AppCompatActivity {
                 slidingMenuClickListen(R.id.UserImage);
             }
         });
-
+        SharedPreUtil.initSharedPreference(getApplicationContext());
         userEntity = SharedPreUtil.getInstance().getUser();
         if (!TextUtils.isEmpty(userEntity.getStudentID())) {
             userEntity.updataToken();
@@ -126,8 +126,8 @@ public class NewMain extends AppCompatActivity {
         ImageLoader.getInstance().init(configuration);
 
         options = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.head_iamge)
-                .showImageOnFail(R.drawable.head_iamge)
+                .showImageOnLoading(R.drawable.userimage)
+                .showImageOnFail(R.drawable.userimage)
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
                 .build();

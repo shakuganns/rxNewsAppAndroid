@@ -2,6 +2,7 @@
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/DrawLayout"
+    android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_bg"
@@ -28,7 +29,6 @@
         </android.support.design.widget.CoordinatorLayout>
     </LinearLayout>
 
-
     <android.support.design.widget.NavigationView
         android:id="@+id/drawer"
         android:layout_gravity="start"
@@ -37,6 +37,5 @@
         android:layout_height="match_parent"
         app:headerLayout="@layout/left_menu_header"
         app:menu="@menu/drawer_menu"/>
-
 
 </android.support.v4.widget.DrawerLayout>

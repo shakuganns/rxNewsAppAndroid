@@ -109,7 +109,7 @@ public class New_login extends Activity {
         PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("alpha", 1f, 1f);
         PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("scaleX", 1f, 1f);
         PropertyValuesHolder pvhZ = PropertyValuesHolder.ofFloat("scaleY", 1f, 1f);
-        Animator objectAnimator =  ObjectAnimator.ofPropertyValuesHolder(view, pvhX, pvhY, pvhZ).setDuration(3000);
+        Animator objectAnimator =  ObjectAnimator.ofPropertyValuesHolder(view, pvhX, pvhY, pvhZ).setDuration(2000);
         objectAnimator.start();
         objectAnimator.addListener(new Animator.AnimatorListener() {
             @Override

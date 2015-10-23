@@ -115,8 +115,8 @@ public class Setting extends BaseActivity {
         ImageLoader.getInstance().init(configuration);
 
         options = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.head_iamge)
-                .showImageOnFail(R.drawable.head_iamge)
+                .showImageOnLoading(R.drawable.userimage)
+                .showImageOnFail(R.drawable.userimage)
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
                 .build();

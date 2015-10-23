@@ -15,13 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <!--<Button-->
-        <!--android:background="@color/action_bar_background"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="56dp"-->
-        <!--android:text="点击评论"-->
-        <!--android:id="@+id/comment_btn"-->
-        <!--android:layout_gravity="center_horizontal" />-->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
