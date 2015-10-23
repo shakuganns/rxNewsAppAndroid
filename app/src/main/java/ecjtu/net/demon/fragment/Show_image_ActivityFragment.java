@@ -79,17 +79,6 @@ public class Show_image_ActivityFragment extends Fragment {
         tushuoImageAdapeter.setContent(getcontent());
         viewPager.setAdapter(tushuoImageAdapeter);
         viewPager.setCurrentItem(tushuShowCardAdapter.position); //设置当前图片为点击图片
-        viewPager.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ActionBar toolbar = ((Show_image_Activity)getActivity()).getSupportActionBar();
-                if (toolbar.isShowing()) {
-                    toolbar.hide();
-                } else {
-                    toolbar.show();
-                }
-            }
-        });
     }
 
     private ArrayList<String> getcontent() {
@@ -128,6 +117,19 @@ public class Show_image_ActivityFragment extends Fragment {
             ImageLoader.getInstance().displayImage(urls.get(position), photoView, options);
             uri[position] = ImageLoader.getInstance().getDiskCache().get(urls.get(position)).getPath();
             container.addView(photoView);
+            photoView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ActionBar toolbar = ((Show_image_Activity) getActivity()).getSupportActionBar();
+                    if (toolbar.isShowing()) {
+                        Log.i("tag", "isShowing~~");
+                        toolbar.hide();
+                    } else {
+                        Log.i("tag", "isHiding~~");
+                        toolbar.show();
+                    }
+                }
+            });
             photoView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {

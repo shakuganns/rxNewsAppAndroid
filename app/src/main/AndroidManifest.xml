@@ -186,7 +186,7 @@
             android:name=".activitys.Show_image_Activity"
             android:label="@string/title_activity_show_image_"
             android:parentActivityName=".activitys.Tusho_show_card_activity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar.Teal">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activitys.Tusho_show_card_activity" />
