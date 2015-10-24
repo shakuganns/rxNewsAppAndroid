@@ -36,17 +36,6 @@ public class New_login extends Activity {
     private SharedPreferences.Editor editor;
     boolean mFirst = false;
 
-    public static Drawable readBitMap(Context context, int resId) {
-        BitmapFactory.Options opt = new BitmapFactory.Options();
-        opt.inPreferredConfig = Bitmap.Config.RGB_565;
-        opt.inPurgeable = true;
-        opt.inInputShareable = true;
-        //获取资源图片
-        InputStream is = context.getResources().openRawResource(resId);
-        BitmapDrawable drawable = new BitmapDrawable(context.getResources(), BitmapFactory.decodeStream(is, null, opt));
-        return drawable;
-    }
-
     private void turn2mianActivity(Bundle bundle) {
         Intent intent = new Intent();
         if (bundle != null) {
@@ -83,13 +72,8 @@ public class New_login extends Activity {
             editor.putBoolean("firststart", false);
             editor.commit();
         }
-//        RelativeLayout background = (RelativeLayout) findViewById(R.id.background);
-//        if (Build.VERSION.SDK_INT < 17) {        //兼容低版本
-//            background.setBackgroundDrawable(readBitMap(this, R.drawable.backgroud));
-//        }else background.setBackground(readBitMap(this, R.drawable.backgroud));
         site = (ImageView) findViewById(R.id.site);
         propertyValuesHolder(site);
-        //checkVersionAsync();
     }
 
     @Override

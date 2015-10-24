@@ -113,7 +113,6 @@ public class NewMain extends AppCompatActivity {
                 slidingMenuClickListen(R.id.UserImage);
             }
         });
-        SharedPreUtil.initSharedPreference(getApplicationContext());
         userEntity = SharedPreUtil.getInstance().getUser();
         if (!TextUtils.isEmpty(userEntity.getStudentID())) {
             userEntity.updataToken();

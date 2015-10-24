@@ -103,8 +103,7 @@ public class CutImageView extends ImageView implements ViewTreeObserver.OnGlobal
         mPaint.setColor(getResources().getColor(R.color.cutimageview_bg));
     }
 
-    private float getScale()
-    {
+    private float getScale() {
         mScaleMatrix.getValues(matrixValues);
         return matrixValues[Matrix.MSCALE_X];
     }
@@ -178,8 +177,7 @@ public class CutImageView extends ImageView implements ViewTreeObserver.OnGlobal
         return imageBitmap;
     }
 
-    private class AutoScaleRunnable implements Runnable
-    {
+    private class AutoScaleRunnable implements Runnable {
         static final float BIGGER = 1.07f;
         static final float SMALLER = 0.93f;
         private float mTargetScale;

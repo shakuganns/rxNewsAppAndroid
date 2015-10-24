@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toolbar;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -38,7 +39,9 @@ import ecjtu.net.demon.activitys.Show_image_Activity;
 import ecjtu.net.demon.activitys.Tusho_show_card_activity;
 import ecjtu.net.demon.adapter.tushuShowCardAdapter;
 import ecjtu.net.demon.utils.ToastMsg;
+import ecjtu.net.demon.view.rxMutipleTouchViewPager;
 import uk.co.senab.photoview.PhotoView;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -49,7 +52,7 @@ public class Show_image_ActivityFragment extends Fragment {
     public ArrayList<String> content;
     public TushuoImageAdapeter tushuoImageAdapeter;
     public static String[] uri = new String[30];
-    public static ViewPager viewPager;
+    public static rxMutipleTouchViewPager viewPager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -74,7 +77,7 @@ public class Show_image_ActivityFragment extends Fragment {
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
                 .build();
-        viewPager = (ViewPager) getView().findViewById(R.id.tushuo_viewpager);
+        viewPager = (rxMutipleTouchViewPager) getView().findViewById(R.id.tushuo_viewpager);
         tushuoImageAdapeter = new TushuoImageAdapeter();
         tushuoImageAdapeter.setContent(getcontent());
         viewPager.setAdapter(tushuoImageAdapeter);
@@ -112,46 +115,51 @@ public class Show_image_ActivityFragment extends Fragment {
 
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
-            final PhotoView photoView = new PhotoView(container.getContext());
-            photoView.setTag(position);
-            ImageLoader.getInstance().displayImage(urls.get(position), photoView, options);
-            uri[position] = ImageLoader.getInstance().getDiskCache().get(urls.get(position)).getPath();
-            container.addView(photoView);
-            photoView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ActionBar toolbar = ((Show_image_Activity) getActivity()).getSupportActionBar();
-                    if (toolbar.isShowing()) {
-                        Log.i("tag", "isShowing~~");
-                        toolbar.hide();
-                    } else {
-                        Log.i("tag", "isHiding~~");
-                        toolbar.show();
+            PhotoView photoView = null;
+            if (container.getChildAt(position) == null) {
+                photoView = new PhotoView(container.getContext());
+                photoView.setTag(position);
+                ImageLoader.getInstance().displayImage(urls.get(position), photoView, options);
+                uri[position] = ImageLoader.getInstance().getDiskCache().get(urls.get(position)).getPath();
+                container.addView(photoView);
+                photoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+                    @Override
+                    public void onPhotoTap(View view, float x, float y) {
+                        ActionBar toolbar = ((Show_image_Activity) getActivity()).getSupportActionBar();
+                        if (toolbar.isShowing()) {
+                            Log.i("tag", "isShowing~~");
+                            toolbar.hide();
+                        } else {
+                            Log.i("tag", "isHiding~~");
+                            toolbar.show();
+                        }
                     }
-                }
-            });
-            photoView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    Log.i("tag","long click~~");
-                    new AlertDialog.Builder(getActivity())
-                            .setItems(new String[]{"保存到相册"}, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    try {
-                                        MediaStore.Images.Media.insertImage(getActivity().getContentResolver(),
-                                                ImageLoader.getInstance().getDiskCache().get(urls.get(position)).getAbsolutePath()
-                                                , "", "");
-                                        ToastMsg.builder.display("保存成功～",500);
-                                    } catch (FileNotFoundException e) {
-                                        e.printStackTrace();
+                });
+                photoView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        Log.i("tag", "long click~~");
+                        new AlertDialog.Builder(getActivity())
+                                .setItems(new String[]{"保存到相册"}, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        try {
+                                            MediaStore.Images.Media.insertImage(getActivity().getContentResolver(),
+                                                    ImageLoader.getInstance().getDiskCache().get(urls.get(position)).getAbsolutePath()
+                                                    , "", "");
+                                            ToastMsg.builder.display("保存成功～", 500);
+                                        } catch (FileNotFoundException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
-                                }
-                            })
-                            .show();
-                    return false;
-                }
-            });
+                                })
+                                .show();
+                        return false;
+                    }
+                });
+            } else {
+                photoView = (PhotoView) container.getChildAt(position);
+            }
             return photoView;
         }
 
