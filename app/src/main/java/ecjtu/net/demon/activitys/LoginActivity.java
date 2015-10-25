@@ -183,7 +183,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
     private boolean isUserNameValid(String email) {
         Log.i("tag", String.valueOf(email.length()));
-        return email.length() == 14;
+        return (email.length() == 14) || (email.length() == 16);
     }
 
     private boolean isPasswordValid(String password) {
