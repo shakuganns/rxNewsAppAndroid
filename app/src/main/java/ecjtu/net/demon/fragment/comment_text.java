@@ -1,6 +1,9 @@
 package ecjtu.net.demon.fragment;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -21,7 +24,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import ecjtu.net.demon.R;
+import ecjtu.net.demon.activitys.ContentWebView;
 import ecjtu.net.demon.activitys.NewMain;
+import ecjtu.net.demon.activitys.rxCommentsActivity;
 import ecjtu.net.demon.activitys.webview;
 import ecjtu.net.demon.utils.HttpAsync;
 import ecjtu.net.demon.utils.ToastMsg;
@@ -68,12 +73,35 @@ public class comment_text extends Fragment {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                             commentText.setText("");
+                            // 构造对话框
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                            builder.setMessage("要去看看你的评论吗");
+                            builder.setPositiveButton("好的", new DialogInterface.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which)
+                                {
+                                    dialog.dismiss();
+                                    Intent intent = new Intent(getActivity(),rxCommentsActivity.class);
+                                    String url = "";
+                                    intent.putExtra("url",url);
+                                    startActivity(intent);
+                                }
+                            });
+                            builder.setNegativeButton("不需要", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            AlertDialog noticeDialog = builder.create();
+                            noticeDialog.show();
                             ToastMsg.builder.display("提交成功～～～", 300);
                         }
 
                         @Override
                         public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                            ToastMsg.builder.display("提交失败～～～" + statusCode, 300);
+                            ToastMsg.builder.display("提交失败,请重试～～～" + statusCode, 300);
                         }
                     });
                 }

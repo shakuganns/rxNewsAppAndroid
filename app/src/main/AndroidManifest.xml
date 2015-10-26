@@ -223,6 +223,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activitys.Setting" />
         </activity>
+        <activity
+            android:name=".activitys.rxCommentsActivity"
+            android:label="SubCommentsActivity"
+            android:parentActivityName=".activitys.webview">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activitys.webview" />
+        </activity>
     </application>
 
 </manifest>

@@ -77,13 +77,11 @@ public class CutImageView extends ImageView implements ViewTreeObserver.OnGlobal
                             return true;
                         float x = e.getX();
                         float y = e.getY();
-                        if (getScale() < SCALE_MAX)
-                        {
+                        if (getScale() < SCALE_MAX) {
                             CutImageView.this.postDelayed(
                                     new AutoScaleRunnable(SCALE_MAX, x, y), 16);
                             isAutoScale = true;
-                        } else
-                        {
+                        } else {
                             CutImageView.this.postDelayed(
                                     new AutoScaleRunnable(initScale, x, y), 16);
                             isAutoScale = true;

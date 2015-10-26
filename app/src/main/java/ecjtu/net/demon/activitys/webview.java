@@ -132,7 +132,7 @@ public class webview extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_webview, menu);
+        getMenuInflater().inflate(R.menu.menu_comments_webview, menu);
         return true;
     }
 
@@ -156,6 +156,12 @@ public class webview extends BaseActivity {
         if (id == R.id.homeAsUp) {
             finish();
             return true;
+        }
+        if (id == R.id.comments) {
+            Intent intent = new Intent(webview.this,rxCommentsActivity.class);
+            String url = "";
+            intent.putExtra("url",url);
+            startActivity(intent);
         }
         if (id == android.R.id.home) {
             Intent upIntent = NavUtils.getParentActivityIntent(webview.this);

@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="ecjtu.net.demon.activitys.webview">
+    <item
+        android:id="@+id/share"
+        android:orderInCategory="100"
+        android:title="@string/action_share"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/comments"
+        android:title="@string/comments"
+        app:showAsAction="always"/>
+</menu>
