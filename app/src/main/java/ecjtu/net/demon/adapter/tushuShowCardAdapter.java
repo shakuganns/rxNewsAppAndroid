@@ -107,7 +107,6 @@ public class tushuShowCardAdapter extends RecyclerView.Adapter<RecyclerView.View
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof NormalTextViewHolder) {
             ((NormalTextViewHolder) holder).position = position - 1;
-            ((NormalTextViewHolder) holder).detail.setText((String) content.get(position - 1).get("detail"));
             ((NormalTextViewHolder) holder).image.setImageResource(R.drawable.thumb_default);
             ImageLoader.getInstance().displayImage((String) content.get(position - 1).get("url"), ((NormalTextViewHolder) holder).image, options);
         } else {
@@ -176,21 +175,13 @@ public class tushuShowCardAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public class NormalTextViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView title;
-        private TextView time;
-        private TextView click;
-        private TextView detail;
+
         private ImageView image;
         private int position;
 
         public NormalTextViewHolder(final View itemView) {
             super(itemView);
-            detail = (TextView) itemView.findViewById(R.id.info);
             image = (ImageView) itemView.findViewById(R.id.tushuo_image);
-            title = (TextView) itemView.findViewById(R.id.title);
-            time = (TextView) itemView.findViewById(R.id.time);
-            click = (TextView) itemView.findViewById(R.id.click);
-
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

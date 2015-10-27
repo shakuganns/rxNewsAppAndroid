@@ -6,15 +6,19 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
+import org.w3c.dom.Text;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -35,9 +39,12 @@ public class Show_image_ActivityFragment extends Fragment {
 
     private DisplayImageOptions options;
     public ArrayList<String> content;
+    public ArrayList<String> info;
     public TushuoImageAdapeter tushuoImageAdapeter;
     public static String[] uri = new String[30];
     public static rxMutipleTouchViewPager viewPager;
+    private TextView pageText;
+    private TextView infoText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,6 +74,27 @@ public class Show_image_ActivityFragment extends Fragment {
         tushuoImageAdapeter.setContent(getcontent());
         viewPager.setAdapter(tushuoImageAdapeter);
         viewPager.setCurrentItem(tushuShowCardAdapter.position); //设置当前图片为点击图片
+        pageText = (TextView) getActivity().findViewById(R.id.page_text);
+        pageText.setText(tushuShowCardAdapter.position+1+"/"+tushuoImageAdapeter.getCount());
+        infoText = (TextView) getActivity().findViewById(R.id.info_text);
+        infoText.setText("              "+Tusho_show_card_activity.infoList.get(tushuShowCardAdapter.position));
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                pageText.setText(position + 1 + "/" + tushuoImageAdapeter.getCount());
+                infoText.setText("              "+Tusho_show_card_activity.infoList.get(position));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     private ArrayList<String> getcontent() {

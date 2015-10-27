@@ -39,6 +39,7 @@ public class Tusho_show_card_activity extends BaseActivity {
     private ArrayList<HashMap<String, Object>> content = new ArrayList<>();
     private static String pid;
     public static ArrayList<String> urlList = new ArrayList<>();
+    public static ArrayList<String> infoList = new ArrayList<>();
 
     public static void setPid(String pid) {
         Tusho_show_card_activity.pid = pid;
@@ -57,6 +58,13 @@ public class Tusho_show_card_activity extends BaseActivity {
         recyclerView.setAdapter(adapeter);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        urlList.clear();
+        pid = null;
+        infoList.clear();
+    }
 
     private ArrayList<HashMap<String, Object>> getContent(String url) {
         urlList.clear();
@@ -83,7 +91,9 @@ public class Tusho_show_card_activity extends BaseActivity {
                             String url = "http://pic.ecjtu.net/" + jsonObject.getString("url");
                             urlList.add(i, url);
                             item.put("url", url);
-                            item.put("detail", jsonObject.getString("detail"));
+                            String info = jsonObject.getString("detail");
+                            item.put("detail", info);
+                            infoList.add(i,info);
                             content.add(item);
                         }
                         adapeter.notifyDataSetChanged();
