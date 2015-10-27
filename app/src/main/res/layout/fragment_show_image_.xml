@@ -23,8 +23,8 @@
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:layout_gravity="bottom"
-        android:background="@color/transparent"
-        android:layout_width="wrap_content"
+        android:background="@color/tushuo_showimage_info_bg"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
             android:textSize="20dp"

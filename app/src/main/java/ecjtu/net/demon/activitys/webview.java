@@ -130,6 +130,15 @@ public class webview extends BaseActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        comment_text.commentText = null;
+        comment_text.context = null;
+        comment_text.fragmentManager = null;
+        comment_text.imm = null;
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_comments_webview, menu);

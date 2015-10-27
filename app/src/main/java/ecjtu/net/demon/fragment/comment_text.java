@@ -4,7 +4,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -23,6 +25,8 @@ import cz.msebera.android.httpclient.Header;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
+
 import ecjtu.net.demon.R;
 import ecjtu.net.demon.activitys.ContentWebView;
 import ecjtu.net.demon.activitys.NewMain;
@@ -37,15 +41,17 @@ public class comment_text extends Fragment {
 
     private View view;
     private Button submitBtn;
+    public static Context context;
     public static EditText commentText;
-    private static InputMethodManager imm;
-    private static FragmentManager fragmentManager;
+    public static InputMethodManager imm;
+    public static FragmentManager fragmentManager;
     private String url;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         webview.isComment = true;
+        context = getActivity();
         view = inflater.inflate(R.layout.comment_text, container, false);
         return view;
     }
@@ -65,7 +71,6 @@ public class comment_text extends Fragment {
                     Log.i("tag", url);
                     RequestParams params = new RequestParams();
                     params.put("sid", NewMain.userEntity.getStudentID());
-                    params.put("token", NewMain.userEntity.getToken());
                     params.put("content", commentText.getText());
                     Log.i("tag",String.valueOf(params));
                     HttpAsync.post(url, params, new JsonHttpResponseHandler() {
@@ -74,21 +79,21 @@ public class comment_text extends Fragment {
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                             commentText.setText("");
                             // 构造对话框
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                            builder.setMessage("要去看看你的评论吗");
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            builder.setMessage("要去看看评论吗？");
                             builder.setPositiveButton("好的", new DialogInterface.OnClickListener()
                             {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which)
                                 {
                                     dialog.dismiss();
-                                    Intent intent = new Intent(getActivity(),rxCommentsActivity.class);
+                                    Intent intent = new Intent(context,rxCommentsActivity.class);
                                     String url = "";
-                                    intent.putExtra("url",url);
-                                    startActivity(intent);
+                                    intent.putExtra("url", url);
+                                    context.startActivity(intent);
                                 }
                             });
-                            builder.setNegativeButton("不需要", new DialogInterface.OnClickListener() {
+                            builder.setNegativeButton("不用了", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
@@ -96,7 +101,6 @@ public class comment_text extends Fragment {
                             });
                             AlertDialog noticeDialog = builder.create();
                             noticeDialog.show();
-                            ToastMsg.builder.display("提交成功～～～", 300);
                         }
 
                         @Override
