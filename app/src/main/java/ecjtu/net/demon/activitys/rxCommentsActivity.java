@@ -16,7 +16,7 @@ import ecjtu.net.demon.R;
 /**
  * Created by shakugan on 15/10/26.
  */
-public class rxCommentsActivity extends AppCompatActivity {
+public class rxCommentsActivity extends BaseActivity {
 
     private WebView webView;
     private String title;

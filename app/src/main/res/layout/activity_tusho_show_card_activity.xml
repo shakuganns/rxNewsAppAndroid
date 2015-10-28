@@ -9,6 +9,7 @@
     <include layout="@layout/tool_bar" />
 
     <android.support.v7.widget.RecyclerView
+        android:paddingBottom="8dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/profile_show_card_recyclerview"
         android:layout_width="match_parent"

@@ -1,5 +1,7 @@
 package ecjtu.net.demon.activitys;
 
+import android.content.pm.ActivityInfo;
+import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -26,6 +28,12 @@ public class BaseActivity extends AppCompatActivity {
 
     //用于计算手指滑动的速度。
     private VelocityTracker mVelocityTracker;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

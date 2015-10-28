@@ -25,7 +25,7 @@ import ecjtu.net.demon.utils.ToastMsg;
  * 意见反馈
  * Created by shakugan on 15/10/18.
  */
-public class SubCommentsActivity extends AppCompatActivity {
+public class SubCommentsActivity extends BaseActivity {
 
     private EditText commentsText;
     private TextView sizeText;

@@ -46,7 +46,7 @@ public class TushuoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         options = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.thumb_default)
                 .showImageOnFail(R.drawable.thumb_default)
-                .cacheInMemory(false)
+                .cacheInMemory(true)
                 .cacheOnDisk(true)
                 .build();
     }
@@ -80,6 +80,7 @@ public class TushuoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder normalTextViewHolder, int position) {
         if (normalTextViewHolder instanceof NormalTextViewHolder) {
+
             ((NormalTextViewHolder) normalTextViewHolder).pid.setText((String) content.get(position).get("pid"));
                 ((NormalTextViewHolder) normalTextViewHolder).title.setText((String) content.get(position).get("title"));
                 ((NormalTextViewHolder) normalTextViewHolder).info.setText((String) content.get(position).get("info"));

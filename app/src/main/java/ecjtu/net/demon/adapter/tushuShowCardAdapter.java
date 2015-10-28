@@ -76,7 +76,7 @@ public class tushuShowCardAdapter extends RecyclerView.Adapter<RecyclerView.View
         options = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.thumb_default)
                 .showImageOnFail(R.drawable.thumb_default)
-                .cacheInMemory(false)
+                .cacheInMemory(true)
                 .cacheOnDisk(true)
                 .build();
     }
@@ -116,7 +116,7 @@ public class tushuShowCardAdapter extends RecyclerView.Adapter<RecyclerView.View
                     BitmapDrawable bd = (BitmapDrawable) headImage;
                     Bitmap bitmap = bd.getBitmap();
                     bitmap = blur(bitmap,((HeadViewHolder) holder).bg,20);
-                    Drawable drawable =new BitmapDrawable(bitmap);
+                    Drawable drawable = new BitmapDrawable(bitmap);
                     ((HeadViewHolder) holder).bg.setImageDrawable(drawable);
                 }
                 else ((HeadViewHolder) holder).bg.setImageDrawable(headImage);

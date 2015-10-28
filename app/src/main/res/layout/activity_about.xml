@@ -292,7 +292,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="摇摇"
+                        android:text="Phantr4x"
                         android:textColor="@color/md_grey_800"
                         android:id="@+id/name7"
                         android:layout_alignParentTop="true"

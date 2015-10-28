@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -99,6 +100,7 @@ public class NewMain extends AppCompatActivity {
 //        main_view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
 //        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.drawlayout);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         //使用toolbar代替actionbar
         drawerLayout = (DrawerLayout) findViewById(R.id.DrawLayout);
         initFragment();

@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -63,6 +64,7 @@ public class New_login extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         SharedPreUtil.initSharedPreference(getApplicationContext());
         setContentView(R.layout.activity_new_login);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         preferences = getSharedPreferences("phone", Context.MODE_PRIVATE);
         //判断是不是首次登录，
         if (preferences.getBoolean("firststart", true)) {

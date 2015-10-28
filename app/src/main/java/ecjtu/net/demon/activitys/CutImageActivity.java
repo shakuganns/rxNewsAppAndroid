@@ -3,6 +3,7 @@ package ecjtu.net.demon.activitys;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +18,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -37,11 +42,27 @@ public class CutImageActivity extends AppCompatActivity {
     private Button btnClip;
     private Toolbar toolbar;
     private Bitmap bitmap = null;
+    private DisplayImageOptions options;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cutimage);
+
+        ImageLoaderConfiguration configuration = ImageLoaderConfiguration
+                .createDefault(this);
+
+        //Initialize ImageLoader with configuration.
+        ImageLoader.getInstance().init(configuration);
+
+        options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.userimage)
+                .showImageOnFail(R.drawable.userimage)
+                .cacheInMemory(false)
+                .cacheOnDisk(true)
+                .build();
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("裁剪头像");
@@ -49,8 +70,9 @@ public class CutImageActivity extends AppCompatActivity {
         imageView = (ImageView) findViewById(R.id.headimage);
         btnClip = (Button) findViewById(R.id.btn_clip);
         if (getIntent().getStringExtra("data") != null) {
-            Uri mUri = Uri.parse(getIntent().getStringExtra("data"));
-            cutImageView.setImageBitmap(getDiskBitmap(getRealFilePath(this, mUri)));
+            String mUri = Uri.parse(getIntent().getStringExtra("data")).toString();
+            ImageLoader.getInstance().displayImage(mUri,cutImageView,options);
+//            cutImageView.setImageBitmap(getDiskBitmap(getRealFilePath(this, mUri)));
         } else {
             cutImageView.setImageBitmap(
                     drawableToBitmap(Drawable.createFromPath(getApplicationContext()
@@ -74,8 +96,10 @@ public class CutImageActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        bitmap.recycle();
-        bitmap = null;
+        if (bitmap != null) {
+            bitmap.recycle();
+            bitmap = null;
+        }
     }
 
     /**

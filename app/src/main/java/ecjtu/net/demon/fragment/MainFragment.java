@@ -143,7 +143,7 @@ public class MainFragment extends ProgressFragment {
     /**
      * 数据请求方法
      * @param lastId api请求参数
-     * @param isInit 是否初始化数据
+     * @param isInit app启动第一次加载数据
      *
      */
 

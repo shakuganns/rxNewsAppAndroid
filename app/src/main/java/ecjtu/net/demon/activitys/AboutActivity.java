@@ -1,5 +1,6 @@
 package ecjtu.net.demon.activitys;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,7 @@ public class AboutActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         versionCode = (TextView) findViewById(R.id.tv_version);
         try {
             versionCode.setText(String.valueOf("Version " + BuildConfig.VERSION_NAME));
