@@ -22,6 +22,8 @@ import android.widget.ImageView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -29,6 +31,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import ecjtu.net.demon.R;
+import ecjtu.net.demon.utils.ToastMsg;
 import ecjtu.net.demon.view.CutImageView;
 
 /**
@@ -42,7 +45,7 @@ public class CutImageActivity extends AppCompatActivity {
     private Button btnClip;
     private Toolbar toolbar;
     private Bitmap bitmap = null;
-    private DisplayImageOptions options;
+    private String mUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,16 +54,8 @@ public class CutImageActivity extends AppCompatActivity {
 
         ImageLoaderConfiguration configuration = ImageLoaderConfiguration
                 .createDefault(this);
-
         //Initialize ImageLoader with configuration.
         ImageLoader.getInstance().init(configuration);
-
-        options = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.userimage)
-                .showImageOnFail(R.drawable.userimage)
-                .cacheInMemory(false)
-                .cacheOnDisk(true)
-                .build();
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
@@ -70,9 +65,31 @@ public class CutImageActivity extends AppCompatActivity {
         imageView = (ImageView) findViewById(R.id.headimage);
         btnClip = (Button) findViewById(R.id.btn_clip);
         if (getIntent().getStringExtra("data") != null) {
-            String mUri = Uri.parse(getIntent().getStringExtra("data")).toString();
-            ImageLoader.getInstance().displayImage(mUri,cutImageView,options);
-//            cutImageView.setImageBitmap(getDiskBitmap(getRealFilePath(this, mUri)));
+            mUri = Uri.parse(getIntent().getStringExtra("data")).toString();
+//            ImageLoader.getInstance().displayImage(mUri,cutImageView,options);
+            ImageLoader.getInstance().loadImage(mUri, new ImageLoadingListener() {
+                @Override
+                public void onLoadingStarted(String imageUri, View view) {
+
+                }
+
+                @Override
+                public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                    ToastMsg.builder.display("图片加载失败",500);
+                    finish();
+                }
+
+                @Override
+                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                    mUri = imageUri;
+                }
+
+                @Override
+                public void onLoadingCancelled(String imageUri, View view) {
+
+                }
+            });
+            cutImageView.setImageBitmap(getDiskBitmap(getRealFilePath(this, Uri.parse(mUri))));
         } else {
             cutImageView.setImageBitmap(
                     drawableToBitmap(Drawable.createFromPath(getApplicationContext()
