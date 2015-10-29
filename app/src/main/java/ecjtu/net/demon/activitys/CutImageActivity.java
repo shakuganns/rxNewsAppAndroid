@@ -76,22 +76,20 @@ public class CutImageActivity extends AppCompatActivity {
 
                 @Override
                 public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                    ToastMsg.builder.display("图片加载失败",500);
+                    ToastMsg.builder.display("图片加载失败", 500);
                     finish();
                 }
 
                 @Override
                 public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                    File file = new File(getApplicationContext()
-                            .getExternalFilesDir("headImage") + "/" + getIntent().getStringExtra("string")+ "2" + ".png");
-                    if (!file.exists()) {
-                        try {
-                            saveFileImageLoader(loadedImage);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                    try {
+                        saveFileImageLoader(loadedImage);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                    Log.i("tag","uri = "+mUri);
+                    Log.i("tag", "uri = " + mUri);
+                    cutImageView.setImageBitmap(getDiskBitmap(getRealFilePath(CutImageActivity.this, Uri.parse(getApplicationContext()
+                            .getExternalFilesDir("headImage") + "/" + getIntent().getStringExtra("string") + "2" + ".png"))));
                 }
 
                 @Override
@@ -99,8 +97,6 @@ public class CutImageActivity extends AppCompatActivity {
 
                 }
             });
-            cutImageView.setImageBitmap(getDiskBitmap(getRealFilePath(this, Uri.parse(getApplicationContext()
-                    .getExternalFilesDir("headImage") + "/" + getIntent().getStringExtra("string")+ "2" + ".png"))));
         } else {
             cutImageView.setImageBitmap(
                     drawableToBitmap(Drawable.createFromPath(getApplicationContext()
