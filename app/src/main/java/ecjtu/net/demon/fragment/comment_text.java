@@ -105,7 +105,7 @@ public class comment_text extends Fragment {
 
                         @Override
                         public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                            ToastMsg.builder.display("提交失败,请重试～～～" + statusCode, 300);
+                            ToastMsg.builder.display("提交失败,请重试" + statusCode, 300);
                         }
                     });
                 }

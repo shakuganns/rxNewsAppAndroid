@@ -158,7 +158,7 @@ public class Show_image_ActivityFragment extends Fragment {
                                         MediaStore.Images.Media.insertImage(getActivity().getContentResolver(),
                                                 ImageLoader.getInstance().getDiskCache().get(urls.get(position)).getAbsolutePath()
                                                 , "", "");
-                                        ToastMsg.builder.display("保存成功～", 500);
+                                        ToastMsg.builder.display("保存成功", 500);
                                     } catch (FileNotFoundException e) {
                                         e.printStackTrace();
                                     }

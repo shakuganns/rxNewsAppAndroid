@@ -399,7 +399,7 @@ public class Setting extends BaseActivity {
                 try {
                     if(response.getBoolean("result") == false) {
                         userEntity.updataToken();
-                        ToastMsg.builder.display("上传头像失败，请重试～", duration);
+                        ToastMsg.builder.display("上传头像失败，请重试", duration);
                     } else {
                         userEntity.setHeadImagePath(response.getString("avatar"));
                         SharedPreUtil.getInstance().putUser(userEntity);
@@ -413,7 +413,7 @@ public class Setting extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                ToastMsg.builder.display("头像上传失败，网络有点不给力呀～", duration);
+                ToastMsg.builder.display("头像上传失败，网络有点不给力呀", duration);
                 Log.i("TAG", String.valueOf(responseString));
                 Log.i("TAG", String.valueOf(statusCode));
             }

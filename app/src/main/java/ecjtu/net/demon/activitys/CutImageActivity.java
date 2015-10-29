@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -81,7 +82,16 @@ public class CutImageActivity extends AppCompatActivity {
 
                 @Override
                 public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                    mUri = imageUri;
+                    File file = new File(getApplicationContext()
+                            .getExternalFilesDir("headImage") + "/" + getIntent().getStringExtra("string")+ "2" + ".png");
+                    if (!file.exists()) {
+                        try {
+                            saveFileImageLoader(loadedImage);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    Log.i("tag","uri = "+mUri);
                 }
 
                 @Override
@@ -89,7 +99,8 @@ public class CutImageActivity extends AppCompatActivity {
 
                 }
             });
-            cutImageView.setImageBitmap(getDiskBitmap(getRealFilePath(this, Uri.parse(mUri))));
+            cutImageView.setImageBitmap(getDiskBitmap(getRealFilePath(this, Uri.parse(getApplicationContext()
+                    .getExternalFilesDir("headImage") + "/" + getIntent().getStringExtra("string")+ "2" + ".png"))));
         } else {
             cutImageView.setImageBitmap(
                     drawableToBitmap(Drawable.createFromPath(getApplicationContext()
@@ -126,6 +137,17 @@ public class CutImageActivity extends AppCompatActivity {
     public void saveFile(Bitmap bm) throws IOException {
         File myCaptureFile = new File(getApplicationContext()
                 .getExternalFilesDir("headImage") + "/" + getIntent().getStringExtra("string") + ".png");
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(myCaptureFile));
+        bm.compress(Bitmap.CompressFormat.PNG, 100, bos);
+        bos.flush();
+        bos.close();
+    }
+
+    //使用相册时把头像转存
+
+    public void saveFileImageLoader(Bitmap bm) throws IOException {
+        File myCaptureFile = new File(getApplicationContext()
+                .getExternalFilesDir("headImage") + "/" + getIntent().getStringExtra("string")+ "2" + ".png");
         BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(myCaptureFile));
         bm.compress(Bitmap.CompressFormat.PNG, 100, bos);
         bos.flush();

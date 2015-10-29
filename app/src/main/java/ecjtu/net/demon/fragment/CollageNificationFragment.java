@@ -171,7 +171,7 @@ public class CollageNificationFragment extends ProgressFragment {
                             TextView bottom = (TextView) mContentView.findViewById(R.id.pull_to_refresh_loadmore_text);
                             ProgressBar bottomProgressBar = (ProgressBar) mContentView.findViewById(R.id.pull_to_refresh_load_progress);
                             bottomProgressBar.setVisibility(View.GONE);
-                            bottom.setText("已经到底啦～");
+                            bottom.setText("已经到底啦");
                         }
                         else {
                             JSONArray list = response.getJSONArray("articles");

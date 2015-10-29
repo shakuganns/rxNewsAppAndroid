@@ -141,7 +141,7 @@ public class TushuoFragment extends ProgressFragment {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        ToastMsg.builder.display("网络环境好像不是很好呀~！", duration);
+                        ToastMsg.builder.display("网络环境好像不是很好呀！", duration);
                     }
 
                     @Override
@@ -181,7 +181,7 @@ public class TushuoFragment extends ProgressFragment {
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    ToastMsg.builder.display("网络环境好像不是很好呀~！", duration);
+                    ToastMsg.builder.display("网络环境好像不是很好呀！", duration);
                     swipeRefreshLayout.setRefreshing(false);
                 }
 

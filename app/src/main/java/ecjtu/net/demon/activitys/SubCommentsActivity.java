@@ -72,13 +72,13 @@ public class SubCommentsActivity extends BaseActivity {
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        ToastMsg.builder.display("提交成功,感谢您的反馈~~",500);
+                        ToastMsg.builder.display("提交成功,感谢您的反馈",500);
                         finish();
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        ToastMsg.builder.display("提交失败～～",500);
+                        ToastMsg.builder.display("提交失败",500);
                     }
                 });
             }

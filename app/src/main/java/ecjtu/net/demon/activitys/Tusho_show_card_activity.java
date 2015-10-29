@@ -61,9 +61,11 @@ public class Tusho_show_card_activity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        urlList.clear();
-        pid = null;
-        infoList.clear();
+        if (urlList != null) {
+            urlList.clear();
+            pid = null;
+            infoList.clear();
+        }
     }
 
     private ArrayList<HashMap<String, Object>> getContent(String url) {

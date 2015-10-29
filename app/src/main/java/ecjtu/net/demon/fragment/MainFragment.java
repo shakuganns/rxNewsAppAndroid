@@ -178,7 +178,6 @@ public class MainFragment extends ProgressFragment {
 
                     @Override
                     public void onStart() {
-                        ToastMsg.builder.display("正在加载...", duration);
                     }
 
                     @Override
@@ -207,7 +206,7 @@ public class MainFragment extends ProgressFragment {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                         super.onFailure(statusCode, headers, responseString, throwable);
-                        ToastMsg.builder.display("网络环境好像不是很好呀~！", duration);
+                        ToastMsg.builder.display("网络环境好像不是很好呀！", duration);
                     }
 
                     @Override
@@ -221,12 +220,11 @@ public class MainFragment extends ProgressFragment {
         HttpAsync.get(url, new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
-                ToastMsg.builder.display("正在加载...", duration);
+
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
                 if (lastId == null) {//只缓存最新的内容列表
                     newsListCache.remove("newsList");
                     newsListCache.put("newsList", response, 7 * ACache.TIME_DAY);
@@ -240,8 +238,12 @@ public class MainFragment extends ProgressFragment {
                         isbottom = true;
                         TextView bottom = (TextView) mContentView.findViewById(R.id.pull_to_refresh_loadmore_text);
                         ProgressBar bottomProgressBar = (ProgressBar) mContentView.findViewById(R.id.pull_to_refresh_load_progress);
-                        bottomProgressBar.setVisibility(View.GONE);
-                        bottom.setText("已经到底啦～");
+                        if (bottomProgressBar == null) {
+                            isbottom = false;
+                        } else {
+                            bottomProgressBar.setVisibility(View.GONE);
+                            bottom.setText("已经到底啦");
+                        }
                     }
                     else {
                         if(isRefresh) {
@@ -281,7 +283,7 @@ public class MainFragment extends ProgressFragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
-                ToastMsg.builder.display("网络环境好像不是很好呀~！", duration);
+                ToastMsg.builder.display("网络环境好像不是很好呀！", duration);
                 if(!isRefresh) {
 //                    refreshLayout.setLoading(false);
                 } else {

@@ -405,7 +405,7 @@ public class NewMain extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.searchView) {
-            ToastMsg.builder.display("这个还不知道要用来干什么～～", duration);
+            ToastMsg.builder.display("这个还不知道要用来干什么", duration);
         }
 
         //noinspection SimplifiableIfStatement
