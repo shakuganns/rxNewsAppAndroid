@@ -5,43 +5,28 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Message;
 import android.renderscript.Allocation;
-import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import ecjtu.net.demon.R;
 import ecjtu.net.demon.activitys.Show_image_Activity;
-import ecjtu.net.demon.activitys.Tusho_show_card_activity;
 import ecjtu.net.demon.view.CycleImageView;
 
 /**
@@ -81,6 +66,11 @@ public class tushuShowCardAdapter extends RecyclerView.Adapter<RecyclerView.View
                 .build();
     }
 
+    public void notifyDataChanged() {
+        content.remove(0);
+        super.notifyDataSetChanged();
+    }
+
     public ArrayList<HashMap<String, Object>> getContent() {
         return content;
     }
@@ -106,7 +96,7 @@ public class tushuShowCardAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof NormalTextViewHolder) {
-            ((NormalTextViewHolder) holder).position = position - 1;
+            ((NormalTextViewHolder) holder).position = position;
             ((NormalTextViewHolder) holder).image.setImageResource(R.drawable.thumb_default);
             ImageLoader.getInstance().displayImage((String) content.get(position - 1).get("url"), ((NormalTextViewHolder) holder).image, options);
         } else {
@@ -161,6 +151,15 @@ public class tushuShowCardAdapter extends RecyclerView.Adapter<RecyclerView.View
             count = (TextView) itemView.findViewById(R.id.count);
             title = (TextView) itemView.findViewById(R.id.title);
             bg = (ImageView) itemView.findViewById(R.id.show_card_headbg);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    tushuShowCardAdapter.position = 0;
+                    Intent intent = new Intent();
+                    intent.setClass(itemView.getContext(), Show_image_Activity.class);
+                    itemView.getContext().startActivity(intent);
+                }
+            });
         }
 
     }

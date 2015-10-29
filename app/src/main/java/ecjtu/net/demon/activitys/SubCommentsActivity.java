@@ -68,7 +68,7 @@ public class SubCommentsActivity extends BaseActivity {
                 RequestParams params = new RequestParams();
                 params.add("username", NewMain.userEntity.getStudentID());
                 params.add("content",String.valueOf(commentsText.getText()));
-                HttpAsync.post("http://app.ecjtu.net/api/v1/feedbook",params,new JsonHttpResponseHandler() {
+                HttpAsync.post("http://app.ecjtu.net/api/v1/feedback",params,new JsonHttpResponseHandler() {
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

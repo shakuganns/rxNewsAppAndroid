@@ -81,7 +81,7 @@ public class CollageNificationFragment extends ProgressFragment {
                 getcontent(url, null, false, true);
             }
         });
-        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -170,8 +170,12 @@ public class CollageNificationFragment extends ProgressFragment {
                             isBottom = true;
                             TextView bottom = (TextView) mContentView.findViewById(R.id.pull_to_refresh_loadmore_text);
                             ProgressBar bottomProgressBar = (ProgressBar) mContentView.findViewById(R.id.pull_to_refresh_load_progress);
-                            bottomProgressBar.setVisibility(View.GONE);
-                            bottom.setText("已经到底啦");
+                            if ( bottomProgressBar == null) {
+                                isBottom = false;
+                            } else {
+                                bottomProgressBar.setVisibility(View.GONE);
+                                bottom.setText("已经到底啦");
+                            }
                         }
                         else {
                             JSONArray list = response.getJSONArray("articles");
@@ -186,8 +190,7 @@ public class CollageNificationFragment extends ProgressFragment {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    if(isRefresh)
-                    {
+                    if(isRefresh) {
                         swipeRefreshLayout.setRefreshing(false);
                     }
                 }

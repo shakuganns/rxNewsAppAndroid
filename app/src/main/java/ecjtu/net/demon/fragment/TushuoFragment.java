@@ -67,6 +67,7 @@ public class TushuoFragment extends ProgressFragment {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         adapter = new TushuoAdapter(getActivity(), content);
+
         recyclerView.setAdapter(adapter);
 
         swipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.tushuo_fresh);
@@ -77,7 +78,7 @@ public class TushuoFragment extends ProgressFragment {
                 getcontent(url, null, false, true);
             }
         });
-        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);

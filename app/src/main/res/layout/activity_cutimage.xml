@@ -8,10 +8,13 @@
 
 
     <Button
+        android:background="@color/action_bar_background"
         android:id="@+id/btn_clip"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textSize="20dp"
         android:text="确认"
         />
 

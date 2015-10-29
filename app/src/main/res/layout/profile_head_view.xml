@@ -1,6 +1,7 @@
 <FrameLayout
-    android:layout_height="wrap_content"
+    android:layout_height="280dp"
     android:layout_width="match_parent"
+    android:layout_marginBottom="-40dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <ImageView
         android:id="@+id/show_card_headbg"
@@ -10,15 +11,21 @@
         android:contentDescription="@string/app_name"
         android:scaleType="centerCrop" />
 <LinearLayout
-    android:background="#33CCCCCC"
+    android:background="#66000000"
     android:id="@+id/layout_view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="bottom"
-    android:gravity="bottom|center"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:gravity="center"
     android:orientation="vertical"
     android:paddingBottom="8dp"
-    android:paddingTop="8dp">
+    android:paddingTop="20dp">
+    <LinearLayout
+        android:paddingBottom="32dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
     <TextView
         android:gravity="center"
@@ -87,6 +94,6 @@
             android:text="loading" />
     </LinearLayout>
 
-
+    </LinearLayout>
 </LinearLayout>
 </FrameLayout>

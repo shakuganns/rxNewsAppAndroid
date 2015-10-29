@@ -98,7 +98,7 @@ public class Tusho_show_card_activity extends BaseActivity {
                             infoList.add(i,info);
                             content.add(item);
                         }
-                        adapeter.notifyDataSetChanged();
+                        adapeter.notifyDataChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

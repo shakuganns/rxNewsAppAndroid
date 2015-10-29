@@ -9,6 +9,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -25,8 +26,8 @@ import ecjtu.net.demon.R;
  */
 public class CutImageView extends ImageView implements ViewTreeObserver.OnGlobalLayoutListener,ScaleGestureDetector.OnScaleGestureListener {
 
-    private static int mRadius = 200;
-    public static final float SCALE_MAX = 3.0f;
+    private static int mRadius = 240;
+    public static final float SCALE_MAX = 2.0f;
 
     private Paint mPaint;
     private RectF shelterR;
@@ -158,7 +159,8 @@ public class CutImageView extends ImageView implements ViewTreeObserver.OnGlobal
         mBitmap = zoomBitmap(mBitmap);
         Bitmap target = Bitmap.createBitmap(mRadius * 2, mRadius * 2, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(target);
-        canvas.drawCircle(mRadius, mRadius, mRadius, paint);
+//        canvas.drawCircle(mRadius, mRadius, mRadius, paint);
+        canvas.drawRect(0, 0, 2*mRadius, 2*mRadius, paint);
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
 
         canvas.drawBitmap(mBitmap,- (dw / 2 - mRadius) + x ,- (dh / 2 - mRadius) + y, paint);

@@ -4,30 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>日新课表查询</title>
-    <link rel="stylesheet" href="scss/daily-class-style.css"/>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
-    <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="css/style.css"/>
+    <!-- <link rel="stylesheet" href="css/style.css"/> -->
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style>
+        @font-face {
+          font-family: 'Material Icons';
+          font-style: normal;
+          font-weight: 400;
+          src: local('Material Icons'), local('MaterialIcons-Regular'), url(https://fonts.gstatic.com/s/materialicons/v8/2fcrYFNaTjcS6g4U3t-Y5RV6cRhDpPC5P4GCEJpqGoc.woff) format('woff');
+        }
+        .material-icons {
+          font-family: 'Material Icons';
+          font-weight: normal;
+          font-style: normal;
+          font-size: 24px;
+          line-height: 1;
+          letter-spacing: normal;
+          text-transform: none;
+          display: inline-block;
+          white-space: nowrap;
+          word-wrap: normal;
+          direction: ltr;
+          text-rendering: optimizeLegibility;
+          -webkit-font-smoothing: antialiased;
+        }
+    </style>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <!-- <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script> -->
     <script type="text/javascript" src="js/classQuery.js"></script>
 </head>
 <body>
     <div class="row">
         <div class="col s12">
             <ul class="tabs">
-                <li class="tab col s1 teal lighten-2"><a class="white-text waves-effect waves-light" href="#mon">Mon</a></li>
-                <li class="tab col s1 teal lighten-2"><a class="white-text waves-effect waves-light" href="#tue">Tue</a></li>
-                <li class="tab col s1 teal lighten-2"><a class="white-text waves-effect waves-light" href="#wed">Wed</a></li>
-                <li class="tab col s1 teal lighten-2"><a class="white-text waves-effect waves-light" href="#thu">Thu</a></li>
-                <li class="tab col s1 teal lighten-2"><a class="white-text waves-effect waves-light" href="#fri">Fri</a></li>
-                <li class="tab col s1 teal lighten-2"><a class="white-text waves-effect waves-light" href="#sat">Sat</a></li>
-                <li class="tab col s1 teal lighten-2"><a class="white-text waves-effect waves-light" href="#sun">Sun</a></li>
+                <li class="tab col s1 teal lighten-2"><a class="white-text waves-effect waves-light" href="#mon">周一</a></li>
+                <li class="tab col s1 teal lighten-2"><a class="white-text waves-effect waves-light" href="#tue">周二</a></li>
+                <li class="tab col s1 teal lighten-2"><a class="white-text waves-effect waves-light" href="#wed">周三</a></li>
+                <li class="tab col s1 teal lighten-2"><a class="white-text waves-effect waves-light" href="#thu">周四</a></li>
+                <li class="tab col s1 teal lighten-2"><a class="white-text waves-effect waves-light" href="#fri">周五</a></li>
+                <li class="tab col s1 teal lighten-2"><a class="white-text waves-effect waves-light" href="#sat">周六</a></li>
+                <li class="tab col s1 teal lighten-2"><a class="white-text waves-effect waves-light" href="#sun">周日</a></li>
             </ul>
         </div>
         <div id="mon" class="class-date col s12">
             <ul class="class-table collapsible" data-collapsible="accordion">
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">1-2</span><span class="class-name teal-text"></span></div>
+                    <div class="collapsible-header"><span class="class-num">1-2</span><span class="class-name teal-text"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -38,7 +63,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">3-4</span><span class="class-name teal-text text-darken-2"></span></div>
+                    <div class="collapsible-header"><span class="class-num">3-4</span><span class="class-name teal-text text-darken-2"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -49,7 +74,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">5-6</span><span class="class-name teal-text text-darken-2"></span></div>
+                    <div class="collapsible-header"><span class="class-num">5-6</span><span class="class-name teal-text text-darken-2"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -60,7 +85,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">7-8</span><span class="class-name teal-text text-darken-2"></span></div>
+                    <div class="collapsible-header"><span class="class-num">7-8</span><span class="class-name teal-text text-darken-2"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -71,7 +96,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">9-10</span><span class="class-name teal-text text-darken-2"></span></div>
+                    <div class="collapsible-header"><span class="class-num">9-10</span><span class="class-name teal-text text-darken-2"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -86,7 +111,7 @@
         <div id="tue" class="class-date col s12">
             <ul class="class-table collapsible" data-collapsible="accordion">
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">1-2</span><span class="class-name teal-text"></span></div>
+                    <div class="collapsible-header"><span class="class-num">1-2</span><span class="class-name teal-text"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -97,7 +122,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">3-4</span><span class="class-name teal-text text-darken-2"></span></div>
+                    <div class="collapsible-header"><span class="class-num">3-4</span><span class="class-name teal-text text-darken-2"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -108,7 +133,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">5-6</span><span class="class-name teal-text text-darken-2"></span></div>
+                    <div class="collapsible-header"><span class="class-num">5-6</span><span class="class-name teal-text text-darken-2"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -119,7 +144,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">7-8</span><span class="class-name teal-text text-darken-2"></span></div>
+                    <div class="collapsible-header"><span class="class-num">7-8</span><span class="class-name teal-text text-darken-2"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -130,7 +155,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">9-10</span><span class="class-name teal-text text-darken-2"></span></div>
+                    <div class="collapsible-header"><span class="class-num">9-10</span><span class="class-name teal-text text-darken-2"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -145,7 +170,7 @@
         <div id="wed" class="class-date col s12">
             <ul class="class-table collapsible" data-collapsible="accordion">
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">1-2</span><span class="class-name teal-text"></span></div>
+                    <div class="collapsible-header"><span class="class-num">1-2</span><span class="class-name teal-text"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -156,7 +181,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">3-4</span><span class="class-name teal-text text-darken-2"></span></div>
+                    <div class="collapsible-header"><span class="class-num">3-4</span><span class="class-name teal-text text-darken-2"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -167,7 +192,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">5-6</span><span class="class-name teal-text text-darken-2"></span></div>
+                    <div class="collapsible-header"><span class="class-num">5-6</span><span class="class-name teal-text text-darken-2"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -178,7 +203,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">7-8</span><span class="class-name teal-text text-darken-2"></span></div>
+                    <div class="collapsible-header"><span class="class-num">7-8</span><span class="class-name teal-text text-darken-2"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -189,7 +214,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">9-10</span><span class="class-name teal-text text-darken-2"></span></div>
+                    <div class="collapsible-header"><span class="class-num">9-10</span><span class="class-name teal-text text-darken-2"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -204,7 +229,7 @@
         <div id="thu" class="class-date col s12">
             <ul class="class-table collapsible" data-collapsible="accordion">
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">1-2</span><span class="class-name teal-text"></span></div>
+                    <div class="collapsible-header"><span class="class-num">1-2</span><span class="class-name teal-text"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -215,7 +240,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">3-4</span><span class="class-name teal-text text-darken-2"></span></div>
+                    <div class="collapsible-header"><span class="class-num">3-4</span><span class="class-name teal-text text-darken-2"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -226,7 +251,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">5-6</span><span class="class-name teal-text text-darken-2"></span></div>
+                    <div class="collapsible-header"><span class="class-num">5-6</span><span class="class-name teal-text text-darken-2"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -237,7 +262,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">7-8</span><span class="class-name teal-text text-darken-2"></span></div>
+                    <div class="collapsible-header"><span class="class-num">7-8</span><span class="class-name teal-text text-darken-2"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -248,7 +273,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">9-10</span><span class="class-name teal-text text-darken-2"></span></div>
+                    <div class="collapsible-header"><span class="class-num">9-10</span><span class="class-name teal-text text-darken-2"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -263,7 +288,7 @@
         <div id="fri" class="class-date col s12">
             <ul class="class-table collapsible" data-collapsible="accordion">
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">1-2</span><span class="class-name teal-text"></span></div>
+                    <div class="collapsible-header"><span class="class-num">1-2</span><span class="class-name teal-text"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -274,7 +299,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">3-4</span><span class="class-name teal-text text-darken-2"></span></div>
+                    <div class="collapsible-header"><span class="class-num">3-4</span><span class="class-name teal-text text-darken-2"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -285,7 +310,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">5-6</span><span class="class-name teal-text text-darken-2"></span></div>
+                    <div class="collapsible-header"><span class="class-num">5-6</span><span class="class-name teal-text text-darken-2"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -296,7 +321,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">7-8</span><span class="class-name teal-text text-darken-2"></span></div>
+                    <div class="collapsible-header"><span class="class-num">7-8</span><span class="class-name teal-text text-darken-2"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -307,7 +332,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">9-10</span><span class="class-name teal-text text-darken-2"></span></div>
+                    <div class="collapsible-header"><span class="class-num">9-10</span><span class="class-name teal-text text-darken-2"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -322,7 +347,7 @@
         <div id="sat" class="class-date col s12">
             <ul class="class-table collapsible" data-collapsible="accordion">
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">1-2</span><span class="class-name teal-text"></span></div>
+                    <div class="collapsible-header"><span class="class-num">1-2</span><span class="class-name teal-text"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -333,7 +358,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">3-4</span><span class="class-name teal-text text-darken-2"></span></div>
+                    <div class="collapsible-header"><span class="class-num">3-4</span><span class="class-name teal-text text-darken-2"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -344,7 +369,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">5-6</span><span class="class-name teal-text text-darken-2"></span></div>
+                    <div class="collapsible-header"><span class="class-num">5-6</span><span class="class-name teal-text text-darken-2"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -355,7 +380,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">7-8</span><span class="class-name teal-text text-darken-2"></span></div>
+                    <div class="collapsible-header"><span class="class-num">7-8</span><span class="class-name teal-text text-darken-2"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -366,7 +391,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">9-10</span><span class="class-name teal-text text-darken-2"></span></div>
+                    <div class="collapsible-header"><span class="class-num">9-10</span><span class="class-name teal-text text-darken-2"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -381,7 +406,7 @@
         <div id="sun" class="class-date col s12">
             <ul class="class-table collapsible" data-collapsible="accordion">
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">1-2</span><span class="class-name teal-text"></span></div>
+                    <div class="collapsible-header"><span class="class-num">1-2</span><span class="class-name teal-text"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -392,7 +417,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">3-4</span><span class="class-name teal-text text-darken-2"></span></div>
+                    <div class="collapsible-header"><span class="class-num">3-4</span><span class="class-name teal-text text-darken-2"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -403,7 +428,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">5-6</span><span class="class-name teal-text text-darken-2"></span></div>
+                    <div class="collapsible-header"><span class="class-num">5-6</span><span class="class-name teal-text text-darken-2"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -414,7 +439,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">7-8</span><span class="class-name teal-text text-darken-2"></span></div>
+                    <div class="collapsible-header"><span class="class-num">7-8</span><span class="class-name teal-text text-darken-2"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>
@@ -425,7 +450,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header waves-effect "><span class="class-num">9-10</span><span class="class-name teal-text text-darken-2"></span></div>
+                    <div class="collapsible-header"><span class="class-num">9-10</span><span class="class-name teal-text text-darken-2"></span></div>
                     <div class="collapsible-body">
                         <ul class="class-info collection">
                             <li class="class-td col s6 teal-text text-lighten-2"><i class="left tiny material-icons">room</i><span class="class-room"></span></li>

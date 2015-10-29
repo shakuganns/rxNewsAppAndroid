@@ -107,7 +107,7 @@ public class MainFragment extends ProgressFragment {
 //                setNewslist(url, articleId, false, false);
 //            }
 //        });
-        newslist.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        newslist.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);

@@ -63,6 +63,8 @@ import ecjtu.net.demon.view.SlidingTabLayout;
 
 public class NewMain extends AppCompatActivity {
 
+    //所有的布尔类型init均表示应用启动后是否是第一次加载
+
     private boolean isExit = false;
     public static UserEntity userEntity;
     public static boolean isUserInited = false;
@@ -562,7 +564,7 @@ public class NewMain extends AppCompatActivity {
                 try {
                     if(response.getBoolean("result") == false) {
                         userEntity.updataToken();
-                        ToastMsg.builder.display("上传头像失败，请重试～", duration);
+                        ToastMsg.builder.display("上传头像失败，请重试", duration);
                     } else {
                         userEntity.setHeadImagePath(response.getString("avatar"));
                         SharedPreUtil.getInstance().putUser(userEntity);
@@ -576,7 +578,7 @@ public class NewMain extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                ToastMsg.builder.display("头像上传失败，网络有点不给力呀～", duration);
+                ToastMsg.builder.display("头像上传失败，网络有点不给力呀", duration);
                 Log.i("TAG", String.valueOf(responseString));
                 Log.i("TAG", String.valueOf(statusCode));
             }

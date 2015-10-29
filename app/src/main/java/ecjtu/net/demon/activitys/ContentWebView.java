@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.DownloadListener;
+import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -84,7 +85,7 @@ public class ContentWebView extends BaseActivity {
         ws.setAppCacheEnabled(true);
         ws.setDatabaseEnabled(true);
         ws.setRenderPriority(WebSettings.RenderPriority.HIGH);
-        webView.addJavascriptInterface(new JavaScriptInterface(), "interface");
+        webView.addJavascriptInterface(new JavaScriptInterface(), "rixin");
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -191,6 +192,7 @@ public class ContentWebView extends BaseActivity {
          * This is not called on the UI thread. Post a runnable to invoke
          * loadUrl on the UI thread.
          */
+        @JavascriptInterface
         public String getStudentId() {
             Log.i("TAG","js接口调用～～");
             return NewMain.userEntity.getStudentID();

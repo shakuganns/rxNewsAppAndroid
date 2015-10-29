@@ -1,6 +1,7 @@
 package ecjtu.net.demon.activitys;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
@@ -19,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -47,6 +49,7 @@ public class CutImageActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private Bitmap bitmap = null;
     private String mUri;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,12 +69,20 @@ public class CutImageActivity extends AppCompatActivity {
         imageView = (ImageView) findViewById(R.id.headimage);
         btnClip = (Button) findViewById(R.id.btn_clip);
         if (getIntent().getStringExtra("data") != null) {
+            //通过相册选择图片
             mUri = Uri.parse(getIntent().getStringExtra("data")).toString();
 //            ImageLoader.getInstance().displayImage(mUri,cutImageView,options);
             ImageLoader.getInstance().loadImage(mUri, new ImageLoadingListener() {
+
                 @Override
                 public void onLoadingStarted(String imageUri, View view) {
-
+                    dialog = new ProgressDialog(CutImageActivity.this);
+                    dialog.setProgressStyle(R.attr.progressBarStyle);
+                    dialog.setMessage("加载中...");
+                    dialog.setIndeterminate(true);//设置进度条是否为不明确
+                    dialog.setCancelable(false);//设置进度条是否可以按退回键取消
+                    dialog.setCanceledOnTouchOutside(false);//设置点击进度对话框外的区域对话框不消失
+                    dialog.show();
                 }
 
                 @Override
@@ -90,6 +101,7 @@ public class CutImageActivity extends AppCompatActivity {
                     Log.i("tag", "uri = " + mUri);
                     cutImageView.setImageBitmap(getDiskBitmap(getRealFilePath(CutImageActivity.this, Uri.parse(getApplicationContext()
                             .getExternalFilesDir("headImage") + "/" + getIntent().getStringExtra("string") + "2" + ".png"))));
+                    dialog.dismiss();
                 }
 
                 @Override
@@ -98,6 +110,7 @@ public class CutImageActivity extends AppCompatActivity {
                 }
             });
         } else {
+            //拍照取得的图片
             cutImageView.setImageBitmap(
                     drawableToBitmap(Drawable.createFromPath(getApplicationContext()
                             .getExternalFilesDir("headImage") + "/" + getIntent().getStringExtra("string")+ "big" + ".png")));
