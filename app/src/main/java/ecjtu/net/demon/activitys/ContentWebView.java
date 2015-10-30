@@ -27,6 +27,7 @@ import android.widget.RadioGroup;
 
 
 import ecjtu.net.demon.R;
+import ecjtu.net.demon.utils.JavaScriptInterface;
 import ecjtu.net.demon.utils.ToastMsg;
 
 /**
@@ -37,7 +38,7 @@ public class ContentWebView extends BaseActivity {
 
     public String title;
     private WebView webView;
-    private String url;
+    public static String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +86,7 @@ public class ContentWebView extends BaseActivity {
         ws.setAppCacheEnabled(true);
         ws.setDatabaseEnabled(true);
         ws.setRenderPriority(WebSettings.RenderPriority.HIGH);
-        webView.addJavascriptInterface(new JavaScriptInterface(), "rixin");
+        webView.addJavascriptInterface(new JavaScriptInterface(this), "rixin");
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -101,8 +102,6 @@ public class ContentWebView extends BaseActivity {
 //                }
             }
         });
-
-
     }
 
     @Override
@@ -176,28 +175,6 @@ public class ContentWebView extends BaseActivity {
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
         }
-    }
-
-
-    /**
-     * web页面调用接口类
-     */
-
-    final class JavaScriptInterface {
-
-        JavaScriptInterface() {
-        }
-
-        /**
-         * This is not called on the UI thread. Post a runnable to invoke
-         * loadUrl on the UI thread.
-         */
-        @JavascriptInterface
-        public String getStudentId() {
-            Log.i("TAG","js接口调用～～");
-            return NewMain.userEntity.getStudentID();
-        }
-
     }
 
     /**

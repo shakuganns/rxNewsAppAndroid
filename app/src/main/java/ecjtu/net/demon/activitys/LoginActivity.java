@@ -106,18 +106,18 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                Intent upIntent = NavUtils.getParentActivityIntent(LoginActivity.this);
-                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-                    TaskStackBuilder.create(this)
-                            .addNextIntentWithParentStack(upIntent)
-                            .startActivities();
-                } else {
-                    Log.i("tag", "nihao" + String.valueOf(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                    upIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    NavUtils.navigateUpTo(this, upIntent);
-                }
-                return true;
+//            case android.R.id.home:
+//                Intent upIntent = NavUtils.getParentActivityIntent(LoginActivity.this);
+//                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+//                    TaskStackBuilder.create(this)
+//                            .addNextIntentWithParentStack(upIntent)
+//                            .startActivities();
+//                } else {
+//                    Log.i("tag", "nihao" + String.valueOf(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+//                    upIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    NavUtils.navigateUpTo(this, upIntent);
+//                }
+//                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -304,6 +304,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                     HttpHelper.password = mPassword;
                     UserEntity userEntity = httpHelper.getUserContent(mEmail, token, url);
                     SharedPreUtil.getInstance().putUser(userEntity);
+                    NewMain.userEntity = userEntity;
                     return true;
                 } else {
                     return false;

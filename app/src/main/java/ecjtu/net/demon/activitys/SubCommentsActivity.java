@@ -46,6 +46,7 @@ public class SubCommentsActivity extends BaseActivity {
         sizeText = (TextView) findViewById(R.id.size_text);
         commentsText = (EditText) findViewById(R.id.commentText);
         commentsText.addTextChangedListener(new TextWatcher() {
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -58,7 +59,7 @@ public class SubCommentsActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                sizeText.setText("还能输入"+(100-s.length())+"个字符");
+                sizeText.setText("还能输入" + (100 - s.length()) + "个字符");
             }
         });
         submitBtn = (Button) findViewById(R.id.submitBtn);
@@ -67,18 +68,18 @@ public class SubCommentsActivity extends BaseActivity {
             public void onClick(View v) {
                 RequestParams params = new RequestParams();
                 params.add("username", NewMain.userEntity.getStudentID());
-                params.add("content",String.valueOf(commentsText.getText()));
-                HttpAsync.post("http://app.ecjtu.net/api/v1/feedback",params,new JsonHttpResponseHandler() {
+                params.add("content", String.valueOf(commentsText.getText()));
+                HttpAsync.post("http://app.ecjtu.net/api/v1/feedback", params, new JsonHttpResponseHandler() {
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        ToastMsg.builder.display("提交成功,感谢您的反馈",500);
+                        ToastMsg.builder.display("提交成功,感谢您的反馈", 500);
                         finish();
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        ToastMsg.builder.display("提交失败",500);
+                        ToastMsg.builder.display("提交失败", 500);
                     }
                 });
             }

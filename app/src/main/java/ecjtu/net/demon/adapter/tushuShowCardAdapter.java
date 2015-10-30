@@ -161,7 +161,6 @@ public class tushuShowCardAdapter extends RecyclerView.Adapter<RecyclerView.View
                 }
             });
         }
-
     }
 
     public void setHeadText() {

@@ -63,8 +63,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/title"
             android:layout_marginRight="16dp"
+            android:paddingTop="1dp"
             android:layout_toRightOf="@id/click"
-            android:text=""
+            android:text="1111"
             android:textColor="#9a9a9a"
             android:textSize="14sp" />
 

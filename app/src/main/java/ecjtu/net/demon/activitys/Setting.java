@@ -322,18 +322,18 @@ public class Setting extends BaseActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()){
-            case android.R.id.home:
-                Intent upIntent = NavUtils.getParentActivityIntent(Setting.this);
-                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-                    TaskStackBuilder.create(this)
-                            .addNextIntentWithParentStack(upIntent)
-                            .startActivities();
-                } else {
-                    Log.i("tag", "nihao" + String.valueOf(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                    upIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    NavUtils.navigateUpTo(this, upIntent);
-                }
-                return true;
+//            case android.R.id.home:
+//                Intent upIntent = NavUtils.getParentActivityIntent(Setting.this);
+//                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+//                    TaskStackBuilder.create(this)
+//                            .addNextIntentWithParentStack(upIntent)
+//                            .startActivities();
+//                } else {
+//                    Log.i("tag", "nihao" + String.valueOf(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+//                    upIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    NavUtils.navigateUpTo(this, upIntent);
+//                }
+//                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

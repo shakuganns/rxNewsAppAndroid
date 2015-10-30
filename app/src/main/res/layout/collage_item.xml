@@ -45,7 +45,7 @@
             android:layout_toRightOf="@id/click"
             android:text="这是测试用的内容这是测试用的内容这是测试用的内容这是测试用的内容这是测试用的内容这是测试用的内容这是测试用的内容这是测试用的内容"
             android:textColor="#9a9a9a"
-            android:textSize="14sp" />
+            android:textSize="16dp" />
 
         <TextView
             android:id="@+id/time"

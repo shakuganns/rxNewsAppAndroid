@@ -1,5 +1,8 @@
 package ecjtu.net.demon.fragment;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -17,8 +20,6 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-
-import org.w3c.dom.Text;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -106,6 +107,12 @@ public class Show_image_ActivityFragment extends Fragment {
     public class TushuoImageAdapeter extends PagerAdapter {
 
         private ArrayList<String> urls;
+        private ActionBar toolbar;
+
+        public TushuoImageAdapeter() {
+            toolbar = ((Show_image_Activity) getActivity()).getSupportActionBar();
+            toolbar.setShowHideAnimationEnabled(true);
+        }
 
         public void setContent(ArrayList<String> urls) {
             this.urls = urls;
@@ -136,13 +143,18 @@ public class Show_image_ActivityFragment extends Fragment {
             photoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
                 @Override
                 public void onPhotoTap(View view, float x, float y) {
-                    ActionBar toolbar = ((Show_image_Activity) getActivity()).getSupportActionBar();
                     if (toolbar.isShowing()) {
                         Log.i("tag", "isShowing~~");
                         toolbar.hide();
+//                        PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("alpha", 1f, 0);
+//                        Animator objectAnimator =  ObjectAnimator.ofPropertyValuesHolder(toolbar, pvhX).setDuration(1000);
+//                        objectAnimator.start();
                     } else {
                         Log.i("tag", "isHiding~~");
                         toolbar.show();
+//                        PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("alpha", 0, 1f);
+//                        Animator objectAnimator =  ObjectAnimator.ofPropertyValuesHolder(toolbar, pvhX).setDuration(1000);
+//                        objectAnimator.start();
                     }
                 }
             });
