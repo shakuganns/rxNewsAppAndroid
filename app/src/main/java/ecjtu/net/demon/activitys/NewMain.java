@@ -57,6 +57,7 @@ import ecjtu.net.demon.utils.HttpAsync;
 import ecjtu.net.demon.utils.SharedPreUtil;
 import ecjtu.net.demon.utils.ToastMsg;
 import ecjtu.net.demon.utils.UserEntity;
+import ecjtu.net.demon.utils.rxOnClickListener;
 import ecjtu.net.demon.view.CycleImageView;
 import ecjtu.net.demon.view.SlidingTabLayout;
 
@@ -117,6 +118,12 @@ public class NewMain extends AppCompatActivity {
                 slidingMenuClickListen(R.id.UserImage);
             }
         });
+//        headImage.setOnClickListener(new rxOnClickListener() {
+//            @Override
+//            public void rxClick(View v) {
+//                Log.i("tag","this is rxClick");
+//            }
+//        });
         userEntity = SharedPreUtil.getInstance().getUser();
         if (!TextUtils.isEmpty(userEntity.getStudentID())) {
             userEntity.updataToken();

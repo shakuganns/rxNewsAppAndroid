@@ -10,12 +10,12 @@ public abstract class rxOnClickListener implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         upload(v);
-        click(v);
+        rxClick(v);
     }
 
     public void upload(View v) {
         v.getId();
     }
 
-    public abstract void click(View v);
+    public abstract void rxClick(View v);
 }
