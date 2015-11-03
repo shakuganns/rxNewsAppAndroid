@@ -166,12 +166,12 @@ public class webview extends BaseActivity {
             finish();
             return true;
         }
-        if (id == R.id.comments) {
-            Intent intent = new Intent(webview.this,rxCommentsActivity.class);
-            String url = "";
-            intent.putExtra("url",url);
-            startActivity(intent);
-        }
+//        if (id == R.id.comments) {
+//            Intent intent = new Intent(webview.this,rxCommentsActivity.class);
+//            String url = "";
+//            intent.putExtra("url",url);
+//            startActivity(intent);
+//        }
         if (id == android.R.id.home) {
             Intent upIntent = NavUtils.getParentActivityIntent(webview.this);
             if (NavUtils.shouldUpRecreateTask(this, upIntent)) {

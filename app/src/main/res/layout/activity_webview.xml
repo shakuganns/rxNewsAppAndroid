@@ -16,8 +16,9 @@
         android:layout_height="match_parent" />
 
     <FrameLayout
+        android:visibility="invisible"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:id="@+id/comment_layout">
 
     </FrameLayout>

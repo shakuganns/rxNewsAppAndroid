@@ -296,7 +296,8 @@ public class NewMain extends AppCompatActivity {
                     url = "file:///android_asset/RixinClassQuery/classQuery.html";
                     break;
                 case R.id.yktquery:
-                    url = "file:///android_asset/RixinCardQuery/cardQuery.html";
+                    ToastMsg.builder.display("开发中...", duration);
+//                    url = "file:///android_asset/RixinCardQuery/cardQuery.html";
                     break;
                 case R.id.setting:
                     turn2ActivityWithUrl(Setting.class, null);
