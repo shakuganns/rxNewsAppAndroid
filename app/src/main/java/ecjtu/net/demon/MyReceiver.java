@@ -15,6 +15,7 @@ import org.json.JSONTokener;
 
 import cn.jpush.android.api.JPushInterface;
 import ecjtu.net.demon.activitys.ContentWebView;
+import ecjtu.net.demon.activitys.webview;
 
 public class MyReceiver extends BroadcastReceiver {
 
@@ -44,21 +45,20 @@ public class MyReceiver extends BroadcastReceiver {
             Log.i("tag","==================="+bundle.getString(JPushInterface.EXTRA_ALERT));
             String json = bundle.getString(JPushInterface.EXTRA_EXTRA);
             JSONTokener jsonTokener = new JSONTokener(json);
+            String url = null;
             try {
                 JSONObject jsonObject = (JSONObject) jsonTokener.nextValue();
-                String articleID = jsonObject.getString("id");
-                url = "http://app.ecjtu.net/api/v1/article/" + articleID + "/view";
+                url = jsonObject.getString("url");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             Log.i("tag",json);
-            // 在这里可以自己写代码去定义用户点击后的行为
-            Intent i = new Intent(context, ContentWebView.class);  //自定义打开的界面
+//             在这里可以自己写代码去定义用户点击后的行为
+            Intent i = new Intent(context, webview.class);  //自定义打开的界面
             i.putExtra("url", url);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             i.putExtras(bundle);
             context.startActivity(i);
-
         } else {
             Log.d(TAG, "Unhandled intent - " + intent.getAction());
         }
