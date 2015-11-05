@@ -88,7 +88,7 @@ public class comment_text extends Fragment {
                                 {
                                     dialog.dismiss();
                                     Intent intent = new Intent(context,rxCommentsActivity.class);
-                                    String url = "";
+                                    String url = comment_text.this.url+"s";
                                     intent.putExtra("url", url);
                                     context.startActivity(intent);
                                 }

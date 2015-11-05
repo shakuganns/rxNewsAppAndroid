@@ -37,6 +37,7 @@ public class webview extends BaseActivity {
     public String title;
     private WebView webView;
     private String url;
+    private String id;
     private InputMethodManager imm;
     private FragmentTransaction transaction;
     public static comment_text commentText;
@@ -68,6 +69,7 @@ public class webview extends BaseActivity {
         webView = (WebView) findViewById(R.id.webView);
         Intent intent = getIntent();
         url = intent.getStringExtra("url");
+        id = intent.getStringExtra("sid");
         Log.i("tag", url);
         webView.loadUrl(url);
         webView.setWebChromeClient(new WebChromeClient() {
@@ -168,7 +170,7 @@ public class webview extends BaseActivity {
         }
         if (id == R.id.comments) {
             Intent intent = new Intent(webview.this,rxCommentsActivity.class);
-            String url = "";
+            String url = "http://app.ecjtu.net/api/v1/article/"+this.id+"/comments";
             intent.putExtra("url",url);
             startActivity(intent);
         }
@@ -183,7 +185,6 @@ public class webview extends BaseActivity {
                 upIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 NavUtils.navigateUpTo(this, upIntent);
             }
-
             return true;
         }
         return super.onOptionsItemSelected(item);
