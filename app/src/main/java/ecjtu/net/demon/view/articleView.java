@@ -156,5 +156,4 @@ public class articleView extends LinearLayout {
         }
     }
 
-
 }

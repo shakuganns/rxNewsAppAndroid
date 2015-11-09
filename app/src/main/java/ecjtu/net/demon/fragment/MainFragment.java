@@ -96,17 +96,6 @@ public class MainFragment extends ProgressFragment {
                 setNewslist(url, null, false,true);
             }
         });
-//        refreshLayout.setOnLoadListener(new RefreshLayout.OnLoadListener() {
-//            @Override
-//            public void onLoad() {
-//                newslist.removeFooterView(upToLoad);
-//                Log.i("tag", "the count is" + newslist.getCount());
-//                HashMap<String, Object> hashMap = (HashMap<String, Object>) newslist.getAdapter().getItem(newslist.getCount() - 3);
-//                String articleId = String.valueOf(hashMap.get("id"));
-//                Log.i("tag", "the articleId is " + articleId);
-//                setNewslist(url, articleId, false, false);
-//            }
-//        });
         newslist.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
