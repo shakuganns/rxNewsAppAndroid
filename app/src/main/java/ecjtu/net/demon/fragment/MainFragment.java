@@ -161,6 +161,7 @@ public class MainFragment extends ProgressFragment {
                 rixinNewsAdapter.updateInfo(isRefresh);
                 Log.i("TAG", "---------" + rixinNewsAdapter.getContent().size() + "-------");
                 setContentShown(true);
+                setNewslist(url,null,false,true);
             }
             if (cache == null) {
                 HttpAsync.get(url, new JsonHttpResponseHandler() {

@@ -263,6 +263,7 @@ public class CollageNificationFragment extends ProgressFragment {
         @Override
         protected void onPostExecute(String result) {
             setContentShown(true);
+            getcontent(url,null,false,true);
         }
     }
 }

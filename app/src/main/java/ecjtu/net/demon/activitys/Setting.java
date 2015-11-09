@@ -137,15 +137,7 @@ public class Setting extends BaseActivity {
         SimpleAdapter userAdapter = new SimpleAdapter(this, getUserData(), R.layout.list_item, new String[] { "notes","information" }, new int[] { R.id.notes, R.id.information});
         userListView.setAdapter(userAdapter);
         headImage = (CycleImageView) findViewById(R.id.imageView2);
-        File file = new File(getApplicationContext().getExternalFilesDir("headImage") + "/" + getUserId() + ".png");
-        if (file.exists()) {
-            headImage.setImageDrawable(Drawable.createFromPath(getApplicationContext()
-                    .getExternalFilesDir("headImage") + "/" + getUserId() + ".png"));
-        } else if(userEntity.getHeadImagePath() == "") {
-
-        } else {
-            ImageLoader.getInstance().displayImage("http://"+userEntity.getHeadImagePath(),headImage,options);
-        }
+        ImageLoader.getInstance().displayImage("http://"+userEntity.getHeadImagePath(),headImage,options);
         headImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

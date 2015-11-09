@@ -36,6 +36,7 @@ import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.tencent.bugly.crashreport.CrashReport;
 
 
 import cz.msebera.android.httpclient.Header;
@@ -153,16 +154,7 @@ public class NewMain extends AppCompatActivity {
             if (userName != null) {
                 userNameView.setText(userName);
                 studentIdView.setText(studentID);
-                File file = new File(getApplicationContext().getExternalFilesDir("headImage") + "/" + studentID + ".png");
-                if (file.exists()) {
-                    headImage = (CycleImageView) findViewById(R.id.UserImage);
-                    headImage.setImageDrawable(Drawable.createFromPath(getApplicationContext()
-                            .getExternalFilesDir("headImage") + "/" + studentID + ".png"));
-                } else if(userEntity.getHeadImagePath() == "") {
-
-                } else {
-                    ImageLoader.getInstance().displayImage("http://"+userEntity.getHeadImagePath(),headImage,options);
-                }
+                ImageLoader.getInstance().displayImage("http://"+userEntity.getHeadImagePath(),headImage,options);
             } else {
                 userNameView.setText(R.string.UserName);
                 studentIdView.setText("");
