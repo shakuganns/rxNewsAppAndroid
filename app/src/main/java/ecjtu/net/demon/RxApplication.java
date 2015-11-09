@@ -1,6 +1,9 @@
 package ecjtu.net.demon;
 
 import android.app.Application;
+
+import com.tencent.bugly.crashreport.CrashReport;
+
 import cn.jpush.android.api.JPushInterface;
 import ecjtu.net.demon.utils.ToastMsg;
 
@@ -15,5 +18,6 @@ public class RxApplication extends Application {
         ToastMsg.builder.init(getApplicationContext());
         JPushInterface.setDebugMode(false);
         JPushInterface.init(this);
+        CrashReport.initCrashReport(getApplicationContext(), "900011553", false);
     }
 }
