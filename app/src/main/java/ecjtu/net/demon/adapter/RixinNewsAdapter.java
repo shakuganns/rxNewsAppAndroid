@@ -54,11 +54,11 @@ public class RixinNewsAdapter extends RecyclerView.Adapter {
         listContainer = LayoutInflater.from(context);
         myTopViewS = new ArrayList<>();
 
-        ImageLoaderConfiguration configuration = ImageLoaderConfiguration
-                .createDefault(context);
-
-        //Initialize ImageLoader with configuration.
-        ImageLoader.getInstance().init(configuration);
+//        ImageLoaderConfiguration configuration = ImageLoaderConfiguration
+//                .createDefault(context);
+//
+//        //Initialize ImageLoader with configuration.
+//        ImageLoader.getInstance().init(configuration);
 
         options = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.thumb_default)

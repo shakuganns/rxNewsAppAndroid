@@ -254,32 +254,6 @@ public class NewMain extends AppCompatActivity {
         if (!TextUtils.isEmpty(studentID)) {
             switch (id) {
                 case R.id.UserImage:
-                    /*Log.i("tag","token:"+userEntity.getToken());
-                    new AlertDialog.Builder(this)
-                            .setTitle("上传头像")
-                            .setItems(new String[]{"在相册中选择", "拍照"}, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent;
-                                    switch (which) {
-                                        case 0:
-                                            intent = new Intent(Intent.ACTION_GET_CONTENT);
-                                            intent.addCategory(Intent.CATEGORY_OPENABLE);
-                                            intent.setType("image*//*");
-                                            startActivityForResult(intent, 11);
-                                            break;
-                                        case 1:
-                                            intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                                            intent.putExtra(MediaStore.EXTRA_OUTPUT,
-                                                    Uri.fromFile(new File(getApplicationContext().
-                                                            getExternalFilesDir("headImage"), studentID+ "big" + ".png")));
-                                            intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
-                                            startActivityForResult(intent, 10);
-                                            break;
-                                    }
-                                }
-                            })
-                            .show();*/
                     turn2ActivityWithUrl(SettingActivity.class,null);
                     break;
                 case R.id.scran:
@@ -302,11 +276,7 @@ public class NewMain extends AppCompatActivity {
                     ToastMsg.builder.display("开发中...", duration);
                     break;
                 default:
-                    //ToastMsg.builder.display("开发中...", duration);
-                    //Toast.makeText(main.this, "开发中。。。", Toast.LENGTH_SHORT).show();
-                /*case R.id.bookquery:;break;
-                case R.id.moonModel:;break;
-                */
+                    break;
             }
             if (url != null) {
                 turn2ActivityWithUrl(ContentWebView.class, url);
@@ -321,7 +291,6 @@ public class NewMain extends AppCompatActivity {
                     ToastMsg.builder.display("请先行登入", duration);
                 }
             }
-            //Toast.makeText(main.this, "请先行登入", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -476,7 +445,6 @@ public class NewMain extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                super.onFailure(statusCode, headers, responseString, throwable);
 //                ToastMsg.builder.display("更新请求失败", duration);
                 //Toast.makeText(Setting.this, "网络请求失败", Toast.LENGTH_SHORT).show();
             }
@@ -519,67 +487,5 @@ public class NewMain extends AppCompatActivity {
         }
         return true;
     }
-
- /*   @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 10 && resultCode == Activity.RESULT_OK) {
-//            headImage.setImageDrawable(Drawable.createFromPath(getApplicationContext()
-//                    .getExternalFilesDir("headImage") + "/" + studentID + ".png"));
-//            headImageUrl = studentID+".png";
-//            userEntity.setHeadImage(headImageUrl);
-            turn2ActivityWithStringForResult(CutImageActivity.class, studentID,null,12);
-        }else if (requestCode == 11 && resultCode == Activity.RESULT_OK) {
-            Log.i("TAG", String.valueOf(data.getData()));
-            turn2ActivityWithStringForResult(CutImageActivity.class, studentID, String.valueOf(data.getData()), 12);
-            Log.i("TAG", "settingHead----->");
-        }
-        if (requestCode == 12 && resultCode == Activity.RESULT_OK) {
-            headImage.setImageDrawable(Drawable.createFromPath(getApplicationContext()
-                      .getExternalFilesDir("headImage") + "/" + studentID + ".png"));
-            uplaodHeadImage();
-            Log.i("TAG", "settingHead----->");
-            Log.i("tag", "file://" + getApplicationContext()
-                    .getExternalFilesDir("headImage") + "/" + studentID + ".png");
-        }
-    }*/
-
- /*   public void uplaodHeadImage() {
-        File file = new File(getApplicationContext().getExternalFilesDir("headImage") + "/" + studentID + ".png");
-        RequestParams params = new RequestParams();
-        params.put("token",userEntity.getToken());
-        try {
-            params.put("avatar",file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        Log.i("TAG", String.valueOf(file.exists()));
-
-        HttpAsync.post("http://user.ecjtu.net/api/user/"+studentID+"/avatar",params,new JsonHttpResponseHandler() {
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                try {
-                    if(response.getBoolean("result") == false) {
-                        userEntity.updataToken();
-                        ToastMsg.builder.display("上传头像失败，请重试", duration);
-                    } else {
-                        userEntity.setHeadImagePath(response.getString("avatar"));
-                        SharedPreUtil.getInstance().putUser(userEntity);
-                        ToastMsg.builder.display("上传头像成功", duration);
-                        Log.i("TAG",String.valueOf(response));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                ToastMsg.builder.display("头像上传失败，网络有点不给力呀", duration);
-                Log.i("TAG", String.valueOf(responseString));
-                Log.i("TAG", String.valueOf(statusCode));
-            }
-        });
-    }*/
 
 }

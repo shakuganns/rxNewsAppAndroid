@@ -18,10 +18,11 @@
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tab"
+        app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabIndicatorColor="@color/white"
         app:tabSelectedTextColor="@color/white"
-        app:tabTextColor="@color/md_grey_200" />
+        app:tabTextColor="@color/white_aa_alpha" />
 
 </android.support.design.widget.AppBarLayout>

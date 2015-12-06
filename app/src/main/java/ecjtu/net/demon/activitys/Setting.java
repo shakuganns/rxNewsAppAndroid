@@ -108,11 +108,6 @@ public class Setting extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.setting);
-        ImageLoaderConfiguration configuration = ImageLoaderConfiguration
-                .createDefault(this);
-
-        //Initialize ImageLoader with configuration.
-        ImageLoader.getInstance().init(configuration);
 
         options = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.userimage)

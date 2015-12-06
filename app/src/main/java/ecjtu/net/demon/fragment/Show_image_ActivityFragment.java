@@ -67,7 +67,7 @@ public class Show_image_ActivityFragment extends Fragment {
         options = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.thumb_default)
                 .showImageOnFail(R.drawable.thumb_default)
-                .cacheInMemory(true)
+                .cacheInMemory(false)
                 .cacheOnDisk(true)
                 .build();
         viewPager = (rxMutipleTouchViewPager) getView().findViewById(R.id.tushuo_viewpager);

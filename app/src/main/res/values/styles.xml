@@ -29,6 +29,11 @@
         <item name="color">@android:color/white</item>
     </style>
 
+    <style name="MyTabLayoutTextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
+        <item name="android:textSize">14dp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
     <style name="AlertDialogCustom" parent="AlertDialog.AppCompat.Light">
     </style>
 

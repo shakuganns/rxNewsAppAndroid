@@ -14,7 +14,6 @@ import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,11 +42,6 @@ public class newsImageAdapter extends PagerAdapter {
         newsHeadImageViewList = new ArrayList<>();
         this.newsHeadImageViewListS = newsHeadImageViewListS;
         this.context = context;
-        ImageLoaderConfiguration configuration = ImageLoaderConfiguration
-                .createDefault(context);
-
-        //Initialize ImageLoader with configuration.
-        ImageLoader.getInstance().init(configuration);
 
         options = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.thumb_default)

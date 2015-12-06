@@ -1,31 +1,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg"
     android:gravity="center_horizontal"
     android:orientation="vertical"
+    android:background="@color/md_grey_100"
     tools:context="ecjtu.net.demon.activitys.LoginActivity"
     >
 
     <include layout="@layout/tool_bar" />
 
-    <!-- Login progress -->
-    <ProgressBar android:id="@+id/login_progress"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:visibility="gone" />
-
-    <ScrollView android:id="@+id/login_form"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin">
+        android:layout_height="match_parent">
 
-        <LinearLayout android:id="@+id/email_login_form"
+        <ProgressBar android:id="@+id/login_progress"
+            android:layout_gravity="center"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:visibility="gone"/>
+
+        <LinearLayout android:id="@+id/login_form"
+            android:padding="12dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -37,11 +34,7 @@
                 android:hint="@string/prompt_email"
                 android:inputType="number"
                 android:maxLines="1"
-                android:singleLine="true"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-
-                />
+                android:singleLine="true" />
 
             <EditText android:id="@+id/password"
                 android:layout_width="match_parent"
@@ -53,23 +46,22 @@
                 android:imeOptions="actionUnspecified"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:singleLine="true"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                />
+                android:singleLine="true" />
 
             <Button
+                android:textColor="@color/white"
                 android:id="@+id/email_sign_in_button"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="24dp"
-                android:background="@color/login_text"
+                android:background="@color/action_bar_background"
                 android:text="@string/action_sign_in"
                 android:textStyle="bold"
                 />
 
         </LinearLayout>
-    </ScrollView>
+
+    </FrameLayout>
 
 </LinearLayout>
 

@@ -56,11 +56,6 @@ public class CutImageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cutimage);
 
-        ImageLoaderConfiguration configuration = ImageLoaderConfiguration
-                .createDefault(this);
-        //Initialize ImageLoader with configuration.
-        ImageLoader.getInstance().init(configuration);
-
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
@@ -79,9 +74,9 @@ public class CutImageActivity extends AppCompatActivity {
                     dialog = new ProgressDialog(CutImageActivity.this);
                     dialog.setProgressStyle(R.attr.progressBarStyle);
                     dialog.setMessage("加载中...");
-                    dialog.setIndeterminate(true);//设置进度条是否为不明确
-                    dialog.setCancelable(false);//设置进度条是否可以按退回键取消
-                    dialog.setCanceledOnTouchOutside(false);//设置点击进度对话框外的区域对话框不消失
+                    dialog.setIndeterminate(true);              //设置进度条是否为不明确
+                    dialog.setCancelable(false);                //设置进度条是否可以按退回键取消
+                    dialog.setCanceledOnTouchOutside(false);    //设置点击进度对话框外的区域对话框不消失
                     dialog.show();
                 }
 

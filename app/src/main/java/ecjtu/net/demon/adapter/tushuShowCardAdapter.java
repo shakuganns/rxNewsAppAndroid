@@ -53,10 +53,10 @@ public class tushuShowCardAdapter extends RecyclerView.Adapter<RecyclerView.View
         this.context = context;
         headInfo = new ArrayList<>();
         layoutInflater = LayoutInflater.from(context);
-        ImageLoaderConfiguration configuration = ImageLoaderConfiguration
-                .createDefault(context);
-        //Initialize ImageLoader with configuration.
-        ImageLoader.getInstance().init(configuration);
+//        ImageLoaderConfiguration configuration = ImageLoaderConfiguration
+//                .createDefault(context);
+//        //Initialize ImageLoader with configuration.
+//        ImageLoader.getInstance().init(configuration);
 
         options = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.thumb_default)

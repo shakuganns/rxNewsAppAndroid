@@ -54,4 +54,5 @@
     <string name="introduce">       日新网APP开发小组精心打造，只为帮助你更好的了解，在花椒的点点滴滴。在这里，你可以看到：校内发生的各种大事小事、校内各个学院的精品专题活动介绍，还有，日新新闻出版中心以及日新视觉摄影工作室联合为你推出的日新图说。此外，还有各种便捷功能，等你来发现！</string>
     <string name="introduce2">日新出品，必属精品哦~</string>
     <string name="introduce3">后期Android开发&amp;设计</string>
+    <string name="activity_setting_theme">主题设置</string>
 </resources>

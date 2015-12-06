@@ -122,6 +122,14 @@ public class SettingActivity extends BaseActivity {
                         }
                         break;
                     }
+                    case 3: {
+                        SharedPreUtil.getInstance().DeleteUser();
+                        NewMain.isUserInited = false;
+                        Intent intent = new Intent(SettingActivity.this,NewMain.class);
+                        startActivity(intent);
+                        finish();
+                        break;
+                    }
                 }
                 return false;
             }
@@ -158,10 +166,9 @@ public class SettingActivity extends BaseActivity {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
+                Log.i("tag",String.valueOf(response));
                 try {
                     int versionCode = response.getInt("version_code");
-                    md5 = response.getString("md5");
                     if (versionCode > getVersionCode()) {
                         Log.i("tag", "需要更新");
                         showNoticeDialog();
@@ -170,8 +177,6 @@ public class SettingActivity extends BaseActivity {
                         ToastMsg.builder.display("已是最新版本，无需更新", duration);
                         //Toast.makeText(Setting.this,"已是最新版本，无需更新",Toast.LENGTH_SHORT).show();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
