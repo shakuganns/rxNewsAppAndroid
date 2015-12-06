@@ -18,6 +18,6 @@ public class RxApplication extends Application {
         ToastMsg.builder.init(getApplicationContext());
 //        JPushInterface.setDebugMode(false);
 //        JPushInterface.init(this);
-        CrashReport.initCrashReport(getApplicationContext(), "900011553", false);
+//        CrashReport.initCrashReport(getApplicationContext(), "900011553", false);
     }
 }

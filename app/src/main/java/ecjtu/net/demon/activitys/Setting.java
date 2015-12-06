@@ -331,8 +331,7 @@ public class Setting extends BaseActivity {
         }
     }
 
-    private String getVersionName() throws Exception
-    {
+    private String getVersionName() throws Exception {
         // 获取packagemanager的实例
         PackageManager packageManager = getPackageManager();
         // getPackageName()是你当前类的包名，0代表是获取版本信息

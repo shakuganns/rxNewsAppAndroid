@@ -82,6 +82,9 @@
             android:name=".activitys.Setting"
             android:label="@string/setting">
         </activity>
+        <activity android:name=".activitys.SettingActivity"
+            android:label="@string/setting">
+        </activity>
         <activity
             android:name=".activitys.CaptureActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -97,7 +100,6 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
             <intent-filter>
                 <action android:name="cn.jpush.android.ui.PushActivity" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="ecjtu.net.demon" />
             </intent-filter>
@@ -197,7 +199,7 @@
         <activity
             android:name=".activitys.AboutActivity"
             android:label="@string/about_activity"
-            android:parentActivityName=".activitys.Setting">
+            android:parentActivityName=".activitys.SettingActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activitys.Setting" />
@@ -213,7 +215,7 @@
         <activity
             android:name=".activitys.SubCommentsActivity"
             android:label="SubCommentsActivity"
-            android:parentActivityName=".activitys.Setting">
+            android:parentActivityName=".activitys.SettingActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activitys.Setting" />

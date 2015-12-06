@@ -12,6 +12,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import ecjtu.net.demon.R;
+import ecjtu.net.demon.utils.JavaScriptInterface;
 
 /**
  * Created by shakugan on 15/10/26.
@@ -56,7 +57,7 @@ public class rxCommentsActivity extends BaseActivity {
         ws.setAppCacheEnabled(true);
         ws.setDatabaseEnabled(true);
         ws.setRenderPriority(WebSettings.RenderPriority.HIGH);
-        webView.addJavascriptInterface(new JavaScriptInterface(), "interface");
+        webView.addJavascriptInterface(new JavaScriptInterface(this), "interface");
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -85,24 +86,4 @@ public class rxCommentsActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-
-    /**
-     * web页面调用接口类
-     */
-
-    final class JavaScriptInterface {
-
-        JavaScriptInterface() {
-        }
-
-        /**
-         * This is not called on the UI thread. Post a runnable to invoke
-         * loadUrl on the UI thread.
-         */
-        public String getArticleId() {
-            Log.i("TAG", "js接口调用～～");
-            return NewMain.userEntity.getStudentID();
-        }
-
-    }
 }

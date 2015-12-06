@@ -13,15 +13,15 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/action_bar_background"
         app:layout_scrollFlags="scroll|enterAlways"
-        android:elevation="3dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-    <ecjtu.net.demon.view.SlidingTabLayout
+    <android.support.design.widget.TabLayout
         android:id="@+id/tab"
-        android:layout_gravity="bottom"
-        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:tabIndicatorColor="@color/white"
+        app:tabSelectedTextColor="@color/white"
+        app:tabTextColor="@color/md_grey_200" />
 
 </android.support.design.widget.AppBarLayout>

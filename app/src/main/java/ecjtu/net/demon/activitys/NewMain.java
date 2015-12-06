@@ -1,6 +1,5 @@
 package ecjtu.net.demon.activitys;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,11 +9,9 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -22,35 +19,29 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.transition.Explode;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.TextView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.tencent.bugly.crashreport.CrashReport;
-
 
 import cz.msebera.android.httpclient.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import ecjtu.net.demon.R;
 import ecjtu.net.demon.adapter.MainAdapter;
+import ecjtu.net.demon.fragment.ChatFragment;
 import ecjtu.net.demon.fragment.CollageNificationFragment;
 import ecjtu.net.demon.fragment.MainFragment;
 import ecjtu.net.demon.fragment.TushuoFragment;
@@ -60,7 +51,6 @@ import ecjtu.net.demon.utils.ToastMsg;
 import ecjtu.net.demon.utils.UserEntity;
 import ecjtu.net.demon.utils.rxOnClickListener;
 import ecjtu.net.demon.view.CycleImageView;
-import ecjtu.net.demon.view.SlidingTabLayout;
 
 
 public class NewMain extends AppCompatActivity {
@@ -73,7 +63,7 @@ public class NewMain extends AppCompatActivity {
     private String studentID;
     private String userName;
     private CycleImageView headImage;
-    private SlidingTabLayout tab;
+    private TabLayout tabLayout;
     private ViewPager pager;
     private DrawerLayout drawerLayout;
     private NavigationView drawer;
@@ -83,6 +73,7 @@ public class NewMain extends AppCompatActivity {
     private int duration = 300;
     public static MainAdapter mainAdapter;
     private MainFragment mainFragment;
+//    private ChatFragment chatFragment;
     private CollageNificationFragment collageNificationFragment;
     private TushuoFragment tushoFragment;
     private boolean[] isInit = {true,true,true};
@@ -94,15 +85,13 @@ public class NewMain extends AppCompatActivity {
     public void initFragment() {
         mainFragment = new MainFragment();
         collageNificationFragment = new CollageNificationFragment();
+//        chatFragment = new ChatFragment();
         tushoFragment = new TushuoFragment();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        View main_view = LayoutInflater.from(this).inflate(R.layout.drawlayout, null);
-//        main_view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.drawlayout);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         //使用toolbar代替actionbar
@@ -180,8 +169,25 @@ public class NewMain extends AppCompatActivity {
     }
 
     private void findView() {
-        tab = (SlidingTabLayout) findViewById(R.id.tab);
-        tab.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        pager = (ViewPager) findViewById(R.id.pager);
+        tabLayout = (TabLayout) findViewById(R.id.tab);
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                pager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -213,32 +219,21 @@ public class NewMain extends AppCompatActivity {
 
             }
         });
-        pager = (ViewPager) findViewById(R.id.pager);
     }
 
     private void initViewPager() {
         findView();
         ArrayList<Fragment> fragments = new ArrayList<>();
         fragments.add(mainFragment);
+//        fragments.add(chatFragment);
         fragments.add(collageNificationFragment);
         fragments.add(tushoFragment);
         mainAdapter = new MainAdapter(getSupportFragmentManager(), fragments);
         pager.setAdapter(mainAdapter);
+        tabLayout.setTabsFromPagerAdapter(mainAdapter);
+        tabLayout.setupWithViewPager(pager);
         pager.setOffscreenPageLimit(fragments.size());
-        tab.setCustomTabView(R.layout.tab_style, 0);
-       /* tab.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
-            @Override
-            public int getIndicatorColor(int position) {
-            }
-
-            @Override
-            public int getDividerColor(int position) {
-                return 0;
-            }
-        });*/
-        tab.setViewPager(pager);
     }
-
 
     private void initUserInfo() {
         userEntity = SharedPreUtil.getInstance().getUser();
@@ -259,6 +254,7 @@ public class NewMain extends AppCompatActivity {
         if (!TextUtils.isEmpty(studentID)) {
             switch (id) {
                 case R.id.UserImage:
+                    /*Log.i("tag","token:"+userEntity.getToken());
                     new AlertDialog.Builder(this)
                             .setTitle("上传头像")
                             .setItems(new String[]{"在相册中选择", "拍照"}, new DialogInterface.OnClickListener() {
@@ -269,7 +265,7 @@ public class NewMain extends AppCompatActivity {
                                         case 0:
                                             intent = new Intent(Intent.ACTION_GET_CONTENT);
                                             intent.addCategory(Intent.CATEGORY_OPENABLE);
-                                            intent.setType("image/*");
+                                            intent.setType("image*//*");
                                             startActivityForResult(intent, 11);
                                             break;
                                         case 1:
@@ -283,7 +279,8 @@ public class NewMain extends AppCompatActivity {
                                     }
                                 }
                             })
-                            .show();
+                            .show();*/
+                    turn2ActivityWithUrl(SettingActivity.class,null);
                     break;
                 case R.id.scran:
                     turn2ActivityWithUrl(CaptureActivity.class, null);
@@ -299,7 +296,7 @@ public class NewMain extends AppCompatActivity {
 //                    url = "file:///android_asset/RixinCardQuery/cardQuery.html";
                     break;
                 case R.id.setting:
-                    turn2ActivityWithUrl(Setting.class, null);
+                    turn2ActivityWithUrl(SettingActivity.class, null);
                     break;
                 case R.id.bookquery:
                     ToastMsg.builder.display("开发中...", duration);
@@ -523,7 +520,7 @@ public class NewMain extends AppCompatActivity {
         return true;
     }
 
-    @Override
+ /*   @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 10 && resultCode == Activity.RESULT_OK) {
 //            headImage.setImageDrawable(Drawable.createFromPath(getApplicationContext()
@@ -544,9 +541,9 @@ public class NewMain extends AppCompatActivity {
             Log.i("tag", "file://" + getApplicationContext()
                     .getExternalFilesDir("headImage") + "/" + studentID + ".png");
         }
-    }
+    }*/
 
-    public void uplaodHeadImage() {
+ /*   public void uplaodHeadImage() {
         File file = new File(getApplicationContext().getExternalFilesDir("headImage") + "/" + studentID + ".png");
         RequestParams params = new RequestParams();
         params.put("token",userEntity.getToken());
@@ -583,6 +580,6 @@ public class NewMain extends AppCompatActivity {
                 Log.i("TAG", String.valueOf(statusCode));
             }
         });
-    }
+    }*/
 
 }

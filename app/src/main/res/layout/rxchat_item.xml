@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="8dp"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-</LinearLayout>
+    <ecjtu.net.demon.view.CycleImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/view" />
+
+    <TextView
+        android:text="test"
+        android:textColor="@color/md_black_1000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/view"
+        android:layout_toRightOf="@+id/view"
+        android:layout_toEndOf="@+id/view"
+        android:id="@+id/title" />
+
+    <TextView
+        android:text="test"
+        android:textColor="@color/md_grey_800"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/title"
+        android:layout_alignStart="@+id/title" />
+
+</RelativeLayout>

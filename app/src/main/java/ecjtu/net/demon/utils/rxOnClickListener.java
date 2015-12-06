@@ -14,7 +14,7 @@ public abstract class rxOnClickListener implements View.OnClickListener {
     }
 
     public void upload(View v) {
-        v.getId();
+        v.getTag();
     }
 
     public abstract void rxClick(View v);
