@@ -427,7 +427,6 @@ public class NewMain extends AppCompatActivity {
                 if (preferences.getBoolean("update", true)) {
                     try {
                         int versionCode = response.getInt("version_code");
-                        md5 = response.getString("md5");
                         if (versionCode > getVersionCode()) {
                             Log.i("tag", "需要更新");
                             ToastMsg.builder.display("有新版本了，快更新吧!", duration);
@@ -435,8 +434,6 @@ public class NewMain extends AppCompatActivity {
                         } else {
                             Log.i("tag", "我们不需要更新");
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

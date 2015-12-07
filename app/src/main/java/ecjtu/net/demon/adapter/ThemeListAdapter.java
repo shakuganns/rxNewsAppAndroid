@@ -1,5 +1,7 @@
 package ecjtu.net.demon.adapter;
 
+import android.content.Context;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +16,12 @@ import ecjtu.net.demon.view.CycleImageView;
  */
 public class ThemeListAdapter extends BaseAdapter {
 
-    private String[] themeList = {"夜间模式","少女粉","姨妈红","咸蛋黄","早苗绿","胖次蓝","基佬紫"};
+    private String[] themeList = {"早苗绿","少女粉","姨妈红","咸蛋黄","胖次蓝","基佬紫"};
+    private LayoutInflater inflater;
+
+    public ThemeListAdapter(Context context) {
+        inflater = LayoutInflater.from(context);
+    }
 
     @Override
     public int getCount() {
@@ -35,7 +42,7 @@ public class ThemeListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         TextView textView;
         if (convertView == null) {
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_theme_item, parent);
+            convertView = inflater.inflate(R.layout.list_theme_item, null);
             textView = (TextView) convertView.findViewById(R.id.themeText);
             CycleImageView imageView = (CycleImageView) convertView.findViewById(R.id.themeColor);
             textView.setText(themeList[position]);

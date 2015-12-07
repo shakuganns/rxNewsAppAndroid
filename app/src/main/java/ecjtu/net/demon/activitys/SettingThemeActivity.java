@@ -19,7 +19,7 @@ public class SettingThemeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_theme);
         themeList = (ListView) findViewById(R.id.themeList);
-        adapter = new ThemeListAdapter();
+        adapter = new ThemeListAdapter(this);
         themeList.setAdapter(adapter);
     }
 }

@@ -107,14 +107,18 @@ public class SettingActivity extends BaseActivity {
                     case 2: {
                         switch (childPosition) {
                             case 0: {
-                                turn2ActivityWithUrl(SubCommentsActivity.class,null);
+                                turn2ActivityWithUrl(SettingThemeActivity.class,null);
                                 break;
                             }
                             case 1: {
-                                checkVersionAsync();
+                                turn2ActivityWithUrl(SubCommentsActivity.class,null);
                                 break;
                             }
                             case 2: {
+                                checkVersionAsync();
+                                break;
+                            }
+                            case 3: {
                                 turn2ActivityWithUrl(AboutActivity.class,null);
                                 break;
                             }

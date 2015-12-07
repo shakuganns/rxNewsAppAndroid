@@ -22,7 +22,7 @@ import ecjtu.net.demon.view.CycleImageView;
  */
 public class SettingListAdapter extends BaseExpandableListAdapter {
 
-    private String[][] title = {{"头像"},{"昵称","账号","密码"},{"意见反馈","检查更新","关于我们"},{"退出登录"}};
+    private String[][] title = {{"头像"},{"昵称","账号","密码"},{"主题选择","意见反馈","检查更新","关于我们"},{"退出登录"}};
     private CycleImageView headImage;
     private LayoutInflater inflater;
     private DisplayImageOptions options;
@@ -126,10 +126,7 @@ public class SettingListAdapter extends BaseExpandableListAdapter {
             case 2: {
                 TextView textView = (TextView) convertView.findViewById(R.id.info);
                 switch (childPosition) {
-                    case 0: {
-                        break;
-                    }
-                    case 1: {
+                    case 2: {
                         try {
                             textView.setText(getVersionName());
                         } catch (Exception e) {
@@ -137,7 +134,7 @@ public class SettingListAdapter extends BaseExpandableListAdapter {
                         }
                         break;
                     }
-                    case 2: {
+                    case 3: {
                         break;
                     }
                 }
