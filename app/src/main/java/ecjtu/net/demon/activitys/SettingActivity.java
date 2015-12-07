@@ -62,7 +62,6 @@ public class SettingActivity extends BaseActivity {
         for(int i = 0;i < adapter.getGroupCount();i++) {
             settingList.expandGroup(i);
         }
-        headImage = (CycleImageView) findViewById(R.id.head_image);
         settingList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
@@ -240,6 +239,7 @@ public class SettingActivity extends BaseActivity {
             Log.i("TAG", "settingHead----->");
         }
         if (requestCode == 12 && resultCode == Activity.RESULT_OK) {
+            headImage = adapter.getHeadImage();
             headImage.setImageDrawable(Drawable.createFromPath(getApplicationContext()
                     .getExternalFilesDir("headImage") + "/" + userEntity.getStudentID() + ".png"));
             NewMain.isUserInited = false;

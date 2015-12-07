@@ -8,6 +8,7 @@
 
 
     <Button
+        android:textColor="@color/white"
         android:background="@color/action_bar_background"
         android:id="@+id/btn_clip"
         android:layout_alignParentBottom="true"
@@ -15,8 +16,7 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:textSize="20dp"
-        android:text="确认"
-        />
+        android:text="确认" />
 
     <ecjtu.net.demon.view.CutImageView
         android:id="@+id/cutimageview"

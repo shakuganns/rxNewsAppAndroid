@@ -23,6 +23,7 @@ import ecjtu.net.demon.view.CycleImageView;
 public class SettingListAdapter extends BaseExpandableListAdapter {
 
     private String[][] title = {{"头像"},{"昵称","账号","密码"},{"意见反馈","检查更新","关于我们"},{"退出登录"}};
+    private CycleImageView headImage;
     private LayoutInflater inflater;
     private DisplayImageOptions options;
     private UserEntity userEntity;
@@ -40,6 +41,10 @@ public class SettingListAdapter extends BaseExpandableListAdapter {
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
                 .build();
+    }
+
+    public CycleImageView getHeadImage() {
+        return headImage;
     }
 
     @Override
@@ -97,6 +102,7 @@ public class SettingListAdapter extends BaseExpandableListAdapter {
         switch (groupPosition) {
             case 0: {
                 CycleImageView imageView = (CycleImageView) convertView.findViewById(R.id.head_image);
+                headImage = imageView;
                 ImageLoader.getInstance().displayImage("http://"+userEntity.getHeadImagePath(),imageView,options);
                 break;
             }

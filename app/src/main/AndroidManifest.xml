@@ -222,7 +222,7 @@
         </activity>
         <activity
             android:name=".activitys.rxCommentsActivity"
-            android:label="SubCommentsActivity">
+            android:label="@string/rxcommentsActivity">
         </activity>
     </application>
 
