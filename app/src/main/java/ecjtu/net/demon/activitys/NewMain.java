@@ -131,6 +131,17 @@ public class NewMain extends NoGestureBaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        preferences = getSharedPreferences("phone", Context.MODE_PRIVATE);
+        Log.i("tag", "------" + "change theme" + "------");
+        if (themeID != preferences.getInt("theme",0)) {
+            Log.i("tag","------"+"change theme"+"------");
+            themeID = preferences.getInt("theme",0);
+            finish();
+            Intent intent = new Intent(NewMain.this,NewMain.class);
+            startActivity(intent);
+            isUserInited = false;
+            return;
+        }
         if (!isUserInited) {
             initUserInfo();
             TextView userNameView = (TextView) findViewById(R.id.UserName);
@@ -138,7 +149,7 @@ public class NewMain extends NoGestureBaseActivity {
             if (userName != null) {
                 userNameView.setText(userName);
                 studentIdView.setText(studentID);
-                ImageLoader.getInstance().displayImage("http://"+userEntity.getHeadImagePath(),headImage,options);
+                ImageLoader.getInstance().displayImage("http://" + userEntity.getHeadImagePath(), headImage, options);
             } else {
                 userNameView.setText(R.string.UserName);
                 studentIdView.setText("");
@@ -301,58 +312,6 @@ public class NewMain extends NoGestureBaseActivity {
         startActivity(intent);
     }
 
-    private void turn2ActivityWithStringForResult(Class activity, String string,String data,int requestCode) {
-        Intent intent = new Intent();
-        intent.setClass(NewMain.this, activity);
-        intent.putExtra("string", string);
-        intent.putExtra("data", data);
-        startActivityForResult(intent, requestCode);
-    }
-
-   /* private void initActionBar() {
-        toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        drawerLayout = (DrawerLayout) findViewById(R.id.DrawLayout);
-        drawer = (NavigationView) findViewById(R.id.drawer);
-        toolbar.setTitle("首页");
-        toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.tool_bar_open, R.string.tool_bar_close) {
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                toolbar.setTitle("小新助手");
-                invalidateOptionsMenu();
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-                toolbar.setTitle("首页");
-                invalidateOptionsMenu();
-            }
-        };
-
-        actionBarDrawerToggle.syncState();
-        drawerLayout.setDrawerListener(actionBarDrawerToggle);
-        drawer.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                slidingMenuClickListen(menuItem.getItemId());
-                return false;
-            }
-        });
-    }*/
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-//        boolean isDrawerOpen = drawerLayout.isDrawerOpen(drawer);
-//        menu.findItem(R.id.searchView).setVisible(!isDrawerOpen);
-        return super.onPrepareOptionsMenu(menu);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -362,17 +321,10 @@ public class NewMain extends NoGestureBaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         if (id == R.id.searchView) {
             ToastMsg.builder.display("这个还不知道要用来干什么", duration);
         }
-
-        //noinspection SimplifiableIfStatement
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -437,8 +389,6 @@ public class NewMain extends NoGestureBaseActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-//                ToastMsg.builder.display("更新请求失败", duration);
-                //Toast.makeText(Setting.this, "网络请求失败", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -455,7 +405,6 @@ public class NewMain extends NoGestureBaseActivity {
         if (!isExit) {
             isExit = true;
             ToastMsg.builder.display("再按一次退出程序", duration);
-            //Toast.makeText(main.this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
             tExit = new Timer();
             tExit.schedule(new TimerTask() {
                 @Override

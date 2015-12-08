@@ -1,5 +1,7 @@
 package ecjtu.net.demon.activitys;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -20,7 +22,12 @@ import ecjtu.net.demon.R;
  */
 public class NoGestureBaseActivity extends AppCompatActivity {
 
+    public static int themeID;
+    public static final int DEFAULT_THEME = 0;
+    public static final int GREY_THEME = 1;
+
     @LayoutRes int layoutId;
+    public SharedPreferences preferences;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
     public NavigationView drawer;
     public DrawerLayout drawerLayout;
@@ -28,6 +35,18 @@ public class NoGestureBaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        preferences = getSharedPreferences("phone", Context.MODE_PRIVATE);
+        themeID = preferences.getInt("theme",0);
+        switch (themeID) {
+            case DEFAULT_THEME: {
+                setTheme(R.style.AppTheme);
+                break;
+            }
+            case GREY_THEME: {
+                setTheme(R.style.AppTheme2);
+                break;
+            }
+        }
         super.onCreate(savedInstanceState);
         setContentView(layoutId);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
