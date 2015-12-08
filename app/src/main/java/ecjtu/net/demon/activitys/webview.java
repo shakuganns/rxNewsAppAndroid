@@ -32,7 +32,7 @@ import ecjtu.net.demon.fragment.comment_text;
 import ecjtu.net.demon.utils.ToastMsg;
 
 
-public class webview extends BaseActivity {
+public class webview extends NoGestureBaseActivity {
 
     public String title;
     private WebView webView;
@@ -46,8 +46,8 @@ public class webview extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setContentViewLayout(R.layout.activity_webview);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_webview);
         isComment = false;
         imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 //        linearLayout = (LinearLayout) findViewById(R.id.webview_layout);
@@ -58,13 +58,8 @@ public class webview extends BaseActivity {
 //                return false;
 //            }
 //        });
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        toolbar.setTitle("日小新");
-        toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        initActionBar();
+        getSupportActionBar().setTitle("日新新闻");
 
         webView = (WebView) findViewById(R.id.webView);
         Intent intent = getIntent();

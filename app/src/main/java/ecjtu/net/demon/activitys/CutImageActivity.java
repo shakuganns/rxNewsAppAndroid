@@ -41,25 +41,23 @@ import ecjtu.net.demon.view.CutImageView;
  * Created by shakugan on 15/9/15.
  * 头像裁剪
  */
-public class CutImageActivity extends AppCompatActivity {
+public class CutImageActivity extends NoGestureBaseActivity {
 
     private CutImageView cutImageView;
     private ImageView imageView;
     private Button btnClip;
-    private Toolbar toolbar;
     private Bitmap bitmap = null;
     private String mUri;
     private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setContentViewLayout(R.layout.activity_cutimage);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cutimage);
 
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        setSupportActionBar(toolbar);
+        initActionBar();
         getSupportActionBar().setTitle("裁剪头像");
+
         cutImageView = (CutImageView) findViewById(R.id.cutimageview);
         imageView = (ImageView) findViewById(R.id.headimage);
         btnClip = (Button) findViewById(R.id.btn_clip);

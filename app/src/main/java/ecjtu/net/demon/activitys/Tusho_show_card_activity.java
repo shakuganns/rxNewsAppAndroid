@@ -47,9 +47,12 @@ public class Tusho_show_card_activity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setContentViewLayout(R.layout.activity_tusho_show_card_activity);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tusho_show_card_activity);
+
         initActionBar();
+        getSupportActionBar().setTitle("图说");
+
         recyclerView = (RecyclerView) findViewById(R.id.profile_show_card_recyclerview);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -117,16 +120,6 @@ public class Tusho_show_card_activity extends BaseActivity {
                 }
             });
         return content;
-    }
-
-    private void initActionBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        toolbar.setTitle("图集");
-        toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override

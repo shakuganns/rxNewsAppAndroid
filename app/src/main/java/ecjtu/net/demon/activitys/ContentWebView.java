@@ -34,7 +34,7 @@ import ecjtu.net.demon.utils.ToastMsg;
  * Created by homker on 2015/4/26.
  * 日新网新闻客户端
  */
-public class ContentWebView extends BaseActivity {
+public class ContentWebView extends NoGestureBaseActivity {
 
     public String title;
     private WebView webView;
@@ -42,17 +42,11 @@ public class ContentWebView extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setContentViewLayout(R.layout.activity_webview_nocomment);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_webview_nocomment);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
-        toolbar.setTitle("日小新服务");
-
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        initActionBar();
+        getSupportActionBar().setTitle("日小新服务");
 
         webView = (WebView) findViewById(R.id.webView);
         final Intent intent = getIntent();

@@ -59,8 +59,8 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setContentViewLayout(R.layout.activity_login);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -88,18 +88,8 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-        initAcitonBar();
-
-    }
-
-    private void initAcitonBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        toolbar.setTitle("登入");
-        toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        initActionBar();
+        getSupportActionBar().setTitle("登陆");
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)

@@ -25,9 +25,11 @@ public class rxCommentsActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setContentViewLayout(R.layout.comments_activity);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.comments_activity);
+
         initActionBar();
+        getSupportActionBar().setTitle("日新评论");
 
         webView = (WebView) findViewById(R.id.webView);
         final Intent intent = getIntent();
@@ -73,17 +75,6 @@ public class rxCommentsActivity extends BaseActivity {
 //                }
             }
         });
-    }
-
-    private void initActionBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
-        toolbar.setTitle("日小新服务");
-
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 }

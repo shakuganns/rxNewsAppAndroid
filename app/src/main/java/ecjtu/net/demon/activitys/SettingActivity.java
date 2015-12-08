@@ -51,9 +51,12 @@ public class SettingActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setContentViewLayout(R.layout.activity_setting);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setting);
-        initAcitonBar();
+
+        initActionBar();
+        getSupportActionBar().setTitle("设置");
+
         userEntity = NewMain.userEntity;
 
         settingList = (ExpandableListView) findViewById(R.id.setting);
@@ -137,16 +140,6 @@ public class SettingActivity extends BaseActivity {
                 return false;
             }
         });
-    }
-
-    private void initAcitonBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        toolbar.setTitle("设置");
-        toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void turn2ActivityWithUrl(Class activity, String url) {

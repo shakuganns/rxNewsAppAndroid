@@ -13,7 +13,7 @@ import ecjtu.net.demon.R;
 /**
  * Created by homker on 2015/4/22.
  */
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends NoGestureBaseActivity {
     //手指向右滑动时的最小速度
     private static final int XSPEED_MIN = 200;
 

@@ -29,20 +29,16 @@ public class SubCommentsActivity extends BaseActivity {
 
     private EditText commentsText;
     private TextView sizeText;
-    private Toolbar toolbar;
     private Button submitBtn;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setContentViewLayout(R.layout.activity_subcomments);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_subcomments);
-        toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
-        setSupportActionBar(toolbar);
+
+        initActionBar();
         getSupportActionBar().setTitle("意见反馈");
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         sizeText = (TextView) findViewById(R.id.size_text);
         commentsText = (EditText) findViewById(R.id.commentText);
         commentsText.addTextChangedListener(new TextWatcher() {

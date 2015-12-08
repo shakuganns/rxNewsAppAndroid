@@ -16,10 +16,13 @@ public class SettingThemeActivity extends BaseActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setContentViewLayout(R.layout.activity_theme);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_theme);
         themeList = (ListView) findViewById(R.id.themeList);
         adapter = new ThemeListAdapter(this);
         themeList.setAdapter(adapter);
+
+        initActionBar();
+        getSupportActionBar().setTitle("主题设置");
     }
 }

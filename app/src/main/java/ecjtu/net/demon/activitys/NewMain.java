@@ -53,7 +53,7 @@ import ecjtu.net.demon.utils.rxOnClickListener;
 import ecjtu.net.demon.view.CycleImageView;
 
 
-public class NewMain extends AppCompatActivity {
+public class NewMain extends NoGestureBaseActivity {
 
     //所有的布尔类型init均表示应用启动后是否是第一次加载
 
@@ -65,8 +65,6 @@ public class NewMain extends AppCompatActivity {
     private CycleImageView headImage;
     private TabLayout tabLayout;
     private ViewPager pager;
-    private DrawerLayout drawerLayout;
-    private NavigationView drawer;
     private String md5 = null;
     private String updateUrl = "http://app.ecjtu.net/";
     private String VersionUrl = "http://app.ecjtu.net/api/v1/version";
@@ -77,7 +75,6 @@ public class NewMain extends AppCompatActivity {
     private CollageNificationFragment collageNificationFragment;
     private TushuoFragment tushoFragment;
     private boolean[] isInit = {true,true,true};
-    private Toolbar toolbar;
     private DisplayImageOptions options;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
@@ -91,13 +88,11 @@ public class NewMain extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setContentViewLayout(R.layout.activity_new_main);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.drawlayout);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        //使用toolbar代替actionbar
-        drawerLayout = (DrawerLayout) findViewById(R.id.DrawLayout);
+//        setContentView(R.layout.drawlayout);
         initFragment();
-        initActionBar();
+        initActionBarNewMain();
         initViewPager();
         checkVersionAsync();
         headImage = (CycleImageView) findViewById(R.id.UserImage);
@@ -249,6 +244,7 @@ public class NewMain extends AppCompatActivity {
     }
 
 
+    @Override
     public void slidingMenuClickListen(int id) {
         String url = null;
         if (!TextUtils.isEmpty(studentID)) {
@@ -313,8 +309,7 @@ public class NewMain extends AppCompatActivity {
         startActivityForResult(intent, requestCode);
     }
 
-    private void initActionBar() {
-        setContentView(R.layout.activity_new_main);
+   /* private void initActionBar() {
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         drawerLayout = (DrawerLayout) findViewById(R.id.DrawLayout);
         drawer = (NavigationView) findViewById(R.id.drawer);
@@ -349,7 +344,7 @@ public class NewMain extends AppCompatActivity {
                 return false;
             }
         });
-    }
+    }*/
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
