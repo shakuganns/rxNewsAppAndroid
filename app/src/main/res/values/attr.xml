@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="drawerHeadBg" format="color"></attr>
     <attr name="rightPadding" format="dimension"></attr>
 
     <attr name="titleText" format="string"></attr>

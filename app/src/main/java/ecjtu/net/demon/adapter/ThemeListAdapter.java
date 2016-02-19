@@ -1,11 +1,13 @@
 package ecjtu.net.demon.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import ecjtu.net.demon.R;
@@ -16,7 +18,9 @@ import ecjtu.net.demon.view.CycleImageView;
  */
 public class ThemeListAdapter extends BaseAdapter {
 
-    private String[] themeList = {"早苗绿","少女粉","姨妈红","咸蛋黄","胖次蓝","基佬紫"};
+    private String[] themeList = {"早苗绿","可乐黑","姨妈红"};
+    private int[] colorDrawble = {R.drawable.circle_green,R.drawable.circle_dark,R.drawable.circle_red};
+    private int[] colors = {R.color.md_teal_500,R.color.md_grey_800,R.color.md_red_700};
     private LayoutInflater inflater;
 
     public ThemeListAdapter(Context context) {
@@ -43,13 +47,12 @@ public class ThemeListAdapter extends BaseAdapter {
         TextView textView;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.list_theme_item, null);
-            textView = (TextView) convertView.findViewById(R.id.themeText);
-            CycleImageView imageView = (CycleImageView) convertView.findViewById(R.id.themeColor);
-            textView.setText(themeList[position]);
-        } else {
-            textView = (TextView) convertView.findViewById(R.id.themeText);
-            textView.setText(themeList[position]);
         }
+        textView = (TextView) convertView.findViewById(R.id.themeText);
+        ImageView imageView = (ImageView) convertView.findViewById(R.id.themeColor);
+        imageView.setBackgroundResource(colorDrawble[position]);
+        textView.setText(themeList[position]);
+        textView.setTextColor(convertView.getResources().getColor(colors[position]));
         return convertView;
     }
 

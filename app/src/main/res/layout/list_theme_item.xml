@@ -6,8 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="48dp">
 
-    <ecjtu.net.demon.view.CycleImageView
-        android:src="@drawable/userimage"
+    <ImageView
+        android:background="@drawable/circle_red"
         android:id="@+id/themeColor"
         android:layout_margin="8dp"
         android:layout_width="16dp"

@@ -42,9 +42,15 @@ public class SettingThemeActivity extends BaseActivity {
                         editor.commit();
                         break;
                     }
-                    case GREY_THEME: {
+                    case DARK_THEME: {
                         editor = preferences.edit();
                         editor.putInt("theme", 1);
+                        editor.commit();
+                        break;
+                    }
+                    case RED_THEME: {
+                        editor = preferences.edit();
+                        editor.putInt("theme", 2);
                         editor.commit();
                         break;
                     }

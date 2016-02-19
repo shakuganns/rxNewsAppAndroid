@@ -90,7 +90,6 @@ public class NewMain extends NoGestureBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setContentViewLayout(R.layout.activity_new_main);
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.drawlayout);
         initFragment();
         initActionBarNewMain();
         initViewPager();

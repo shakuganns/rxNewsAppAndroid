@@ -24,7 +24,9 @@ public class NoGestureBaseActivity extends AppCompatActivity {
 
     public static int themeID;
     public static final int DEFAULT_THEME = 0;
-    public static final int GREY_THEME = 1;
+    public static final int DARK_THEME = 1;
+    public static final int RED_THEME = 2;
+
 
     @LayoutRes int layoutId;
     public SharedPreferences preferences;
@@ -42,8 +44,12 @@ public class NoGestureBaseActivity extends AppCompatActivity {
                 setTheme(R.style.AppTheme);
                 break;
             }
-            case GREY_THEME: {
-                setTheme(R.style.AppTheme2);
+            case DARK_THEME: {
+                setTheme(R.style.AppThemeDark);
+                break;
+            }
+            case RED_THEME: {
+                setTheme(R.style.AppThemeRed);
                 break;
             }
         }
@@ -90,14 +96,12 @@ public class NoGestureBaseActivity extends AppCompatActivity {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                toolbar.setTitle("小新助手");
                 invalidateOptionsMenu();
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                toolbar.setTitle("首页");
                 invalidateOptionsMenu();
             }
         };
