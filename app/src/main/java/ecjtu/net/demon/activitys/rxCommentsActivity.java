@@ -25,9 +25,9 @@ public class rxCommentsActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentViewLayout(R.layout.comments_activity);
+//        setContentViewLayout(R.layout.comments_activity);
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.comments_activity);
         initActionBar();
         getSupportActionBar().setTitle("日新评论");
 

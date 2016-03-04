@@ -21,6 +21,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -65,6 +66,8 @@ public class NewMain extends NoGestureBaseActivity {
     private CycleImageView headImage;
     private TabLayout tabLayout;
     private ViewPager pager;
+    private NavigationView navigationView;
+    private View navigationHead;
     private String md5 = null;
     private String updateUrl = "http://app.ecjtu.net/";
     private String VersionUrl = "http://app.ecjtu.net/api/v1/version";
@@ -88,13 +91,16 @@ public class NewMain extends NoGestureBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentViewLayout(R.layout.activity_new_main);
+//        setContentViewLayout(R.layout.activity_new_main);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.drawlayout);
         initFragment();
         initActionBarNewMain();
         initViewPager();
         checkVersionAsync();
-        headImage = (CycleImageView) findViewById(R.id.UserImage);
+        navigationView = (NavigationView) findViewById(R.id.drawer);
+        navigationHead = navigationView.getHeaderView(0);
+        headImage = (CycleImageView) navigationHead.findViewById(R.id.UserImage);
         headImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,6 +108,7 @@ public class NewMain extends NoGestureBaseActivity {
                 slidingMenuClickListen(R.id.UserImage);
             }
         });
+
 //        headImage.setOnClickListener(new rxOnClickListener() {
 //            @Override
 //            public void rxClick(View v) {
@@ -143,16 +150,18 @@ public class NewMain extends NoGestureBaseActivity {
         }
         if (!isUserInited) {
             initUserInfo();
-            TextView userNameView = (TextView) findViewById(R.id.UserName);
-            TextView studentIdView = (TextView) findViewById(R.id.studentId);
+            TextView userNameView = (TextView) navigationHead.findViewById(R.id.UserName);
+            TextView studentIdView = (TextView) navigationHead.findViewById(R.id.studentId);
             if (userName != null) {
+                Log.i("tag","userdata is not null~~");
                 userNameView.setText(userName);
                 studentIdView.setText(studentID);
                 ImageLoader.getInstance().displayImage("http://" + userEntity.getHeadImagePath(), headImage, options);
             } else {
+                Log.i("tag","userdata is null~~");
                 userNameView.setText(R.string.UserName);
                 studentIdView.setText("");
-                headImage = (CycleImageView) findViewById(R.id.UserImage);
+//                headImage = (CycleImageView) navigationHead.findViewById(R.id.UserImage);
                 headImage.setImageResource(R.drawable.userimage);
                 userNameView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -245,8 +254,7 @@ public class NewMain extends NoGestureBaseActivity {
         if (!TextUtils.isEmpty(userEntity.getStudentID())) {
             studentID = userEntity.getStudentID();
             userName = userEntity.getUserName();
-        }
-        else {
+        } else {
             studentID = null;
             userName = null;
             headImage = null;

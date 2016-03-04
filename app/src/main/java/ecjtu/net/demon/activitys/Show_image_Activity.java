@@ -33,8 +33,9 @@ public class Show_image_Activity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentViewLayout(R.layout.activity_show_image_);
+//        setContentViewLayout(R.layout.activity_show_image_);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_show_image_);
         intent = new Intent(Intent.ACTION_SEND);
         intent.setType("image/*");
         intent.putExtra(Intent.EXTRA_STREAM,Uri.fromFile(new File(getApplicationContext().getExternalFilesDir("share") + "/" + "share.jpg")));

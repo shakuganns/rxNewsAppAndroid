@@ -47,9 +47,9 @@ public class Tusho_show_card_activity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentViewLayout(R.layout.activity_tusho_show_card_activity);
+//        setContentViewLayout(R.layout.activity_tusho_show_card_activity);
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_tusho_show_card_activity);
         initActionBar();
         getSupportActionBar().setTitle("图说");
 

@@ -54,13 +54,13 @@ public class NoGestureBaseActivity extends AppCompatActivity {
             }
         }
         super.onCreate(savedInstanceState);
-        setContentView(layoutId);
+//        setContentView(layoutId);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
-    public void setContentViewLayout(@LayoutRes int layoutId) {
-        this.layoutId = layoutId;
-    }
+//    public void setContentViewLayout(@LayoutRes int layoutId) {
+//        this.layoutId = layoutId;
+//    }
 
     protected void initActionBar() {
         toolbar = (Toolbar) findViewById(R.id.tool_bar);

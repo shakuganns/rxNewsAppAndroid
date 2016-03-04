@@ -72,7 +72,7 @@ public class CollageNificationFragment extends ProgressFragment {
         linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
         swipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.collage_nification_fresh);
-        swipeRefreshLayout.setColorSchemeColors(R.color.link_text_material_light);
+//        swipeRefreshLayout.setColorSchemeColors(R.color.link_text_material_light);
         adapter = new CollageNificationAdapter(getActivity(),content);
         recyclerView.setAdapter(adapter);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

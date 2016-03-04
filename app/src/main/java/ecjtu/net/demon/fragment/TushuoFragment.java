@@ -71,7 +71,7 @@ public class TushuoFragment extends ProgressFragment {
         recyclerView.setAdapter(adapter);
 
         swipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.tushuo_fresh);
-        swipeRefreshLayout.setColorSchemeColors(R.color.link_text_material_light);
+//        swipeRefreshLayout.setColorSchemeColors(R.color.link_text_material_light);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

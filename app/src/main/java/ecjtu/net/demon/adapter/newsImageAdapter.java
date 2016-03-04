@@ -14,6 +14,8 @@ import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +32,7 @@ public class newsImageAdapter extends PagerAdapter {
     private ArrayList<HashMap<String,String>> newsHeadImageViewListS;
     private Context context;
     private DisplayImageOptions options;
+    private boolean[] isComplete = {false,false,false};
 
     public ArrayList<HashMap<String,String>> getNewsHeadImageViewListS() {
         return newsHeadImageViewListS;
@@ -52,7 +55,7 @@ public class newsImageAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(ViewGroup container, final int position) {
         String url = newsHeadImageViewListS.get(position).get("url");
         String id = newsHeadImageViewListS.get(position).get("id");
         ImageView imageView = null;
@@ -69,7 +72,27 @@ public class newsImageAdapter extends PagerAdapter {
         imageView.setOnClickListener(new slidePageClickerListener(id));
         newsHeadImageViewList.add(imageView);
         container.addView(newsHeadImageViewList.get(position));
-        ImageLoader.getInstance().displayImage(url, imageView, options);
+        ImageLoader.getInstance().displayImage(url, imageView, options, new ImageLoadingListener() {
+            @Override
+            public void onLoadingStarted(String imageUri, View view) {
+
+            }
+
+            @Override
+            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+
+            }
+
+            @Override
+            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                isComplete[position] = true;
+            }
+
+            @Override
+            public void onLoadingCancelled(String imageUri, View view) {
+
+            }
+        });
         return newsHeadImageViewList.get(position);
     }
 
@@ -90,11 +113,12 @@ public class newsImageAdapter extends PagerAdapter {
         Log.i("position","dele"+position);
         container.removeView(newsHeadImageViewList.get(position));
         Drawable drawable = newsHeadImageViewList.get(position).getDrawable();
-        if(drawable != null) {
+        if(drawable != null&&isComplete[position]) {
             if(drawable instanceof BitmapDrawable){
                 BitmapDrawable bitmapDrawable = (BitmapDrawable)drawable;
                 Bitmap bitmap = bitmapDrawable.getBitmap();
                 if(bitmap != null) {
+                    Log.i("position","recycle"+position);
                     bitmap.recycle();
                 }
             }

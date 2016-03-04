@@ -102,17 +102,6 @@ public class RixinNewsAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private void turn2Activity(Class activity, String url) {
-        Intent intent = new Intent();
-        intent.setClass(context, activity);
-        if (url != null) {
-            Bundle bundle = new Bundle();
-            bundle.putString("url", url);
-            intent.putExtras(bundle);
-        }
-        context.startActivity(intent);
-    }
-
     private void turn2Activity(Class activity, String url,String articleId) {
         Intent intent = new Intent();
         intent.setClass(context, activity);
@@ -215,7 +204,7 @@ public class RixinNewsAdapter extends RecyclerView.Adapter {
                 newsImageAdapter = new newsImageAdapter(myTopViewS, context);
                 ((HeadViewHolder) holder).myViewPager.setAdapter(newsImageAdapter);
                 ((HeadViewHolder) holder).myViewPager.setCurrentItem(0);
-                ((HeadViewHolder) holder).myViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                ((HeadViewHolder) holder).myViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                     @Override
                     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                     }

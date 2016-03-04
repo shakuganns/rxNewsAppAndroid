@@ -52,8 +52,9 @@ public class CutImageActivity extends NoGestureBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentViewLayout(R.layout.activity_cutimage);
+//        setContentViewLayout(R.layout.activity_cutimage);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_cutimage);
 
         initActionBar();
         getSupportActionBar().setTitle("裁剪头像");

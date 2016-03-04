@@ -42,8 +42,9 @@ public class ContentWebView extends NoGestureBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentViewLayout(R.layout.activity_webview_nocomment);
+//        setContentViewLayout(R.layout.activity_webview_nocomment);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_webview_nocomment);
 
         initActionBar();
         getSupportActionBar().setTitle("日小新服务");

@@ -89,7 +89,7 @@ public class MainFragment extends ProgressFragment {
     }
 
     private void initReflash(final SwipeRefreshLayout refreshLayout) {
-        refreshLayout.setColorSchemeColors(R.color.link_text_material_light);
+//        refreshLayout.setColorSchemeColors(R.color.);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

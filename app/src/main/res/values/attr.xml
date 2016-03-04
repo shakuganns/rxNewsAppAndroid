@@ -5,7 +5,6 @@
 
     <attr name="titleText" format="string"></attr>
     <attr name="titleTextSize" format="dimension"></attr>
-    <attr name="titleTextColor" format="color"></attr>
     <attr name="leftButtonBackground" format="reference|color"></attr>
     <attr name="rightButtonBackground" format="reference|color"></attr>
 

@@ -46,8 +46,9 @@ public class webview extends NoGestureBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentViewLayout(R.layout.activity_webview);
+//        setContentViewLayout(R.layout.activity_webview);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_webview);
         isComment = false;
         imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 //        linearLayout = (LinearLayout) findViewById(R.id.webview_layout);
