@@ -9,34 +9,30 @@
     <ImageView
         android:background="@drawable/circle_red"
         android:id="@+id/themeColor"
-        android:layout_margin="8dp"
-        android:layout_width="16dp"
-        android:layout_height="16dp" />
+        android:layout_margin="4dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp" />
 
     <TextView
         android:textColor="@color/md_green_400"
         android:id="@+id/themeText"
+        android:layout_weight="1"
+        android:paddingLeft="8dp"
         android:text="基佬绿"
         android:textSize="12dp"
-        android:gravity="center"
-        android:layout_width="wrap_content"
+        android:gravity="left|center"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="left|center_vertical" />
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:gravity="right"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <TextView
+            android:id="@+id/mark"
             android:visibility="invisible"
-            android:layout_marginRight="8dp"
             android:gravity="center"
+            android:layout_marginRight="8dp"
             android:text="使用中"
             android:textSize="12dp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
 
-    </LinearLayout>
 </LinearLayout>

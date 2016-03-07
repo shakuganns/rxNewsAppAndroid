@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import ecjtu.net.demon.R;
 import ecjtu.net.demon.adapter.ThemeListAdapter;
@@ -32,10 +33,12 @@ public class SettingThemeActivity extends BaseActivity {
         preferences = getSharedPreferences("phone", Context.MODE_PRIVATE);
         initActionBar();
         getSupportActionBar().setTitle("主题设置");
-
         themeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (position == themeID) {
+                    return;
+                }
                 switch (position) {
                     case DEFAULT_THEME: {
                         editor = preferences.edit();
@@ -62,4 +65,5 @@ public class SettingThemeActivity extends BaseActivity {
             }
         });
     }
+
 }

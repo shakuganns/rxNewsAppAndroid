@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import ecjtu.net.demon.R;
+import ecjtu.net.demon.activitys.BaseActivity;
 import ecjtu.net.demon.view.CycleImageView;
 
 /**
@@ -44,11 +45,14 @@ public class ThemeListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        TextView textView;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.list_theme_item, null);
         }
-        textView = (TextView) convertView.findViewById(R.id.themeText);
+        TextView textView = (TextView) convertView.findViewById(R.id.themeText);
+        if (BaseActivity.themeID == position) {
+            TextView mark = (TextView) convertView.findViewById(R.id.mark);
+            mark.setVisibility(View.VISIBLE);
+        }
         ImageView imageView = (ImageView) convertView.findViewById(R.id.themeColor);
         imageView.setBackgroundResource(colorDrawble[position]);
         textView.setText(themeList[position]);

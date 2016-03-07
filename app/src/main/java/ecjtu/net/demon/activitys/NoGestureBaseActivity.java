@@ -27,8 +27,6 @@ public class NoGestureBaseActivity extends AppCompatActivity {
     public static final int DARK_THEME = 1;
     public static final int RED_THEME = 2;
 
-
-    @LayoutRes int layoutId;
     public SharedPreferences preferences;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
     public NavigationView drawer;
