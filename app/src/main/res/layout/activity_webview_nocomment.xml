@@ -3,18 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/webView"
     tools:context="ecjtu.net.demon.activitys.ContentWebView">
 
     <include layout="@layout/tool_bar" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <WebView
-            android:layout_weight="1"
-            android:id="@+id/webView"
-            android:scrollbars="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </RelativeLayout>
+
+
 </LinearLayout>

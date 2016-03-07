@@ -19,6 +19,7 @@ public class comment_btn extends Fragment {
 
     private View view;
     private Button commentBtn;
+    private comment_text commentText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,9 +42,13 @@ public class comment_btn extends Fragment {
                     startActivity(intent);
                 } else {
 //                    commentBtn.setText("逗你的啦，功能还没做好 (/= _ =)/~┴┴ ");
-                    getFragmentManager().beginTransaction().replace(R.id.comment_layout, webview.commentText).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.comment_layout,commentText).commit();
                 }
             }
         });
+    }
+
+    public void setReplaceView(comment_text view) {
+        commentText = view;
     }
 }

@@ -41,7 +41,7 @@ public class MainFragment extends ProgressFragment {
     private RixinNewsAdapter rixinNewsAdapter;
     private RecyclerView newslist;
     private LinearLayoutManager linearLayoutManager;
-    private rxRefreshLayout refreshLayout = null;
+    private rxRefreshLayout refreshLayout;
     private HashMap<String, Object> list = new HashMap<>();
     private boolean isbottom;  //是否还有更多的数据
     private int lastVisibleItem;

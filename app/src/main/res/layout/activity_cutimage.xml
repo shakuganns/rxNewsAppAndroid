@@ -9,7 +9,7 @@
 
     <Button
         android:textColor="@color/white"
-        android:background="@color/action_bar_background"
+        android:background="?attr/colorPrimary"
         android:id="@+id/btn_clip"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"

@@ -8,12 +8,11 @@
 
     <include layout="@layout/tool_bar" />
 
-    <WebView
-        android:scrollbars="vertical"
-        android:layout_weight="1"
+    <FrameLayout
         android:id="@+id/webView"
+        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"></FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"

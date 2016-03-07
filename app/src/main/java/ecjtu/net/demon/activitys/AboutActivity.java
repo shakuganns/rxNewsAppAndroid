@@ -1,10 +1,6 @@
 package ecjtu.net.demon.activitys;
 
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
 import ecjtu.net.demon.BuildConfig;

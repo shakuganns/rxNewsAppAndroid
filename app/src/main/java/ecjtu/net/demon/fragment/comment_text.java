@@ -4,9 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -22,30 +20,26 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import cz.msebera.android.httpclient.Header;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.File;
-
 import ecjtu.net.demon.R;
-import ecjtu.net.demon.activitys.ContentWebView;
 import ecjtu.net.demon.activitys.NewMain;
 import ecjtu.net.demon.activitys.rxCommentsActivity;
 import ecjtu.net.demon.activitys.webview;
 import ecjtu.net.demon.utils.HttpAsync;
 import ecjtu.net.demon.utils.ToastMsg;
-import ecjtu.net.demon.utils.UserEntity;
 
 
 public class comment_text extends Fragment {
 
     private View view;
     private Button submitBtn;
-    public static Context context;
-    public static EditText commentText;
-    public static InputMethodManager imm;
-    public static FragmentManager fragmentManager;
+    private Context context;
+    public EditText commentText;
+    public InputMethodManager imm;
+    public FragmentManager fragmentManager;
     private String url;
+    private comment_btn commentBtn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -111,7 +105,7 @@ public class comment_text extends Fragment {
                 }
                 Log.i("tag","---------submit!!!----------");
                 imm.hideSoftInputFromWindow(commentText.getWindowToken(), 0);
-                fragmentManager.beginTransaction().replace(R.id.comment_layout, webview.commentBtn).commit();
+                fragmentManager.beginTransaction().replace(R.id.comment_layout, commentBtn).commit();
             }
         });
         commentText.setFocusable(true);
@@ -121,13 +115,23 @@ public class comment_text extends Fragment {
         imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
-    public static boolean onKeyDown(int keyCode, KeyEvent event) {
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        context = null;
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
         // TODO Auto-generated method stub
         if (keyCode == event.KEYCODE_BACK) {
             imm.hideSoftInputFromWindow(commentText.getWindowToken(), 0);
-            fragmentManager.beginTransaction().replace(R.id.comment_layout, webview.commentBtn).commit();
+            fragmentManager.beginTransaction().replace(R.id.comment_layout, commentBtn).commit();
         }
         return true;
+    }
+
+    public void setReplaceView(comment_btn view) {
+        commentBtn = view;
     }
 
 }

@@ -1,47 +1,45 @@
 package ecjtu.net.demon.activitys;
 
 import android.annotation.TargetApi;
-import android.app.ActionBar;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.LinearLayout;
 
 import ecjtu.net.demon.R;
 import ecjtu.net.demon.fragment.comment_btn;
 import ecjtu.net.demon.fragment.comment_text;
-import ecjtu.net.demon.utils.ToastMsg;
-
 
 public class webview extends NoGestureBaseActivity {
 
     public String title;
+    private ViewGroup webViewContainer;
     private WebView webView;
     private String url;
     private String id;
     private InputMethodManager imm;
     private FragmentTransaction transaction;
-    public static comment_text commentText;
-    public static comment_btn commentBtn;
+    public comment_text commentText;
+    public comment_btn commentBtn;
     public static boolean isComment;
 
     @Override
@@ -51,18 +49,15 @@ public class webview extends NoGestureBaseActivity {
         setContentView(R.layout.activity_webview);
         isComment = false;
         imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-//        linearLayout = (LinearLayout) findViewById(R.id.webview_layout);
-//        linearLayout.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View view, MotionEvent motionEvent) {
-//                Log.i("tag", "---------Touch!!!----------");
-//                return false;
-//            }
-//        });
+
         initActionBar();
         getSupportActionBar().setTitle("日新新闻");
 
-        webView = (WebView) findViewById(R.id.webView);
+        webViewContainer = (ViewGroup) findViewById(R.id.webView);
+        webView = new WebView(getApplicationContext());
+        webViewContainer.addView(webView);
+
+
         Intent intent = getIntent();
         url = intent.getStringExtra("url");
         id = intent.getStringExtra("sid");
@@ -82,8 +77,8 @@ public class webview extends NoGestureBaseActivity {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (isComment) {
                     transaction = getSupportFragmentManager().beginTransaction();
-                    imm.hideSoftInputFromWindow(comment_text.commentText.getWindowToken(), 0);
-                    transaction.replace(R.id.comment_layout, webview.commentBtn).commit();
+                    imm.hideSoftInputFromWindow(commentText.getView().getWindowToken(), 0);
+                    transaction.replace(R.id.comment_layout, commentBtn).commit();
                 }
                 return false;
             }
@@ -111,29 +106,28 @@ public class webview extends NoGestureBaseActivity {
             }
 
             @Override
-            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                super.onReceivedError(view, errorCode, description, failingUrl);
-//                if(errorCode == 404){
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                super.onReceivedError(view, request, error);
                 view.loadUrl("file:///android_asset/404/404.htm");
-//                }
             }
+
         });
         transaction = getSupportFragmentManager().beginTransaction();
         webView.setDownloadListener(new myDownLoad());
         commentBtn = new comment_btn();
         commentText = new comment_text();
+        commentBtn.setReplaceView(commentText);
+        commentText.setReplaceView(commentBtn);
         transaction.add(R.id.comment_layout, commentBtn);
         transaction.commit();
-
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        comment_text.commentText = null;
-        comment_text.context = null;
-        comment_text.fragmentManager = null;
-        comment_text.imm = null;
+        webViewContainer.removeAllViews();
+        webView.destroy();
+        webView = null;
     }
 
     @Override
@@ -214,7 +208,7 @@ public class webview extends NoGestureBaseActivity {
         // TODO Auto-generated method stub
         Log.d("ActionBar", "OnKey事件");
         if(isComment){
-            comment_text.onKeyDown(keyCode, event);
+            commentText.onKeyDown(keyCode, event);
         }
         return super.onKeyDown(keyCode, event);
     }

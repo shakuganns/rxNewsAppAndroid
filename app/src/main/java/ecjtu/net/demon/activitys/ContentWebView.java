@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.webkit.DownloadListener;
 import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
@@ -37,8 +38,9 @@ import ecjtu.net.demon.utils.ToastMsg;
 public class ContentWebView extends NoGestureBaseActivity {
 
     public String title;
+    private ViewGroup webViewContainer;
     private WebView webView;
-    public static String url;
+    public String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +51,10 @@ public class ContentWebView extends NoGestureBaseActivity {
         initActionBar();
         getSupportActionBar().setTitle("日小新服务");
 
-        webView = (WebView) findViewById(R.id.webView);
+        webViewContainer = (ViewGroup) findViewById(R.id.webView);
+        webView = new WebView(getApplicationContext());
+        webViewContainer.addView(webView);
+
         final Intent intent = getIntent();
         url = intent.getStringExtra("url");
         Log.i("tag", url);
@@ -97,6 +102,14 @@ public class ContentWebView extends NoGestureBaseActivity {
 //                }
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        webViewContainer.removeAllViews();
+        webView.destroy();
+        webView = null;
     }
 
     @Override
