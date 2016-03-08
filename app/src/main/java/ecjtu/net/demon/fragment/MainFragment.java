@@ -66,7 +66,7 @@ public class MainFragment extends ProgressFragment {
         rixinNewsAdapter = new RixinNewsAdapter(getActivity());
         newslist.setAdapter(rixinNewsAdapter);
         initReflash(refreshLayout);
-        setNewslist(url, null, true, false);
+        loadData(url, null, true, false);
     }
 
     private void initReflash(final SwipeRefreshLayout refreshLayout) {
@@ -74,7 +74,7 @@ public class MainFragment extends ProgressFragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                setNewslist(url, null, false, true);
+                loadData(url, null, false, true);
             }
         });
         newslist.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -85,7 +85,7 @@ public class MainFragment extends ProgressFragment {
                     if (!isbottom) {
                         ArrayMap<String, Object> ArrayMap = (ArrayMap<String, Object>) rixinNewsAdapter.getItem(rixinNewsAdapter.getCount() - 3);
                         String articleId = String.valueOf(ArrayMap.get("id"));
-                        setNewslist(url, articleId, false, false);
+                        loadData(url, articleId, false, false);
                     }
                 }
             }
@@ -106,7 +106,7 @@ public class MainFragment extends ProgressFragment {
      *
      */
 
-    public void setNewslist(String url, final String lastId,final boolean isInit, final boolean isRefresh) {
+    public void loadData(String url, final String lastId,final boolean isInit, final boolean isRefresh) {
         isbottom = false;
         if (lastId != null) {
             url = url + "?until=" + lastId;

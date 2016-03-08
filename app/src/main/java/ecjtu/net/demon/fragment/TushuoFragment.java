@@ -2,6 +2,7 @@ package ecjtu.net.demon.fragment;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +21,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import ecjtu.net.demon.R;
 import ecjtu.net.demon.adapter.TushuoAdapter;
@@ -35,7 +35,7 @@ import ecjtu.net.demon.utils.ToastMsg;
 public class TushuoFragment extends ProgressFragment {
 
     private static final int duration = 100;
-    private ArrayList<HashMap<String, Object>> content = new ArrayList<>();
+//    private ArrayList<ArrayMap<String, Object>> content = new ArrayList<>();
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private final static String url = "http://pic.ecjtu.net/api.php/list";
@@ -66,7 +66,7 @@ public class TushuoFragment extends ProgressFragment {
         linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        adapter = new TushuoAdapter(getActivity(), content);
+        adapter = new TushuoAdapter(getActivity());
 
         recyclerView.setAdapter(adapter);
 
@@ -75,7 +75,7 @@ public class TushuoFragment extends ProgressFragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getcontent(url, null, false, true);
+                loadData(url, null, false, true);
             }
         });
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -83,7 +83,7 @@ public class TushuoFragment extends ProgressFragment {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem == adapter.getItemCount() - 1) {
-                    getcontent(url, lastId, false, false);
+                    loadData(url, lastId, false, false);
                 }
             }
 
@@ -97,14 +97,14 @@ public class TushuoFragment extends ProgressFragment {
     }
 
     public void initData() {
-        getcontent(url, null, true, false);
+        loadData(url, null, true, false);
     }
 
     private void initThread() {
         myTask = new MyTask();
     }
 
-    private ArrayList<HashMap<String, Object>> getcontent(String url, final String lastId, boolean isInit, final boolean isRefresh) {
+    private void loadData(String url, final String lastId, boolean isInit, final boolean isRefresh) {
 
         if (lastId != null) {
             url = url + "?before=" + lastId;
@@ -130,8 +130,7 @@ public class TushuoFragment extends ProgressFragment {
                         }
                         try {
                             JSONArray list = response.getJSONArray("list");
-                            content = jsonArray2Arraylist(list);
-                            adapter.getContent().addAll(content);
+                            adapter.getContent().addAll(jsonArray2Arraylist(list));
                             adapter.notifyDataSetChanged();
                             setContentShown(true);
                         } catch (JSONException e) {
@@ -166,12 +165,11 @@ public class TushuoFragment extends ProgressFragment {
                     }
                     try {
                         JSONArray list = response.getJSONArray("list");
-                        content = jsonArray2Arraylist(list);
                         if (isRefresh) {
                             swipeRefreshLayout.setRefreshing(false);
                             adapter.getContent().clear();
                         }
-                        adapter.getContent().addAll(content);
+                        adapter.getContent().addAll(jsonArray2Arraylist(list));
                         adapter.notifyDataSetChanged();
                         setContentShown(true);
                     } catch (JSONException e) {
@@ -195,7 +193,6 @@ public class TushuoFragment extends ProgressFragment {
 
 
         Log.i("tag", "初始化wancengtushuo");
-        return content;
     }
 
     /**
@@ -204,12 +201,12 @@ public class TushuoFragment extends ProgressFragment {
      * @param jsonArray 输入你转换的jsonArray
      * @return 返回arraylist
      */
-    private ArrayList<HashMap<String, Object>> jsonArray2Arraylist(JSONArray jsonArray) {
-        ArrayList<HashMap<String, Object>> arrayList = new ArrayList<>();
+    private ArrayList<ArrayMap<String, Object>> jsonArray2Arraylist(JSONArray jsonArray) {
+        ArrayList<ArrayMap<String, Object>> arrayList = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                HashMap<String, Object> item = new HashMap<>();
+                ArrayMap<String, Object> item = new ArrayMap<>();
                 String imageUrl = "http://" + jsonObject.getString("thumb");
                 item.put("image", imageUrl);
                 item.put("title", jsonObject.getString("title"));
@@ -248,8 +245,7 @@ public class TushuoFragment extends ProgressFragment {
             Log.i("tag", "我们使用了缓存~！tushuo");
             try {
                 JSONArray array = cache.getJSONArray("list");
-                content = jsonArray2Arraylist(array);
-                adapter.getContent().addAll(content);
+                adapter.getContent().addAll(jsonArray2Arraylist(array));
                 adapter.notifyDataSetChanged();
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -261,7 +257,7 @@ public class TushuoFragment extends ProgressFragment {
         @Override
         protected void onPostExecute(String result) {
             setContentShown(true);
-            getcontent(url,null,false,true);
+            loadData(url,null,false,true);
         }
     }
 }

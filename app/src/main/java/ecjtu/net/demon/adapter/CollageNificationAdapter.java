@@ -2,6 +2,7 @@ package ecjtu.net.demon.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,12 +10,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import ecjtu.net.demon.R;
 import ecjtu.net.demon.activitys.webview;
-import ecjtu.net.demon.fragment.CollageNificationFragment;
-import ecjtu.net.demon.utils.ToastMsg;
+
 
 /**
  * Created by homker on 2015/5/4.
@@ -24,17 +23,16 @@ public class CollageNificationAdapter extends RecyclerView.Adapter<RecyclerView.
 
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
-    private ArrayList<HashMap<String, Object>> content = new ArrayList<>();
+    private ArrayList<ArrayMap<String, Object>> content = new ArrayList<>();
     private Context context;
     private LayoutInflater layoutInflater;
 
-    public CollageNificationAdapter(Context context, ArrayList<HashMap<String, Object>> content) {
-        this.content = content;
+    public CollageNificationAdapter(Context context) {
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
     }
 
-    public ArrayList<HashMap<String, Object>> getContent() {
+    public ArrayList<ArrayMap<String, Object>> getContent() {
         return this.content;
     }
 

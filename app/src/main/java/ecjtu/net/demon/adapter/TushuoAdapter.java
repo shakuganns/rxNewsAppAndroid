@@ -2,6 +2,7 @@ package ecjtu.net.demon.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,10 +13,9 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+
 
 import ecjtu.net.demon.R;
 import ecjtu.net.demon.activitys.Tusho_show_card_activity;
@@ -28,13 +28,12 @@ public class TushuoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
-    private ArrayList<HashMap<String, Object>> content = new ArrayList<>();
+    private ArrayList<ArrayMap<String, Object>> content = new ArrayList<>();
     private LayoutInflater layoutInflater;
     private DisplayImageOptions options;
     private Context context;
 
-    public TushuoAdapter(Context context, ArrayList<HashMap<String, Object>> content) {
-        this.content = content;
+    public TushuoAdapter(Context context) {
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
 //        ImageLoaderConfiguration configuration = ImageLoaderConfiguration
@@ -51,7 +50,7 @@ public class TushuoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 .build();
     }
 
-    public ArrayList<HashMap<String, Object>> getContent() {
+    public ArrayList<ArrayMap<String, Object>> getContent() {
         return this.content;
     }
 
