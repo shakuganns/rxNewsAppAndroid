@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context="ecjtu.net.demon.activitys.NewMain">
 
-    <ecjtu.net.demon.view.rxRefreshLayout
+    <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/fresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -18,6 +18,6 @@
             android:layout_alignParentTop="true"
             android:background="@color/white" />
 
-    </ecjtu.net.demon.view.rxRefreshLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.util.ArrayMap;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 import android.view.View;
@@ -18,7 +19,6 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import ecjtu.net.demon.R;
 import ecjtu.net.demon.activitys.webview;
@@ -29,19 +29,19 @@ import ecjtu.net.demon.activitys.webview;
 public class newsImageAdapter extends PagerAdapter {
 
     private ArrayList<ImageView> newsHeadImageViewList;
-    private ArrayList<HashMap<String,String>> newsHeadImageViewListS;
+    private ArrayList<ArrayMap<String,String>> newsHeadImageViewListS;
     private Context context;
     private DisplayImageOptions options;
     private boolean[] isComplete = {false,false,false};
 
-    public ArrayList<HashMap<String,String>> getNewsHeadImageViewListS() {
+    public ArrayList<ArrayMap<String,String>> getNewsHeadImageViewListS() {
         return newsHeadImageViewListS;
     }
 
     public newsImageAdapter(ArrayList<ImageView> newsHeadImageViewList){
         this.newsHeadImageViewList = newsHeadImageViewList;
     }
-    public newsImageAdapter(ArrayList<HashMap<String,String>> newsHeadImageViewListS,Context context){
+    public newsImageAdapter(ArrayList<ArrayMap<String,String>> newsHeadImageViewListS,Context context){
         newsHeadImageViewList = new ArrayList<>();
         this.newsHeadImageViewListS = newsHeadImageViewListS;
         this.context = context;

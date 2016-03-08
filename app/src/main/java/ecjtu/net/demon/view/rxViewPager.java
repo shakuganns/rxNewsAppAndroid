@@ -19,9 +19,8 @@ public class rxViewPager extends ViewPager {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        getParent().requestDisallowInterceptTouchEvent(true);// 父级元素不阻拦touch时间
+//        getParent().requestDisallowInterceptTouchEvent(true);// 父级元素不阻拦touch时间
         return super.dispatchTouchEvent(ev);
     }
-
 
 }

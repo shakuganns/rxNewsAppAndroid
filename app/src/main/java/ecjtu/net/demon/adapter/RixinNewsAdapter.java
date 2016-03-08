@@ -3,6 +3,7 @@ package ecjtu.net.demon.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.util.ArrayMap;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -18,15 +19,12 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
+
 
 import ecjtu.net.demon.R;
 import ecjtu.net.demon.activitys.webview;
-import ecjtu.net.demon.view.rxViewPager;
 
 /**
  * Created by 圣麟 on 2015/8/11.
@@ -36,21 +34,20 @@ public class RixinNewsAdapter extends RecyclerView.Adapter {
     private static final int TYPE_HEAD = 2;
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
-    private HashMap<String,Object> content = new HashMap<>();
+//    private ArrayMap<String,Object> content = new ArrayMap<>();
     private Context context;
-    private ArrayList<HashMap<String, Object>> listItem = new ArrayList<>();// 列表正文的的arraylist
-    private ArrayList<HashMap<String,Object>> slide_articles = new ArrayList<>();// 轮转图的arralist
+    private ArrayList<ArrayMap<String,Object>> listItem = new ArrayList<>();// 列表正文的的arraylist
+    private ArrayList<ArrayMap<String,Object>> slide_articles = new ArrayList<>();// 轮转图的arralist
     private LayoutInflater listContainer;
     private newsImageAdapter newsImageAdapter;
     private boolean isInit = false;
-    private ArrayList<HashMap<String,String>> myTopViewS;
+    private ArrayList<ArrayMap<String,String>> myTopViewS;
     private ArrayList<ImageView> points;//标识点的list
     private DisplayImageOptions options;
     private boolean isRefresh = false;
 
-    public RixinNewsAdapter(Context context, HashMap<String, Object> content) {
+    public RixinNewsAdapter(Context context) {
         this.context = context;
-        this.content = content;
         listContainer = LayoutInflater.from(context);
         myTopViewS = new ArrayList<>();
 
@@ -67,14 +64,14 @@ public class RixinNewsAdapter extends RecyclerView.Adapter {
                 .cacheOnDisk(true)
                 .build();
 
-        slide_articles = (ArrayList<HashMap<String, Object>>) content.get("slide_articles");
-        listItem = (ArrayList<HashMap<String, Object>>) content.get("normal_articles");
+//        slide_articles = (ArrayList<ArrayMap<String, Object>>) content.get("slide_articles");
+//        listItem = (ArrayList<ArrayMap<String, Object>>) content.get("normal_articles");
     }
 
     public void updateInfo(boolean isRefresh) {
         this.isRefresh = isRefresh;
-        slide_articles = (ArrayList<HashMap<String, Object>>) content.get("slide_articles");
-        listItem = (ArrayList<HashMap<String, Object>>) content.get("normal_articles");
+//        slide_articles = (ArrayList<ArrayMap<String, Object>>) content.get("slide_articles");
+//        listItem = (ArrayList<ArrayMap<String, Object>>) content.get("normal_articles");
         super.notifyDataSetChanged();
     }
 
@@ -114,25 +111,35 @@ public class RixinNewsAdapter extends RecyclerView.Adapter {
         context.startActivity(intent);
     }
 
-    public ArrayList<HashMap<String,Object>> getListItem() {
+    public ArrayList<ArrayMap<String,Object>> getListItem() {
         return listItem;
     }
-    public ArrayList<HashMap<String,Object>> getSlide_articles() {
+    public void setListItem(ArrayList<ArrayMap<String,Object>> listItem) {
+        this.listItem = listItem;
+    }
+
+    public ArrayList<ArrayMap<String,Object>> getSlide_articles() {
         return slide_articles;
     }
-    public HashMap<String,Object> getContent() {
-        return content;
+    public void setSlide_articles(ArrayList<ArrayMap<String,Object>> slide_articles) {
+        this.slide_articles = slide_articles;
     }
+//    public ArrayMap<String,Object> getContent() {
+//        return content;
+//    }
+//    public void setContent(ArrayMap<String,Object> content) {
+//        this.content = content;
+//    }
 
     public class HeadViewHolder extends RecyclerView.ViewHolder {
 
-        private rxViewPager myViewPager;
+        private ViewPager myViewPager;
         private LinearLayout myPointView;//pointView 的容器
         private TextView info;
 
         public HeadViewHolder(View itemView) {
             super(itemView);
-            myViewPager = (ecjtu.net.demon.view.rxViewPager) itemView.findViewById(R.id.news_viewPager);
+            myViewPager = (ViewPager) itemView.findViewById(R.id.news_viewPager);
             myPointView = (LinearLayout) itemView.findViewById(R.id.point_view);
             info = (TextView) itemView.findViewById(R.id.news_info);
         }
@@ -196,10 +203,10 @@ public class RixinNewsAdapter extends RecyclerView.Adapter {
                 lp.gravity = Gravity.TOP;
                 ((HeadViewHolder) holder).myViewPager.setLayoutParams(lp);
                 for (int i = 0; i < slide_articles.size(); i++) {
-                    HashMap<String, String> hashMap = new HashMap<>();
-                    hashMap.put("url", (String) slide_articles.get(i).get("thumb"));
-                    hashMap.put("id", String.valueOf(slide_articles.get(i).get("id")));
-                    myTopViewS.add(hashMap);
+                    ArrayMap<String, String> ArrayMap = new ArrayMap<>();
+                    ArrayMap.put("url", (String) slide_articles.get(i).get("thumb"));
+                    ArrayMap.put("id", String.valueOf(slide_articles.get(i).get("id")));
+                    myTopViewS.add(ArrayMap);
                 }
                 newsImageAdapter = new newsImageAdapter(myTopViewS, context);
                 ((HeadViewHolder) holder).myViewPager.setAdapter(newsImageAdapter);
@@ -224,11 +231,11 @@ public class RixinNewsAdapter extends RecyclerView.Adapter {
             } else if(isRefresh) {
                 myTopViewS.clear();
                 for (int i = 0; i < slide_articles.size(); i++) {
-                    HashMap<String, String> hashMap = new HashMap<>();
-                    hashMap.put("title", (String) slide_articles.get(i).get("title"));
-                    hashMap.put("url", (String) slide_articles.get(i).get("thumb"));
-                    hashMap.put("id", String.valueOf(slide_articles.get(i).get("id")));
-                    myTopViewS.add(hashMap);
+                    ArrayMap<String, String> ArrayMap = new ArrayMap<>();
+                    ArrayMap.put("title", (String) slide_articles.get(i).get("title"));
+                    ArrayMap.put("url", (String) slide_articles.get(i).get("thumb"));
+                    ArrayMap.put("id", String.valueOf(slide_articles.get(i).get("id")));
+                    myTopViewS.add(ArrayMap);
                 }
                 newsImageAdapter.notifyDataSetChanged();
                 ((HeadViewHolder) holder).myViewPager.setCurrentItem(0);
@@ -268,8 +275,8 @@ public class RixinNewsAdapter extends RecyclerView.Adapter {
             points.get(i).setImageResource(R.drawable.indicator);
         }
         points.get(position).setImageResource(R.drawable.indicator_focused);
-        HashMap<String,Object> hashMap = slide_articles.get(position);
-        holder.info.setText((String) hashMap.get("title"));
+        ArrayMap<String,Object> ArrayMap = slide_articles.get(position);
+        holder.info.setText((String) ArrayMap.get("title"));
     }
 
 }
