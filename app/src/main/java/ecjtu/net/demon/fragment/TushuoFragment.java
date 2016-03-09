@@ -1,7 +1,8 @@
 package ecjtu.net.demon.fragment;
 
-import android.os.AsyncTask;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.devspark.progressfragment.ProgressFragment;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import cz.msebera.android.httpclient.Header;
@@ -32,7 +32,7 @@ import ecjtu.net.demon.utils.ToastMsg;
  * Created by homker on 2015/5/5.
  * 日新网新闻客户端
  */
-public class TushuoFragment extends ProgressFragment {
+public class TushuoFragment extends Fragment {
 
     private static final int duration = 100;
 //    private ArrayList<ArrayMap<String, Object>> content = new ArrayList<>();
@@ -45,32 +45,25 @@ public class TushuoFragment extends ProgressFragment {
     private int lastVisibleItem;
     private View mContentView;
     private ACache tushuoListCache;
-    private JSONObject cache;
-    private MyTask myTask;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         mContentView = inflater.inflate(R.layout.tushuo, container, false);
-        return inflater.inflate(R.layout.fragment_loading, container, false);
+        return mContentView;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setContentView(mContentView);
-        setEmptyText(R.string.empty);
-        setContentShown(false);
-        initThread();
-        recyclerView = (RecyclerView) getView().findViewById(R.id.tushuo);
+        recyclerView = (RecyclerView) mContentView.findViewById(R.id.tushuo);
         linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
-
         adapter = new TushuoAdapter(getActivity());
-
         recyclerView.setAdapter(adapter);
 
-        swipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.tushuo_fresh);
+
+        swipeRefreshLayout = (SwipeRefreshLayout) mContentView.findViewById(R.id.tushuo_fresh);
 //        swipeRefreshLayout.setColorSchemeColors(R.color.link_text_material_light);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -96,13 +89,11 @@ public class TushuoFragment extends ProgressFragment {
 
     }
 
-    public void initData() {
-        loadData(url, null, true, false);
+    public void updateData() {
+        loadData(url, null, false, true);
+        swipeRefreshLayout.setRefreshing(true);
     }
 
-    private void initThread() {
-        myTask = new MyTask();
-    }
 
     private void loadData(String url, final String lastId, boolean isInit, final boolean isRefresh) {
 
@@ -111,9 +102,17 @@ public class TushuoFragment extends ProgressFragment {
         }
         tushuoListCache = ACache.get(getActivity());
         if (isInit) {
-            cache = tushuoListCache.getAsJSONObject("tushuoList");
+            JSONObject cache = tushuoListCache.getAsJSONObject("tushuoList");
             if (cache != null) {//判断缓存是否为空
-                myTask.execute("");
+                Log.i("tag", "我们使用了缓存~！tushuo");
+                try {
+                    JSONArray array = cache.getJSONArray("list");
+                    adapter.getContent().addAll(jsonArray2Arraylist(array));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                adapter.notifyDataSetChanged();
+                setContentShown(true);
             } else {
                 Log.i("tag", "初始化tushuo");
                 HttpAsync.get(url, new JsonHttpResponseHandler() {
@@ -190,9 +189,13 @@ public class TushuoFragment extends ProgressFragment {
                 }
             });
         }
-
-
         Log.i("tag", "初始化wancengtushuo");
+    }
+
+    public void setContentShown(boolean shown) {
+        if (shown) {
+            recyclerView.setVisibility(View.VISIBLE);
+        }
     }
 
     /**
@@ -229,35 +232,8 @@ public class TushuoFragment extends ProgressFragment {
 
     public String TimeStamp2Date(String timestampString, String formats) {
         Long timestamp = Long.parseLong(timestampString) * 1000;
-        String date = new java.text.SimpleDateFormat(formats).format(new java.util.Date(timestamp));
+        @SuppressLint("SimpleDateFormat") String date = new java.text.SimpleDateFormat(formats).format(new java.util.Date(timestamp));
         return date;
     }
 
-    private class MyTask extends AsyncTask<String, Integer, String> {
-
-        @Override
-        protected String doInBackground(String... strings) {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            Log.i("tag", "我们使用了缓存~！tushuo");
-            try {
-                JSONArray array = cache.getJSONArray("list");
-                adapter.getContent().addAll(jsonArray2Arraylist(array));
-                adapter.notifyDataSetChanged();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        //onPostExecute方法用于在执行完后台任务后更新UI,显示结果
-        @Override
-        protected void onPostExecute(String result) {
-            setContentShown(true);
-            loadData(url,null,false,true);
-        }
-    }
 }

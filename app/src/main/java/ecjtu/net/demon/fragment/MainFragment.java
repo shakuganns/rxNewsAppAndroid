@@ -2,6 +2,7 @@ package ecjtu.net.demon.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.devspark.progressfragment.ProgressFragment;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import cz.msebera.android.httpclient.Header;
@@ -29,8 +29,8 @@ import ecjtu.net.demon.utils.ACache;
 import ecjtu.net.demon.utils.HttpAsync;
 import ecjtu.net.demon.utils.ToastMsg;
 
-public class MainFragment extends ProgressFragment {
-    
+public class MainFragment extends Fragment {
+
     private View mContentView;   //内容视图
     private static final int duration = 100;
     private final static String url = "http://app.ecjtu.net/api/v1/index";
@@ -47,21 +47,19 @@ public class MainFragment extends ProgressFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         mContentView = inflater.inflate(R.layout.activity_main, container, false);
-        return inflater.inflate(R.layout.fragment_loading, container, false);   //返回loading视图
+        return mContentView;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setContentView(mContentView);
-        setEmptyText(R.string.empty);
-        setContentShown(false);  //设置内容视图不显示
         isbottom = false;
         linearLayoutManager = new LinearLayoutManager(getActivity());
-        newslist = (RecyclerView) getView().findViewById(R.id.newslist);
+        newslist = (RecyclerView) mContentView.findViewById(R.id.newslist);
         newslist.setLayoutManager(linearLayoutManager);
         //初始化ListView
-        refreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.fresh_layout);
+        refreshLayout = (SwipeRefreshLayout) mContentView.findViewById(R.id.fresh_layout);
+
 
         rixinNewsAdapter = new RixinNewsAdapter(getActivity());
         newslist.setAdapter(rixinNewsAdapter);
@@ -83,7 +81,7 @@ public class MainFragment extends ProgressFragment {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem == rixinNewsAdapter.getItemCount() - 1) {
                     if (!isbottom) {
-                        ArrayMap<String, Object> ArrayMap = (ArrayMap<String, Object>) rixinNewsAdapter.getItem(rixinNewsAdapter.getCount() - 3);
+                        ArrayMap<String, Object> ArrayMap = rixinNewsAdapter.getItem(rixinNewsAdapter.getCount() - 3);
                         String articleId = String.valueOf(ArrayMap.get("id"));
                         loadData(url, articleId, false, false);
                     }
@@ -122,19 +120,14 @@ public class MainFragment extends ProgressFragment {
                     JSONArray slide_articles = slide_article.getJSONArray("articles");
                     JSONObject normal_article = cache.getJSONObject("normal_article");
                     JSONArray normal_articles = normal_article.getJSONArray("articles");
-//                    list.put("slide_articles", jsonArray2Arraylist(slide_articles));
-//                    list.put("normal_articles", jsonArray2Arraylist(normal_articles));
                     rixinNewsAdapter.setSlide_articles(jsonArray2Arraylist(slide_articles));
                     rixinNewsAdapter.setListItem(jsonArray2Arraylist(normal_articles));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-//                rixinNewsAdapter.setContent(list);
                 rixinNewsAdapter.updateInfo(isRefresh);
-//                Log.i("TAG", "---------" + rixinNewsAdapter.getContent().size() + "-------");
                 setContentShown(true);
-            }
-            if (cache == null) {
+            } else {
                 HttpAsync.get(url, new JsonHttpResponseHandler() {
 
                     @Override
@@ -155,20 +148,16 @@ public class MainFragment extends ProgressFragment {
                             JSONArray normal_articles = normal_article.getJSONArray("articles");
                             rixinNewsAdapter.setSlide_articles(jsonArray2Arraylist(slide_articles));
                             rixinNewsAdapter.setListItem(jsonArray2Arraylist(normal_articles));
-//                            list.put("slide_articles", jsonArray2Arraylist(slide_articles));
-//                            list.put("normal_articles", jsonArray2Arraylist(normal_articles));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                         Log.i("tag", "更新线程执行成功");
-//                        rixinNewsAdapter.setContent(list);
                         rixinNewsAdapter.updateInfo(isRefresh);
                         setContentShown(true);
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        super.onFailure(statusCode, headers, responseString, throwable);
                         ToastMsg.builder.display("网络环境好像不是很好呀！", duration);
                     }
 
@@ -209,9 +198,8 @@ public class MainFragment extends ProgressFragment {
                                 bottomProgressBar.setVisibility(View.GONE);
                                 bottom.setText("已经到底啦");
                             }
-                        }
-                        else {
-                            if(isRefresh) {
+                        } else {
+                            if (isRefresh) {
                                 if (rixinNewsAdapter.getListItem() != null) {
                                     rixinNewsAdapter.getListItem().clear();
                                     rixinNewsAdapter.getListItem().addAll(jsonArray2Arraylist(normal_articles));
@@ -244,9 +232,8 @@ public class MainFragment extends ProgressFragment {
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    super.onFailure(statusCode, headers, responseString, throwable);
                     ToastMsg.builder.display("网络环境好像不是很好呀！", duration);
-                    if(!isRefresh) {
+                    if (!isRefresh) {
 //                    refreshLayout.setLoading(false);
                     } else {
                         refreshLayout.setRefreshing(false);
@@ -259,6 +246,12 @@ public class MainFragment extends ProgressFragment {
                 }
 
             });
+        }
+    }
+
+    public void setContentShown(boolean shown) {
+        if (shown) {
+            newslist.setVisibility(View.VISIBLE);
         }
     }
 

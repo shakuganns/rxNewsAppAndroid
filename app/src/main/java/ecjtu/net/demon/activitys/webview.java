@@ -208,7 +208,7 @@ public class webview extends NoGestureBaseActivity {
         // TODO Auto-generated method stub
         Log.d("ActionBar", "OnKey事件");
         if(isComment){
-            commentText.onKeyDown(keyCode, event);
+            commentText.onKeyDown(keyCode);
         }
         return super.onKeyDown(keyCode, event);
     }

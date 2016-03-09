@@ -33,7 +33,6 @@ import ecjtu.net.demon.utils.ToastMsg;
 public class comment_text extends Fragment {
 
     private View view;
-    private Button submitBtn;
     private Context context;
     public EditText commentText;
     public InputMethodManager imm;
@@ -53,20 +52,20 @@ public class comment_text extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        submitBtn = (Button) view.findViewById(R.id.submitBtn);
+        Button submitBtn = (Button) view.findViewById(R.id.submitBtn);
         commentText = (EditText) view.findViewById(R.id.commentText);
         fragmentManager = getFragmentManager();
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!commentText.getText().toString().equals("")) {
+                if (!commentText.getText().toString().equals("")) {
                     url = "http://app.ecjtu.net/api/v1/article/";
                     url = url + getActivity().getIntent().getStringExtra("sid") + "/comment";
                     Log.i("tag", url);
                     RequestParams params = new RequestParams();
                     params.put("sid", NewMain.userEntity.getStudentID());
                     params.put("content", commentText.getText());
-                    Log.i("tag",String.valueOf(params));
+                    Log.i("tag", String.valueOf(params));
                     HttpAsync.post(url, params, new JsonHttpResponseHandler() {
 
                         @Override
@@ -75,14 +74,12 @@ public class comment_text extends Fragment {
                             // 构造对话框
                             AlertDialog.Builder builder = new AlertDialog.Builder(context);
                             builder.setMessage("要去看看评论吗？");
-                            builder.setPositiveButton("好的", new DialogInterface.OnClickListener()
-                            {
+                            builder.setPositiveButton("好的", new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int which)
-                                {
+                                public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    Intent intent = new Intent(context,rxCommentsActivity.class);
-                                    String url = comment_text.this.url+"s";
+                                    Intent intent = new Intent(context, rxCommentsActivity.class);
+                                    String url = comment_text.this.url + "s";
                                     intent.putExtra("url", url);
                                     context.startActivity(intent);
                                 }
@@ -103,7 +100,7 @@ public class comment_text extends Fragment {
                         }
                     });
                 }
-                Log.i("tag","---------submit!!!----------");
+                Log.i("tag", "---------submit!!!----------");
                 imm.hideSoftInputFromWindow(commentText.getWindowToken(), 0);
                 fragmentManager.beginTransaction().replace(R.id.comment_layout, commentBtn).commit();
             }
@@ -121,9 +118,9 @@ public class comment_text extends Fragment {
         context = null;
     }
 
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    public boolean onKeyDown(int keyCode) {
         // TODO Auto-generated method stub
-        if (keyCode == event.KEYCODE_BACK) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             imm.hideSoftInputFromWindow(commentText.getWindowToken(), 0);
             fragmentManager.beginTransaction().replace(R.id.comment_layout, commentBtn).commit();
         }

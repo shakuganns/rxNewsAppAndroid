@@ -3,13 +3,12 @@ package ecjtu.net.demon.activitys;
 import android.annotation.TargetApi;
 import android.app.TaskStackBuilder;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,7 +21,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import ecjtu.net.demon.R;
 import ecjtu.net.demon.adapter.tushuShowCardAdapter;
@@ -36,7 +34,7 @@ public class Tusho_show_card_activity extends BaseActivity {
     private RecyclerView recyclerView;
     private tushuShowCardAdapter adapeter;
     private LinearLayoutManager linearLayoutManager;
-    private ArrayList<HashMap<String, Object>> content = new ArrayList<>();
+//    private ArrayList<ArrayMap<String, Object>> content = new ArrayList<>();
     private static String pid;
     public static ArrayList<String> urlList = new ArrayList<>();
     public static ArrayList<String> infoList = new ArrayList<>();
@@ -50,14 +48,14 @@ public class Tusho_show_card_activity extends BaseActivity {
 //        setContentViewLayout(R.layout.activity_tusho_show_card_activity);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tusho_show_card_activity);
+        loadData(url);
         initActionBar();
         getSupportActionBar().setTitle("图说");
 
         recyclerView = (RecyclerView) findViewById(R.id.profile_show_card_recyclerview);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        getContent(url);
-        adapeter =  new tushuShowCardAdapter(Tusho_show_card_activity.this,content);
+        adapeter =  new tushuShowCardAdapter(Tusho_show_card_activity.this);
         recyclerView.setAdapter(adapeter);
     }
 
@@ -71,7 +69,7 @@ public class Tusho_show_card_activity extends BaseActivity {
         }
     }
 
-    private ArrayList<HashMap<String, Object>> getContent(String url) {
+    private void loadData(String url) {
         urlList.clear();
             url = url + "/" + pid;
             HttpAsync.get(url, new JsonHttpResponseHandler() {
@@ -91,7 +89,7 @@ public class Tusho_show_card_activity extends BaseActivity {
                         adapeter.setHeadText();
                         JSONArray jsonArray = response.getJSONArray("pictures");
                         for (int i = 0; i < jsonArray.length(); i++) {
-                            HashMap<String, Object> item = new HashMap<>();
+                            ArrayMap<String, Object> item = new ArrayMap<>();
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             String url = "http://pic.ecjtu.net/" + jsonObject.getString("url");
                             urlList.add(i, url);
@@ -99,7 +97,7 @@ public class Tusho_show_card_activity extends BaseActivity {
                             String info = jsonObject.getString("detail");
                             item.put("detail", info);
                             infoList.add(i,info);
-                            content.add(item);
+                            adapeter.getContent().add(item);
                         }
                         adapeter.notifyDataChanged();
                     } catch (JSONException e) {
@@ -119,7 +117,6 @@ public class Tusho_show_card_activity extends BaseActivity {
 
                 }
             });
-        return content;
     }
 
     @Override

@@ -2,6 +2,7 @@ package ecjtu.net.demon.fragment;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.devspark.progressfragment.ProgressFragment;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import cz.msebera.android.httpclient.Header;
@@ -34,10 +34,11 @@ import ecjtu.net.demon.utils.ToastMsg;
  * 日新网新闻客户端
  */
 
-public class CollageNificationFragment extends ProgressFragment {
+public class CollageNificationFragment extends Fragment {
 
     private final static String url = "http://app.ecjtu.net/api/v1/schoolnews";
     private static final int duration = 100;
+    private RecyclerView recyclerView;
     private CollageNificationAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
     private int lastVisibleItem;
@@ -46,28 +47,23 @@ public class CollageNificationFragment extends ProgressFragment {
 //    private ArrayList<ArrayMap<String, Object>> content = new ArrayList<>();
     private View mContentView;
     private ACache tushuoListCache;
-    private JSONObject cache;
-    private MyTask myTask;
     private boolean isBottom;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         mContentView = inflater.inflate(R.layout.collage_nification, container, false);
-        return inflater.inflate(R.layout.fragment_loading, container, false);
+        return mContentView;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setContentView(mContentView);
-        setEmptyText(R.string.empty);
-        setContentShown(false);
-        initThread();
-        RecyclerView recyclerView = (RecyclerView) getView().findViewById(R.id.collage_nification);
+        recyclerView = (RecyclerView) mContentView.findViewById(R.id.collage_nification);
+
         linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
-        swipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.collage_nification_fresh);
+        swipeRefreshLayout = (SwipeRefreshLayout) mContentView.findViewById(R.id.collage_nification_fresh);
 //        swipeRefreshLayout.setColorSchemeColors(R.color.link_text_material_light);
         adapter = new CollageNificationAdapter(getActivity());
         recyclerView.setAdapter(adapter);
@@ -97,12 +93,9 @@ public class CollageNificationFragment extends ProgressFragment {
         });
     }
 
-    private void initThread() {
-        myTask = new MyTask();
-    }
-
-    public void initData() {
-        loadData(url, null, true, false);
+    public void updateData() {
+        loadData(url, null, false, true);
+        swipeRefreshLayout.setRefreshing(true);
     }
 
     private void loadData(String url , final String lastId , boolean isInit, final boolean isRefresh) {
@@ -112,11 +105,18 @@ public class CollageNificationFragment extends ProgressFragment {
         }
         tushuoListCache = ACache.get(getActivity());
         if (isInit) {
-            cache = tushuoListCache.getAsJSONObject("CNList");
+            JSONObject cache = tushuoListCache.getAsJSONObject("CNList");
             if (cache != null) {//判断缓存是否为空
-                myTask.execute("");
-            }
-            if(cache == null) {
+                Log.i("tag", "我们使用了缓存~！collage");
+                try {
+                    JSONArray array = cache.getJSONArray("articles");
+                    adapter.getContent().addAll(jsonArray2Arraylist(array));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                adapter.notifyDataSetChanged();
+                setContentShown(true);
+            } else {
                 HttpAsync.get(url, new JsonHttpResponseHandler() {
                     @Override
                     public void onStart() {
@@ -156,7 +156,6 @@ public class CollageNificationFragment extends ProgressFragment {
             HttpAsync.get(url, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    super.onSuccess(statusCode, headers, response);
                     if (lastId == null) {//只缓存最新的内容列表
                         tushuoListCache.remove("CNList");
                         tushuoListCache.put("CNList", response, 7 * ACache.TIME_DAY);
@@ -192,7 +191,6 @@ public class CollageNificationFragment extends ProgressFragment {
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    super.onFailure(statusCode, headers, responseString, throwable);
                     ToastMsg.builder.display("网络环境好像不是很好呀~！", duration);
                     swipeRefreshLayout.setRefreshing(false);
                 }
@@ -204,6 +202,13 @@ public class CollageNificationFragment extends ProgressFragment {
             });
         }
     }
+
+    public void setContentShown(boolean shown) {
+        if (shown) {
+            recyclerView.setVisibility(View.VISIBLE);
+        }
+    }
+
 
     /**
      * 将json数组变成arraylist
@@ -232,31 +237,4 @@ public class CollageNificationFragment extends ProgressFragment {
         return arrayList;
     }
 
-    private class MyTask extends AsyncTask<String, Integer, String> {
-
-        @Override
-        protected String doInBackground(String... strings) {
-            Log.i("tag", "我们使用了缓存~！collage");
-            try {
-                Thread.sleep(400);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            try {
-                JSONArray array = cache.getJSONArray("articles");
-                adapter.getContent().addAll(jsonArray2Arraylist(array));
-                adapter.notifyDataSetChanged();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        //onPostExecute方法用于在执行完后台任务后更新UI,显示结果
-        @Override
-        protected void onPostExecute(String result) {
-            setContentShown(true);
-            loadData(url,null,false,true);
-        }
-    }
 }

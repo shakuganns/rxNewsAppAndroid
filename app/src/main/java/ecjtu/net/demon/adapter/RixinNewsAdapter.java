@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -167,7 +166,7 @@ public class RixinNewsAdapter extends RecyclerView.Adapter {
         return listItem == null ? 0 : listItem.size() + 2;
     }
 
-    public Object getItem(int position) {
+    public ArrayMap<String,Object> getItem(int position) {
         return listItem.get(position);
     }
 

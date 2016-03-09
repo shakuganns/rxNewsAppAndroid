@@ -46,11 +46,6 @@ public class SharedPreUtil {
         return s_SharedPreUtil;
     }
 
-    public SharedPreferences getSharedPref() {
-        return msp;
-    }
-
-
     public synchronized void putUser(UserEntity user) {
 
         SharedPreferences.Editor editor = msp.edit();

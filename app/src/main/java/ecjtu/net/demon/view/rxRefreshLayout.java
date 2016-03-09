@@ -3,6 +3,8 @@ package ecjtu.net.demon.view;
 import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.AttributeSet;
+import android.view.View;
+import android.widget.ImageView;
 
 
 /**
@@ -10,10 +12,7 @@ import android.util.AttributeSet;
  */
 public class rxRefreshLayout extends SwipeRefreshLayout {
 
-    /**
-     * 滑动距离及坐标
-     */
-    private float xDistance, yDistance, xLast, yLast;
+//    private static final int DEFAULT_CHILD_GRAVITY = Gravity.TOP | Gravity.START;
 
     /**
      * @param context
@@ -49,4 +48,42 @@ public class rxRefreshLayout extends SwipeRefreshLayout {
 //        }
 //        return super.onInterceptTouchEvent(ev);
 //    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        layoutChildren();
+    }
+
+    void layoutChildren() {
+        final int count = getChildCount();
+
+
+        for (int i = 0; i < count; i++) {
+            final View child = getChildAt(i);
+            if (child instanceof ImageView) {
+                continue;
+            }
+            if (child.getVisibility() != GONE) {
+
+                final int width = child.getMeasuredWidth();
+                final int height = child.getMeasuredHeight();
+
+
+                int childLeft = 0;
+                int childTop = 0;
+
+
+                child.layout(childLeft, childTop, childLeft + width, childTop + height);
+            }
+        }
+    }
+
+//    public class LayoutParams extends FrameLayout.LayoutParams {
+//
+//        public LayoutParams(Context c, AttributeSet attrs) {
+//            super(c, attrs);
+//        }
+//    }
+
 }

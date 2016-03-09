@@ -5,24 +5,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,7 +26,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import cz.msebera.android.httpclient.Header;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -43,7 +34,6 @@ import java.util.TimerTask;
 
 import ecjtu.net.demon.R;
 import ecjtu.net.demon.adapter.MainAdapter;
-import ecjtu.net.demon.fragment.ChatFragment;
 import ecjtu.net.demon.fragment.CollageNificationFragment;
 import ecjtu.net.demon.fragment.MainFragment;
 import ecjtu.net.demon.fragment.TushuoFragment;
@@ -51,7 +41,6 @@ import ecjtu.net.demon.utils.HttpAsync;
 import ecjtu.net.demon.utils.SharedPreUtil;
 import ecjtu.net.demon.utils.ToastMsg;
 import ecjtu.net.demon.utils.UserEntity;
-import ecjtu.net.demon.utils.rxOnClickListener;
 import ecjtu.net.demon.view.CycleImageView;
 
 
@@ -67,11 +56,8 @@ public class NewMain extends NoGestureBaseActivity {
     private CycleImageView headImage;
     private TabLayout tabLayout;
     private ViewPager pager;
-    private NavigationView navigationView;
     private View navigationHead;
-    private String md5 = null;
     private String updateUrl = "http://app.ecjtu.net/";
-    private String VersionUrl = "http://app.ecjtu.net/api/v1/version";
     private int duration = 300;
     public static MainAdapter mainAdapter;
     private MainFragment mainFragment;
@@ -99,7 +85,7 @@ public class NewMain extends NoGestureBaseActivity {
         initActionBarNewMain();
         initViewPager();
         checkVersionAsync();
-        navigationView = (NavigationView) findViewById(R.id.drawer);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.drawer);
         navigationHead = navigationView.getHeaderView(0);
         headImage = (CycleImageView) navigationHead.findViewById(R.id.UserImage);
         headImage.setOnClickListener(new View.OnClickListener() {
@@ -215,14 +201,14 @@ public class NewMain extends NoGestureBaseActivity {
                     case 1:
                         if (isInit[1]) {
                             Log.i("TAG", "---------setfragment2------------");
-                            collageNificationFragment.initData();
+                            collageNificationFragment.updateData();
                             isInit[1] = false;
                         }
                         break;
                     case 2:
                         if (isInit[2]) {
                             Log.i("TAG", "---------setfragment3------------");
-                            tushoFragment.initData();
+                            tushoFragment.updateData();
                             isInit[2] = false;
                         }
                         break;
@@ -245,7 +231,7 @@ public class NewMain extends NoGestureBaseActivity {
         fragments.add(tushoFragment);
         mainAdapter = new MainAdapter(getSupportFragmentManager(), fragments);
         pager.setAdapter(mainAdapter);
-        tabLayout.setTabsFromPagerAdapter(mainAdapter);
+//        tabLayout.setTabsFromPagerAdapter(mainAdapter);
         tabLayout.setupWithViewPager(pager);
         pager.setOffscreenPageLimit(fragments.size());
     }
@@ -359,7 +345,7 @@ public class NewMain extends NoGestureBaseActivity {
                 preferences = getSharedPreferences("phone", Context.MODE_PRIVATE);
                 editor = preferences.edit();
                 editor.putBoolean("update", false);
-                editor.commit();
+                editor.apply();
                 dialog.dismiss();
                 ToastMsg.builder.display("需要升级请在设置界面选择升级哟～", duration);
             }
@@ -369,7 +355,8 @@ public class NewMain extends NoGestureBaseActivity {
     }
 
     private void checkVersionAsync(){
-        HttpAsync.get(VersionUrl, new JsonHttpResponseHandler() {
+        String versionUrl = "http://app.ecjtu.net/api/v1/version";
+        HttpAsync.get(versionUrl, new JsonHttpResponseHandler() {
 
             @Override
             public void onStart() {
@@ -428,10 +415,10 @@ public class NewMain extends NoGestureBaseActivity {
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // TODO Auto-generated method stub
-        if ((keyCode == event.KEYCODE_BACK)&&drawerLayout.isDrawerOpen(drawer)) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)&&drawerLayout.isDrawerOpen(drawer)) {
             drawerLayout.closeDrawer(drawer);
         }
-        else if (keyCode == event.KEYCODE_BACK){
+        else if (keyCode == KeyEvent.KEYCODE_BACK){
             exitInBack2();
         }
         return true;

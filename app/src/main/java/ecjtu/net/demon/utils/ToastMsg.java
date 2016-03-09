@@ -13,7 +13,7 @@ public enum  ToastMsg {
     private View view;
     private Toast toast;
     public void init(Context context){
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         view = Toast.makeText(context,"",Toast.LENGTH_SHORT).getView();
         toast = new Toast(context);
         toast.setView(view);

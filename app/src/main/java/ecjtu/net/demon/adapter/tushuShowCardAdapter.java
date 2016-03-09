@@ -11,6 +11,7 @@ import android.os.Build;
 import android.renderscript.Allocation;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
+import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,10 +21,8 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import ecjtu.net.demon.R;
 import ecjtu.net.demon.activitys.Show_image_Activity;
@@ -38,7 +37,7 @@ public class tushuShowCardAdapter extends RecyclerView.Adapter<RecyclerView.View
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_HEAD = 1;
     public static Drawable headImage;
-    private ArrayList<HashMap<String, Object>> content;
+    private ArrayList<ArrayMap<String, Object>> content = new ArrayList<>();
     public ArrayList<String> headInfo;
     private Context context;
     private RecyclerView.ViewHolder holder;
@@ -48,8 +47,7 @@ public class tushuShowCardAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public static int position = 0;
 
-    public tushuShowCardAdapter(Context context, ArrayList<HashMap<String, Object>> content) {
-        this.content = content;
+    public tushuShowCardAdapter(Context context) {
         this.context = context;
         headInfo = new ArrayList<>();
         layoutInflater = LayoutInflater.from(context);
@@ -71,8 +69,12 @@ public class tushuShowCardAdapter extends RecyclerView.Adapter<RecyclerView.View
         super.notifyDataSetChanged();
     }
 
-    public ArrayList<HashMap<String, Object>> getContent() {
+    public ArrayList<ArrayMap<String, Object>> getContent() {
         return content;
+    }
+    
+    public void setContent(ArrayList<ArrayMap<String, Object>> content) {
+        this.content = content;
     }
 
     @Override

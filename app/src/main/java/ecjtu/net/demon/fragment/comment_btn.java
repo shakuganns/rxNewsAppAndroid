@@ -18,7 +18,6 @@ import ecjtu.net.demon.utils.ToastMsg;
 public class comment_btn extends Fragment {
 
     private View view;
-    private Button commentBtn;
     private comment_text commentText;
 
     @Override
@@ -32,7 +31,7 @@ public class comment_btn extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        commentBtn = (Button) view.findViewById(R.id.comment_btn);
+        Button commentBtn = (Button) view.findViewById(R.id.comment_btn);
         commentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -42,7 +41,7 @@ public class comment_btn extends Fragment {
                     startActivity(intent);
                 } else {
 //                    commentBtn.setText("逗你的啦，功能还没做好 (/= _ =)/~┴┴ ");
-                    getFragmentManager().beginTransaction().replace(R.id.comment_layout,commentText).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.comment_layout, commentText).commit();
                 }
             }
         });

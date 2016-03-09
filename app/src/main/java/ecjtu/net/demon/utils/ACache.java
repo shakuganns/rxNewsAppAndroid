@@ -16,12 +16,6 @@
 package ecjtu.net.demon.utils;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.PixelFormat;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -447,89 +441,6 @@ public class ACache {
 
 	}
 
-	// =======================================
-	// ============== bitmap 数据 读写 =============
-	// =======================================
-	/**
-	 * 保存 bitmap 到 缓存中
-	 * 
-	 * @param key
-	 *            保存的key
-	 * @param value
-	 *            保存的bitmap数据
-	 */
-	public void put(String key, Bitmap value) {
-		put(key, Utils.Bitmap2Bytes(value));
-	}
-
-	/**
-	 * 保存 bitmap 到 缓存中
-	 * 
-	 * @param key
-	 *            保存的key
-	 * @param value
-	 *            保存的 bitmap 数据
-	 * @param saveTime
-	 *            保存的时间，单位：秒
-	 */
-	public void put(String key, Bitmap value, int saveTime) {
-		put(key, Utils.Bitmap2Bytes(value), saveTime);
-	}
-
-	/**
-	 * 读取 bitmap 数据
-	 * 
-	 * @param key
-	 * @return bitmap 数据
-	 */
-	public Bitmap getAsBitmap(String key) {
-		if (getAsBinary(key) == null) {
-			return null;
-		}
-		return Utils.Bytes2Bimap(getAsBinary(key));
-	}
-
-	// =======================================
-	// ============= drawable 数据 读写 =============
-	// =======================================
-	/**
-	 * 保存 drawable 到 缓存中
-	 * 
-	 * @param key
-	 *            保存的key
-	 * @param value
-	 *            保存的drawable数据
-	 */
-	public void put(String key, Drawable value) {
-		put(key, Utils.drawable2Bitmap(value));
-	}
-
-	/**
-	 * 保存 drawable 到 缓存中
-	 * 
-	 * @param key
-	 *            保存的key
-	 * @param value
-	 *            保存的 drawable 数据
-	 * @param saveTime
-	 *            保存的时间，单位：秒
-	 */
-	public void put(String key, Drawable value, int saveTime) {
-		put(key, Utils.drawable2Bitmap(value), saveTime);
-	}
-
-	/**
-	 * 读取 Drawable 数据
-	 * 
-	 * @param key
-	 * @return Drawable 数据
-	 */
-	public Drawable getAsDrawable(String key) {
-		if (getAsBinary(key) == null) {
-			return null;
-		}
-		return Utils.bitmap2Drawable(Utils.Bytes2Bimap(getAsBinary(key)));
-	}
 
 	/**
 	 * 获取缓存文件
@@ -671,62 +582,6 @@ public class ACache {
 				currentTime = "0" + currentTime;
 			}
 			return currentTime + "-" + second + mSeparator;
-		}
-
-		/*
-		 * Bitmap → byte[]
-		 */
-		private static byte[] Bitmap2Bytes(Bitmap bm) {
-			if (bm == null) {
-				return null;
-			}
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
-			return baos.toByteArray();
-		}
-
-		/*
-		 * byte[] → Bitmap
-		 */
-		private static Bitmap Bytes2Bimap(byte[] b) {
-			if (b.length == 0) {
-				return null;
-			}
-			return BitmapFactory.decodeByteArray(b, 0, b.length);
-		}
-
-		/*
-		 * Drawable → Bitmap
-		 */
-		private static Bitmap drawable2Bitmap(Drawable drawable) {
-			if (drawable == null) {
-				return null;
-			}
-			// 取 drawable 的长宽
-			int w = drawable.getIntrinsicWidth();
-			int h = drawable.getIntrinsicHeight();
-			// 取 drawable 的颜色格式
-			Bitmap.Config config = drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
-					: Bitmap.Config.RGB_565;
-			// 建立对应 bitmap
-			Bitmap bitmap = Bitmap.createBitmap(w, h, config);
-			// 建立对应 bitmap 的画布
-			Canvas canvas = new Canvas(bitmap);
-			drawable.setBounds(0, 0, w, h);
-			// 把 drawable 内容画到画布中
-			drawable.draw(canvas);
-			return bitmap;
-		}
-
-		/*
-		 * Bitmap → Drawable
-		 */
-		@SuppressWarnings("deprecation")
-		private static Drawable bitmap2Drawable(Bitmap bm) {
-			if (bm == null) {
-				return null;
-			}
-			return new BitmapDrawable(bm);
 		}
 	}
 
