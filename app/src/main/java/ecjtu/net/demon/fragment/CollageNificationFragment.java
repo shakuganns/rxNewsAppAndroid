@@ -1,6 +1,5 @@
 package ecjtu.net.demon.fragment;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
@@ -15,7 +14,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import cz.msebera.android.httpclient.Header;
 import org.json.JSONArray;
@@ -92,6 +90,8 @@ public class CollageNificationFragment extends Fragment {
                 lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
             }
         });
+
+        loadData(url,null,true,false);
     }
 
     @Override

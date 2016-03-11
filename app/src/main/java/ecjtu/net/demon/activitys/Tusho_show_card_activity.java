@@ -3,6 +3,7 @@ package ecjtu.net.demon.activitys;
 import android.annotation.TargetApi;
 import android.app.TaskStackBuilder;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -31,6 +32,7 @@ public class Tusho_show_card_activity extends BaseActivity {
 
     private static final String url = "http://pic.ecjtu.net/api.php/post";
     private static final int duration = 100;
+    private Bitmap headImage;
     private RecyclerView recyclerView;
     private tushuShowCardAdapter adapeter;
     private LinearLayoutManager linearLayoutManager;
@@ -82,7 +84,7 @@ public class Tusho_show_card_activity extends BaseActivity {
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
                     try {
-                        adapeter.headInfo.add(0,response.get("title").toString());
+                        adapeter.headInfo.add(0, response.get("title").toString());
                         adapeter.headInfo.add(1, response.get("author").toString());
                         adapeter.headInfo.add(2, response.get("count").toString());
                         adapeter.headInfo.add(3, response.get("click").toString());
@@ -96,7 +98,7 @@ public class Tusho_show_card_activity extends BaseActivity {
                             item.put("url", url);
                             String info = jsonObject.getString("detail");
                             item.put("detail", info);
-                            infoList.add(i,info);
+                            infoList.add(i, info);
                             adapeter.getContent().add(item);
                         }
                         adapeter.notifyDataChanged();
@@ -152,5 +154,9 @@ public class Tusho_show_card_activity extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setHeadImage(Bitmap bitmap) {
+        headImage = bitmap;
     }
 }

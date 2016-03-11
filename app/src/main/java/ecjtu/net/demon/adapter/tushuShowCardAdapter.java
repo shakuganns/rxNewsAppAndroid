@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.renderscript.Allocation;
 import android.renderscript.RenderScript;
@@ -105,13 +107,10 @@ public class tushuShowCardAdapter extends RecyclerView.Adapter<RecyclerView.View
             if (!isHeadSet) {
                 isHeadSet = true;
                 if (Build.VERSION.SDK_INT > 16) {
-                    BitmapDrawable bd = (BitmapDrawable) headImage;
-                    Bitmap bitmap = bd.getBitmap();
-                    bitmap = blur(bitmap,((HeadViewHolder) holder).bg,20);
-                    Drawable drawable = new BitmapDrawable(bitmap);
-                    ((HeadViewHolder) holder).bg.setImageDrawable(drawable);
-                }
-                else ((HeadViewHolder) holder).bg.setImageDrawable(headImage);
+                    BlurTask blurTask = new BlurTask(headImage);
+                    blurTask.execute();
+                    ((HeadViewHolder) holder).bg.setBackgroundColor(Color.GRAY);
+                } else ((HeadViewHolder) holder).bg.setImageDrawable(headImage);
             }
         }
     }
@@ -192,6 +191,29 @@ public class tushuShowCardAdapter extends RecyclerView.Adapter<RecyclerView.View
                     itemView.getContext().startActivity(intent);
                 }
             });
+        }
+    }
+
+    private class BlurTask extends AsyncTask< Void, Void, Drawable> {
+
+        private Drawable drawable;
+
+        public BlurTask(Drawable drawable) {
+            this.drawable = drawable;
+        }
+
+        @Override
+        protected Drawable doInBackground(Void... params) {
+            BitmapDrawable bd = (BitmapDrawable) drawable;
+            Bitmap bitmap = bd.getBitmap();
+            bitmap = blur(bitmap,((HeadViewHolder) holder).bg,20);
+            Drawable drawable = new BitmapDrawable(bitmap);
+            return drawable;
+        }
+
+        @Override
+        protected void onPostExecute(Drawable drawable) {
+            ((HeadViewHolder) holder).bg.setImageDrawable(drawable);
         }
     }
 }

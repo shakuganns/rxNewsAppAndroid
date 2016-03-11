@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -63,7 +62,6 @@ public class TushuoFragment extends Fragment {
         adapter = new TushuoAdapter(getActivity());
         recyclerView.setAdapter(adapter);
 
-
         swipeRefreshLayout = (SwipeRefreshLayout) mContentView.findViewById(R.id.tushuo_fresh);
 //        swipeRefreshLayout.setColorSchemeColors(R.color.link_text_material_light);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -87,6 +85,8 @@ public class TushuoFragment extends Fragment {
                 lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
             }
         });
+
+        loadData(url, null, true, false);
     }
 
     @Override
