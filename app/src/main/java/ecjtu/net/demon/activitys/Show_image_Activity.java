@@ -3,14 +3,13 @@ package ecjtu.net.demon.activitys;
 import android.annotation.TargetApi;
 import android.app.TaskStackBuilder;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v4.internal.view.SupportMenuItem;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +22,7 @@ import java.io.InputStream;
 
 import ecjtu.net.demon.R;
 import ecjtu.net.demon.fragment.Show_image_ActivityFragment;
+import ecjtu.net.demon.view.rxMutipleTouchViewPager;
 
 
 public class Show_image_Activity extends BaseActivity {
@@ -44,23 +44,30 @@ public class Show_image_Activity extends BaseActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_show_image_, menu);
-        MenuItem shareItem = menu.findItem(R.id.menu_item_share);
-        mShareActionProvider = (ShareActionProvider)
-                MenuItemCompat.getActionProvider(shareItem);
-        mShareActionProvider.setShareIntent(intent);
-        mShareActionProvider.setOnShareTargetSelectedListener(new ShareActionProvider.OnShareTargetSelectedListener() {
-            @Override
-            public boolean onShareTargetSelected(ShareActionProvider shareActionProvider, Intent i) {
-                fetchImage();
-                Log.i("tag", "file://" + String.valueOf(Show_image_ActivityFragment.uri[Show_image_ActivityFragment.viewPager.getCurrentItem()]));
-                return false;
-            }
-        });
-        return true;
+    protected void onDestroy() {
+        super.onDestroy();
     }
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_show_image_, menu);
+//        mShareActionProvider = new ShareActionProvider(getApplicationContext());
+//        MenuItem shareItem = menu.findItem(R.id.menu_item_share);
+//        if (shareItem instanceof SupportMenuItem) {
+//            mShareActionProvider = (ShareActionProvider)((SupportMenuItem) shareItem).getSupportActionProvider();
+//        }
+//        mShareActionProvider.setShareIntent(intent);
+//        mShareActionProvider.setOnShareTargetSelectedListener(new ShareActionProvider.OnShareTargetSelectedListener() {
+//            @Override
+//            public boolean onShareTargetSelected(ShareActionProvider shareActionProvider, Intent i) {
+//                fetchImage();
+//                Log.i("tag", "file://" + String.valueOf(Show_image_ActivityFragment.uri[((rxMutipleTouchViewPager)findViewById(R.id.tushuo_viewpager)).getCurrentItem()]));
+//                return false;
+//            }
+//        });
+//        return true;
+//    }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -77,7 +84,7 @@ public class Show_image_Activity extends BaseActivity {
         if (id == android.R.id.home) {
             Intent upIntent = NavUtils.getParentActivityIntent(this);
             if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-                TaskStackBuilder.create(this)
+                TaskStackBuilder.create(getApplicationContext()) ///
                         .addNextIntentWithParentStack(upIntent)
                         .startActivities();
             } else {
@@ -96,7 +103,7 @@ public class Show_image_Activity extends BaseActivity {
         new Thread() {
             public void run() {
                 try {
-                    file = new File(Show_image_ActivityFragment.uri[Show_image_ActivityFragment.viewPager.getCurrentItem()]);
+                    file = new File(Show_image_ActivityFragment.uri[((rxMutipleTouchViewPager)findViewById(R.id.tushuo_viewpager)).getCurrentItem()]);
                     InputStream in = new FileInputStream(file);
                     readAsFile(in, new File(getApplicationContext().getExternalFilesDir("share") + "/" + "share.jpg"));
                     Log.i("tag", getApplicationContext().getExternalFilesDir("share") + "/" + "share.jpg");
@@ -108,7 +115,7 @@ public class Show_image_Activity extends BaseActivity {
         }.start();
     }
 
-    public static void readAsFile(InputStream inSream, File file) throws Exception{
+    public void readAsFile(InputStream inSream, File file) throws Exception{
         FileOutputStream outStream = new FileOutputStream(file);
         byte[] buffer = new byte[1024];
         int len = -1;

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -86,7 +87,15 @@ public class TushuoFragment extends Fragment {
                 lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
             }
         });
+    }
 
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        if (!isVisible()) {
+            mContentView.findViewById(R.id.tushuo_fresh).setVisibility(View.GONE);
+            mContentView.findViewById(R.id.loading_container).setVisibility(View.VISIBLE);
+        }
     }
 
     public void updateData() {

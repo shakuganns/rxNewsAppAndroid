@@ -19,7 +19,7 @@ import ecjtu.net.demon.activitys.webview;
 
 public class MyReceiver extends BroadcastReceiver {
 
-    private static final String TAG = "tag";
+    private static final String TAG = "Receiver";
     private String url;
 
     public MyReceiver() {

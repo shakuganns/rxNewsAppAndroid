@@ -44,6 +44,7 @@ public class New_login extends Activity {
         }
         intent.setClass(this, NewMain.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.push_center_in,R.anim.push_center_out);
         finish();
     }
 

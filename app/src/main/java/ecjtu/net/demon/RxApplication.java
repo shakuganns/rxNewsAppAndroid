@@ -18,7 +18,6 @@ public class RxApplication extends Application {
         super.onCreate();
         ToastMsg.builder.init(getApplicationContext());
         LeakCanary.install(this);
-//        JPushInterface.setDebugMode(false);
 //        JPushInterface.init(this);
 //        CrashReport.initCrashReport(getApplicationContext(), "900011553", false);
     }

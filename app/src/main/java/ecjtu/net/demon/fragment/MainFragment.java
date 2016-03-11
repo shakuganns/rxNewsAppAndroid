@@ -60,7 +60,6 @@ public class MainFragment extends Fragment {
         //初始化ListView
         refreshLayout = (SwipeRefreshLayout) mContentView.findViewById(R.id.fresh_layout);
 
-
         rixinNewsAdapter = new RixinNewsAdapter(getActivity());
         newslist.setAdapter(rixinNewsAdapter);
         initReflash(refreshLayout);
@@ -95,6 +94,15 @@ public class MainFragment extends Fragment {
             }
         });
 
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        if (!isVisible()) {
+            mContentView.findViewById(R.id.fresh_layout).setVisibility(View.GONE);
+            mContentView.findViewById(R.id.loading_container).setVisibility(View.VISIBLE);
+        }
     }
 
     /**

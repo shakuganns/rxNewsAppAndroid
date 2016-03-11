@@ -38,11 +38,9 @@
 
     <application
         android:name=".RxApplication"
-        android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".activitys.New_login"
             android:label="@string/app_name"
@@ -126,6 +124,7 @@
 
         <!-- Required SDK核心功能 -->
         <receiver
+            android:exported="false"
             android:name="cn.jpush.android.service.PushReceiver"
             android:enabled="true" >
             <intent-filter android:priority="1000" >
@@ -151,6 +150,7 @@
 
         <!-- User defined.  For test only  用户自定义的广播接收器 -->
         <receiver
+            android:exported="false"
             android:name=".MyReceiver"
             android:enabled="true" >
             <intent-filter>
@@ -183,7 +183,7 @@
             android:name=".activitys.Show_image_Activity"
             android:label="@string/title_activity_show_image_"
             android:parentActivityName=".activitys.Tusho_show_card_activity"
-            android:theme="@style/AppTheme.NoActionBar.Teal">
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activitys.Tusho_show_card_activity" />

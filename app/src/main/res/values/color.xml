@@ -45,6 +45,5 @@
     <color name="cutimageview_bg">#77000000</color>
     <color name="tushuo_showimage_info_bg">#60000000</color>
     <color name="welcome_background">#FFB93F</color>
-    <color name="drawerHeadBg">?attr/drawerHeadBg</color>
 </resources>
 

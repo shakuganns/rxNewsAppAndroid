@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -12,8 +13,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import ecjtu.net.demon.R;
 
@@ -26,6 +31,14 @@ public class NoGestureBaseActivity extends AppCompatActivity {
     public static final int DEFAULT_THEME = 0;
     public static final int DARK_THEME = 1;
     public static final int RED_THEME = 2;
+    public static final String DEFUALT_COLOR = "#009688";
+    public static final String DEFUALT_COLOR_DARK = "#00796b";
+    public static final String BLACK_COLOR = "#424242";
+    public static final String BLACK_COLOR_DARK = "#212121";
+    public static final String RED_COLOR = "#c41411";
+    public static final String RED_COLOR_DARK = "#b0120a";
+    public static int themeColor;
+    public static int themeColorDark;
 
     public SharedPreferences preferences;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
@@ -39,15 +52,18 @@ public class NoGestureBaseActivity extends AppCompatActivity {
         themeID = preferences.getInt("theme",0);
         switch (themeID) {
             case DEFAULT_THEME: {
-                setTheme(R.style.AppTheme);
+                themeColor = Color.parseColor(DEFUALT_COLOR);
+                themeColorDark = Color.parseColor(DEFUALT_COLOR_DARK);
                 break;
             }
             case DARK_THEME: {
-                setTheme(R.style.AppThemeDark);
+                themeColor = Color.parseColor(BLACK_COLOR);
+                themeColorDark = Color.parseColor(BLACK_COLOR_DARK);
                 break;
             }
             case RED_THEME: {
-                setTheme(R.style.AppThemeRed);
+                themeColor = Color.parseColor(RED_COLOR);
+                themeColorDark = Color.parseColor(RED_COLOR_DARK);
                 break;
             }
         }
@@ -59,6 +75,18 @@ public class NoGestureBaseActivity extends AppCompatActivity {
 //    public void setContentViewLayout(@LayoutRes int layoutId) {
 //        this.layoutId = layoutId;
 //    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        toolbar.setBackgroundColor(themeColor);
+        getWindow().getDecorView().setBackgroundColor(themeColorDark);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(Color.parseColor("#00000000"));
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        }
+    }
 
     protected void initActionBar() {
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
@@ -103,9 +131,9 @@ public class NoGestureBaseActivity extends AppCompatActivity {
                 invalidateOptionsMenu();
             }
         };
-
         actionBarDrawerToggle.syncState();
-        drawerLayout.setDrawerListener(actionBarDrawerToggle);
+
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
         drawer.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -121,4 +149,10 @@ public class NoGestureBaseActivity extends AppCompatActivity {
      */
     public void slidingMenuClickListen(int id) {}
 
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        Log.i("lowmemory", "clearMemoryCache0-----------");
+        ImageLoader.getInstance().clearMemoryCache();
+    }
 }

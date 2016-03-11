@@ -2,7 +2,7 @@
 <LinearLayout
     android:paddingTop="20dp"
     android:id="@+id/User"
-    android:background="?attr/drawerHeadBg"
+    android:background="?attr/colorPrimary"
     android:layout_width="match_parent"
     android:layout_height="170dp"
     android:orientation="vertical"

@@ -34,7 +34,7 @@ public class CycleImageView extends ImageView {
         paint = new Paint();
     }
 
-    private Bitmap getCircyleBitmap(Bitmap bitmap, int pixels) {
+    private Bitmap getCircyleBitmap(Bitmap bitmap) {
         Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(output);
         final int color = 0xff424242;
@@ -44,7 +44,7 @@ public class CycleImageView extends ImageView {
         paint.setColor(color);
         int x = bitmap.getWidth() / 2;
         canvas.drawCircle(x, x, x, paint);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.ADD.SRC_IN));
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(bitmap, rect, rect, paint);
         return output;
     }
@@ -54,7 +54,7 @@ public class CycleImageView extends ImageView {
         Drawable drawable = getDrawable();
         if (drawable != null) {
             Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-            Bitmap b = getCircyleBitmap(bitmap, 14);
+            Bitmap b = getCircyleBitmap(bitmap);
             final Rect rectSrc = new Rect(0, 0, b.getWidth(), b.getHeight());
             final Rect rectDest = new Rect(0, 0, getWidth(), getHeight());
             paint.reset();

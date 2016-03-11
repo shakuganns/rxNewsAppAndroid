@@ -108,6 +108,7 @@ public class RixinNewsAdapter extends RecyclerView.Adapter {
             intent.putExtras(bundle);
         }
         context.startActivity(intent);
+
     }
 
     public ArrayList<ArrayMap<String,Object>> getListItem() {

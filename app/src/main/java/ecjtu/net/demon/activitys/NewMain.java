@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -122,19 +124,29 @@ public class NewMain extends NoGestureBaseActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        tabLayout.setBackgroundColor(themeColor);
+        navigationHead.setBackgroundColor(themeColor);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
-        preferences = getSharedPreferences("phone", Context.MODE_PRIVATE);
-        Log.i("tag", "------" + "change theme" + "------");
-        if (themeID != preferences.getInt("theme",0)) {
-            Log.i("tag","------"+"change theme"+"------");
-            themeID = preferences.getInt("theme",0);
-            finish();
-            Intent intent = new Intent(NewMain.this,NewMain.class);
-            startActivity(intent);
-            isUserInited = false;
-            return;
-        }
+//        preferences = getSharedPreferences("phone", Context.MODE_PRIVATE);
+//        if (themeID != preferences.getInt("theme",0)) {
+//            Log.i("tag","------"+"change theme"+"------");
+//            themeID = preferences.getInt("theme",0);
+//            toolbar.setBackgroundColor(themeColor);
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                getWindow().setStatusBarColor(Color.parseColor("#00000000"));
+//            }
+////            finish();
+////            Intent intent = new Intent(NewMain.this,NewMain.class);
+////            startActivity(intent);
+////            isUserInited = false;
+////            return;
+//        }
         if (!isUserInited) {
             initUserInfo();
             TextView userNameView = (TextView) navigationHead.findViewById(R.id.UserName);
@@ -148,8 +160,6 @@ public class NewMain extends NoGestureBaseActivity {
                 Log.i("tag","userdata is null~~");
                 userNameView.setText(R.string.UserName);
                 studentIdView.setText("");
-//                headImage = (CycleImageView) navigationHead.findViewById(R.id.UserImage);
-                headImage.setImageResource(R.drawable.userimage);
                 userNameView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
