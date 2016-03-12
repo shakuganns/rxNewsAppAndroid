@@ -51,9 +51,10 @@ public class ContentWebView extends NoGestureBaseActivity {
         initActionBar();
         getSupportActionBar().setTitle("日小新服务");
 
-        webViewContainer = (ViewGroup) findViewById(R.id.webView);
+        webViewContainer = (ViewGroup) findViewById(R.id.main_container);
         webView = new WebView(getApplicationContext());
         webViewContainer.addView(webView);
+        webView.setPadding(0,getSupportActionBar().getHeight(),0,0);
 
         final Intent intent = getIntent();
         url = intent.getStringExtra("url");

@@ -1,6 +1,8 @@
 package ecjtu.net.demon.activitys;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.view.View;
 import android.widget.TextView;
 
@@ -20,6 +22,7 @@ public class AboutActivity extends NoGestureBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         versionCode = (TextView) findViewById(R.id.tv_version);
+
         try {
             versionCode.setText(String.valueOf("Version " + BuildConfig.VERSION_NAME));
         } catch (Exception e) {
@@ -28,4 +31,9 @@ public class AboutActivity extends NoGestureBaseActivity {
         initActionBarAbout();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        toolbar.setBackgroundColor(Color.parseColor("#00000000"));
+    }
 }

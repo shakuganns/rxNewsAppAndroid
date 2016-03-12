@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,6 +17,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -27,7 +30,7 @@ import ecjtu.net.demon.R;
  */
 public class NoGestureBaseActivity extends AppCompatActivity {
 
-    public static int themeID;
+    public static int themeID = -1;
     public static final int DEFAULT_THEME = 0;
     public static final int DARK_THEME = 1;
     public static final int RED_THEME = 2;
@@ -48,26 +51,43 @@ public class NoGestureBaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        preferences = getSharedPreferences("phone", Context.MODE_PRIVATE);
-        themeID = preferences.getInt("theme",0);
+        super.onCreate(savedInstanceState);
+        if (themeID == -1) {
+            preferences = getSharedPreferences("phone", Context.MODE_PRIVATE);
+            themeID = preferences.getInt("theme", 0);
+        }
         switch (themeID) {
             case DEFAULT_THEME: {
                 themeColor = Color.parseColor(DEFUALT_COLOR);
                 themeColorDark = Color.parseColor(DEFUALT_COLOR_DARK);
+                setTheme(R.style.AppTheme);
                 break;
             }
             case DARK_THEME: {
                 themeColor = Color.parseColor(BLACK_COLOR);
                 themeColorDark = Color.parseColor(BLACK_COLOR_DARK);
+                setTheme(R.style.AppThemeDark);
                 break;
             }
             case RED_THEME: {
                 themeColor = Color.parseColor(RED_COLOR);
                 themeColorDark = Color.parseColor(RED_COLOR_DARK);
+                setTheme(R.style.AppThemeRed);
                 break;
             }
         }
-        super.onCreate(savedInstanceState);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            Window window = getWindow();
+//            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+//                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+//            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//            window.setStatusBarColor(getResources().getColor(android.R.color.transparent));
+//
+//        }
 //        setContentView(layoutId);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
@@ -77,14 +97,35 @@ public class NoGestureBaseActivity extends AppCompatActivity {
 //    }
 
 
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+////        toolbar.setBackgroundColor(themeColor);
+////        getWindow().getDecorView().setBackgroundColor(themeColorDark);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+////            Window window = getWindow();
+////            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+////            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+////            window.setStatusBarColor(themeColorDark);
+////
+////            Log.i("tag",String.valueOf(R.attr.statusBarBackground)+"-----id-----");
+////            statusBar.setBackgroundColor(Color.parseColor("#00000000"));
+//            toolbar.setBackgroundColor(themeColor);
+//            CoordinatorLayout layout = (CoordinatorLayout) findViewById(R.id.main_container);
+//            if (layout != null) {
+//                layout.setStatusBarBackgroundColor(themeColorDark);
+//
+//            }
+//        }
+//    }
+
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
         toolbar.setBackgroundColor(themeColor);
-        getWindow().getDecorView().setBackgroundColor(themeColorDark);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(Color.parseColor("#00000000"));
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        CoordinatorLayout layout = (CoordinatorLayout) findViewById(R.id.main_container);
+        if (layout != null) {
+            layout.setStatusBarBackgroundColor(themeColorDark);
         }
     }
 

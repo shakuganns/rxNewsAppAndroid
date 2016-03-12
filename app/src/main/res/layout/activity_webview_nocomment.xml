@@ -1,13 +1,14 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:id="@+id/webView"
+    android:id="@+id/main_container"
     tools:context="ecjtu.net.demon.activitys.ContentWebView">
 
     <include layout="@layout/tool_bar" />
 
+    <!-- webview动态添加 -->
 
-
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

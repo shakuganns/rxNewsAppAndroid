@@ -23,6 +23,7 @@ public class ThemeListAdapter extends BaseAdapter {
     private int[] colorDrawble = {R.drawable.circle_green,R.drawable.circle_dark,R.drawable.circle_red};
     private int[] colors = {R.color.md_teal_500,R.color.md_grey_800,R.color.md_red_700};
     private LayoutInflater inflater;
+    private int visibilityPosition;
 
     public ThemeListAdapter(Context context) {
         inflater = LayoutInflater.from(context);
@@ -52,6 +53,7 @@ public class ThemeListAdapter extends BaseAdapter {
         if (BaseActivity.themeID == position) {
             TextView mark = (TextView) convertView.findViewById(R.id.mark);
             mark.setVisibility(View.VISIBLE);
+            visibilityPosition = position;
         }
         ImageView imageView = (ImageView) convertView.findViewById(R.id.themeColor);
         imageView.setBackgroundResource(colorDrawble[position]);
@@ -59,5 +61,15 @@ public class ThemeListAdapter extends BaseAdapter {
         textView.setTextColor(convertView.getResources().getColor(colors[position]));
         return convertView;
     }
+
+
+    public int getVisMarkPos() {
+        return visibilityPosition;
+    }
+
+    public void setVisMarkPos(int visibilityPosition) {
+        this.visibilityPosition = visibilityPosition;
+    }
+
 
 }

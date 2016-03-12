@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fitsSystemWindows="true"
+    android:id="@+id/main_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/black">
 
-    <include layout="@layout/tool_bar"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+    <include layout="@layout/tool_bar"/>
 
     <Button
         android:textColor="@color/white"
@@ -15,11 +20,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:text="确认" />
 
     <ecjtu.net.demon.view.CutImageView
         android:id="@+id/cutimageview"
+        android:layout_marginTop="?attr/actionBarSize"
         android:layout_above="@id/btn_clip"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -30,4 +36,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-</RelativeLayout>
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

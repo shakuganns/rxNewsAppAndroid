@@ -13,6 +13,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -36,7 +38,6 @@ public class Tusho_show_card_activity extends BaseActivity {
     private RecyclerView recyclerView;
     private tushuShowCardAdapter adapeter;
     private LinearLayoutManager linearLayoutManager;
-//    private ArrayList<ArrayMap<String, Object>> content = new ArrayList<>();
     private static String pid;
     public static ArrayList<String> urlList = new ArrayList<>();
     public static ArrayList<String> infoList = new ArrayList<>();

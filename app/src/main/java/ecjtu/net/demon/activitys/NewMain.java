@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -123,12 +124,12 @@ public class NewMain extends NoGestureBaseActivity {
                 .build();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        tabLayout.setBackgroundColor(themeColor);
-        navigationHead.setBackgroundColor(themeColor);
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        tabLayout.setBackgroundColor(themeColor);
+//        navigationHead.setBackgroundColor(themeColor);
+//    }
 
     @Override
     protected void onResume() {
@@ -147,19 +148,24 @@ public class NewMain extends NoGestureBaseActivity {
 ////            isUserInited = false;
 ////            return;
 //        }
+        tabLayout.setBackgroundColor(themeColor);
+        drawerLayout.setStatusBarBackgroundColor(themeColorDark);
+        navigationHead.setBackgroundColor(themeColor);
         if (!isUserInited) {
             initUserInfo();
             TextView userNameView = (TextView) navigationHead.findViewById(R.id.UserName);
             TextView studentIdView = (TextView) navigationHead.findViewById(R.id.studentId);
+            headImage = (CycleImageView) navigationHead.findViewById(R.id.UserImage);
             if (userName != null) {
                 Log.i("tag","userdata is not null~~");
                 userNameView.setText(userName);
                 studentIdView.setText(studentID);
                 ImageLoader.getInstance().displayImage("http://" + userEntity.getHeadImagePath(), headImage, options);
             } else {
-                Log.i("tag","userdata is null~~");
+                Log.i("tag", "userdata is null~~");
                 userNameView.setText(R.string.UserName);
                 studentIdView.setText("");
+                headImage.setImageResource(R.drawable.userimage);
                 userNameView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

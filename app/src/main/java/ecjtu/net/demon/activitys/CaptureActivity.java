@@ -38,7 +38,7 @@ import android.widget.Toast;
   *二维码扫描 Created by Shakugan
   **/
 
-public class CaptureActivity extends Activity implements Callback {
+public class CaptureActivity extends NoGestureBaseActivity implements Callback {
 
 	private CaptureActivityHandler handler;
 	private ViewfinderView viewfinderView;
@@ -55,12 +55,12 @@ public class CaptureActivity extends Activity implements Callback {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.activity_2dcode);
+		initActionBar();
+		getSupportActionBar().setTitle("扫一扫");
+
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		CameraManager.init(getApplication());
-
 		viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
 		hasSurface = false;
 		inactivityTimer = new InactivityTimer(this);
