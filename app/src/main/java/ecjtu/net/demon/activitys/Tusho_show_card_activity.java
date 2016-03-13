@@ -4,8 +4,20 @@ import android.annotation.TargetApi;
 import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.renderscript.Allocation;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,8 +25,12 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -29,18 +45,26 @@ import ecjtu.net.demon.R;
 import ecjtu.net.demon.adapter.tushuShowCardAdapter;
 import ecjtu.net.demon.utils.HttpAsync;
 import ecjtu.net.demon.utils.ToastMsg;
+import ecjtu.net.demon.view.CycleImageView;
 
 public class Tusho_show_card_activity extends BaseActivity {
 
     private static final String url = "http://pic.ecjtu.net/api.php/post";
     private static final int duration = 100;
-    private Bitmap headImage;
+    private Bitmap bitmap;
     private RecyclerView recyclerView;
     private tushuShowCardAdapter adapeter;
     private LinearLayoutManager linearLayoutManager;
+    private CollapsingToolbarLayout layout;
     private static String pid;
     public static ArrayList<String> urlList = new ArrayList<>();
     public static ArrayList<String> infoList = new ArrayList<>();
+
+    private TextView author;
+    private TextView click;
+    private TextView count;
+    private TextView title;
+    private ImageView toolbarImage;
 
     public static void setPid(String pid) {
         Tusho_show_card_activity.pid = pid;
@@ -52,8 +76,15 @@ public class Tusho_show_card_activity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tusho_show_card_activity);
         loadData(url);
-        initActionBar();
+        initActionBarTushuo();
         getSupportActionBar().setTitle("图说");
+
+        toolbarImage = (ImageView) findViewById(R.id.toolbar_image);
+        layout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        author = (TextView) findViewById(R.id.author);
+        click = (TextView) findViewById(R.id.click);
+        count = (TextView) findViewById(R.id.count);
+        title = (TextView) findViewById(R.id.title);
 
         recyclerView = (RecyclerView) findViewById(R.id.profile_show_card_recyclerview);
         linearLayoutManager = new LinearLayoutManager(this);
@@ -63,12 +94,32 @@ public class Tusho_show_card_activity extends BaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        toolbar.setBackgroundColor(Color.parseColor("#00000000"));
+        layout.setStatusBarScrimColor(Color.parseColor("#00000000"));
+        if (Build.VERSION.SDK_INT > 16) {
+            BlurTask blurTask = new BlurTask(tushuShowCardAdapter.headImage);
+            blurTask.execute();
+//            ((HeadViewHolder) holder).bg.setBackgroundColor(Color.GRAY);
+        } else {
+            BitmapDrawable bd = (BitmapDrawable) tushuShowCardAdapter.headImage;
+            bitmap = bd.getBitmap();
+            layout.setContentScrim(new BitmapDrawable(bitmap));
+            toolbarImage.setImageDrawable(new BitmapDrawable(bitmap));
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         if (urlList != null) {
             urlList.clear();
             pid = null;
             infoList.clear();
+            tushuShowCardAdapter.headImage = null;
+            bitmap.recycle();
+            bitmap = null;
         }
     }
 
@@ -85,11 +136,16 @@ public class Tusho_show_card_activity extends BaseActivity {
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
                     try {
-                        adapeter.headInfo.add(0, response.get("title").toString());
-                        adapeter.headInfo.add(1, response.get("author").toString());
-                        adapeter.headInfo.add(2, response.get("count").toString());
-                        adapeter.headInfo.add(3, response.get("click").toString());
-                        adapeter.setHeadText();
+//                        adapeter.headInfo.add(0, response.get("title").toString());
+//                        adapeter.headInfo.add(1, response.get("author").toString());
+//                        adapeter.headInfo.add(2, response.get("count").toString());
+//                        adapeter.headInfo.add(3, response.get("click").toString());
+//                        adapeter.setHeadText();
+
+                        title.setText(response.get("title").toString());
+                        author.setText(response.get("author").toString());
+                        count.setText(response.get("count").toString());
+                        click.setText(response.get("click").toString());
                         JSONArray jsonArray = response.getJSONArray("pictures");
                         for (int i = 0; i < jsonArray.length(); i++) {
                             ArrayMap<String, Object> item = new ArrayMap<>();
@@ -157,7 +213,53 @@ public class Tusho_show_card_activity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void setHeadImage(Bitmap bitmap) {
-        headImage = bitmap;
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private Bitmap blur(Bitmap bkg, View view, float radius) {
+        Bitmap overlay = Bitmap.createBitmap(bkg.getWidth(), bkg.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(overlay);
+        canvas.drawBitmap(bkg, -view.getLeft(), -view.getTop(), null);
+        RenderScript rs = RenderScript.create(this);
+        Allocation overlayAlloc = Allocation.createFromBitmap(rs, overlay);
+        ScriptIntrinsicBlur blur = ScriptIntrinsicBlur.create(rs, overlayAlloc.getElement());
+        blur.setInput(overlayAlloc);
+        blur.setRadius(radius);
+        blur.forEach(overlayAlloc);
+        overlayAlloc.copyTo(overlay);
+        rs.destroy();
+        return overlay;
+    }
+
+//    public void setHeadImage(Bitmap bitmap) {
+//        headImage = bitmap;
+////    }
+
+    private class BlurTask extends AsyncTask< Void, Void, Bitmap> {
+
+        private Drawable drawable;
+
+        public BlurTask(Drawable drawable) {
+            this.drawable = drawable;
+        }
+
+        @Override
+        protected Bitmap doInBackground(Void... params) {
+            BitmapDrawable bd = (BitmapDrawable) drawable;
+
+            int height = bd.getBitmap().getHeight()/4;
+            int width = bd.getBitmap().getWidth()/4;
+            int x = bd.getBitmap().getHeight()/4;
+            int y = bd.getBitmap().getWidth()/4;
+
+            bitmap = Bitmap.createBitmap(bd.getBitmap(), x, y, width, height);
+            bitmap = blur(bitmap,layout,20);
+            return bitmap;
+        }
+
+        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            layout.setContentScrim(new BitmapDrawable(bitmap));
+            toolbarImage.setImageDrawable(new BitmapDrawable(bitmap));
+        }
     }
 }
