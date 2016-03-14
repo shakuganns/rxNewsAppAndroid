@@ -30,6 +30,8 @@ import ecjtu.net.demon.R;
  */
 public class NoGestureBaseActivity extends AppCompatActivity {
 
+    public static int WRITE_CONTACTS = 101;
+
     public static int themeID = -1;
     public static final int DEFAULT_THEME = 0;
     public static final int DARK_THEME = 1;
@@ -76,48 +78,9 @@ public class NoGestureBaseActivity extends AppCompatActivity {
                 break;
             }
         }
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            Window window = getWindow();
-//            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
-//                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-//            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-//                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-//                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-//            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-//            window.setStatusBarColor(getResources().getColor(android.R.color.transparent));
-//
-//        }
-//        setContentView(layoutId);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
-//    public void setContentViewLayout(@LayoutRes int layoutId) {
-//        this.layoutId = layoutId;
-//    }
-
-
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-////        toolbar.setBackgroundColor(themeColor);
-////        getWindow().getDecorView().setBackgroundColor(themeColorDark);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-////            Window window = getWindow();
-////            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-////            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-////            window.setStatusBarColor(themeColorDark);
-////
-////            Log.i("tag",String.valueOf(R.attr.statusBarBackground)+"-----id-----");
-////            statusBar.setBackgroundColor(Color.parseColor("#00000000"));
-//            toolbar.setBackgroundColor(themeColor);
-//            CoordinatorLayout layout = (CoordinatorLayout) findViewById(R.id.main_container);
-//            if (layout != null) {
-//                layout.setStatusBarBackgroundColor(themeColorDark);
-//
-//            }
-//        }
-//    }
 
     @Override
     protected void onResume() {

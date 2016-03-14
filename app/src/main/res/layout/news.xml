@@ -30,6 +30,7 @@
             android:layout_height="match_parent">
 
         <TextView
+            android:maxLines="1"
             android:paddingLeft="8dp"
             android:id="@+id/news_title"
             android:layout_width="match_parent"
@@ -37,7 +38,7 @@
             android:gravity="top"
             android:text="xxxxxxxxxxxxxxxxx"
             android:textColor="#2b2b2b"
-            android:textSize="16dp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/news_info"
@@ -46,7 +47,7 @@
             android:paddingLeft="8dp"
             android:text="12314asdfad"
             android:textColor="#999999"
-            android:textSize="13dp"
+            android:textSize="12sp"
             android:layout_below="@+id/news_title"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
@@ -55,12 +56,11 @@
             android:id="@+id/click"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="bottom|left"
-            android:padding="1dp"
+            android:gravity="bottom|start"
             android:text="1111"
             android:textColor="@color/md_grey_600"
-            android:textSize="12dp"
-            android:layout_gravity="right|bottom"
+            android:textSize="12sp"
+            android:layout_gravity="end|bottom"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
