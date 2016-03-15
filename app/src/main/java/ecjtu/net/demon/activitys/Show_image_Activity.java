@@ -22,6 +22,7 @@ import java.io.InputStream;
 
 import ecjtu.net.demon.R;
 import ecjtu.net.demon.fragment.Show_image_ActivityFragment;
+import ecjtu.net.demon.utils.ToastMsg;
 import ecjtu.net.demon.view.rxMutipleTouchViewPager;
 
 
@@ -46,59 +47,81 @@ public class Show_image_Activity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mShareActionProvider.reset();
+//        mShareActionProvider.reset();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_show_image_, menu);
-        mShareActionProvider = new ShareActionProvider(getApplicationContext());
-        MenuItem shareItem = menu.findItem(R.id.menu_item_share);
-        if (shareItem instanceof SupportMenuItem) {
-            mShareActionProvider = (ShareActionProvider)((SupportMenuItem) shareItem).getSupportActionProvider();
-        }
-        mShareActionProvider.setShareIntent(intent);
-        mShareActionProvider.setOnShareTargetSelectedListener(new ShareActionProvider.OnShareTargetSelectedListener() {
-            @Override
-            public boolean onShareTargetSelected(ShareActionProvider shareActionProvider, Intent i) {
-                fetchImage();
-//                Log.i("tag", "file://" + String.valueOf(Show_image_ActivityFragment.uri[((rxMutipleTouchViewPager)findViewById(R.id.tushuo_viewpager)).getCurrentItem()]));
-                return false;
-            }
-        });
         return true;
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        Log.i("tag","share_____");
         if (id == R.id.menu_item_share){
+            fetchImage();
+
+            startActivity(Intent.createChooser(intent, "请选择"));
         }
-
-        //noinspection SimplifiableIfStatement
-        if (id == android.R.id.home) {
-            Intent upIntent = NavUtils.getParentActivityIntent(this);
-            if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-                TaskStackBuilder.create(getApplicationContext()) ///
-                        .addNextIntentWithParentStack(upIntent)
-                        .startActivities();
-            } else {
-                Log.i("tag", "nihao" + String.valueOf(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                upIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                NavUtils.navigateUpTo(this, upIntent);
-            }
-
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_show_image_, menu);
+////        mShareActionProvider = new ShareActionProvider(getApplicationContext());
+////        MenuItem shareItem = menu.findItem(R.id.menu_item_share);
+////        if (shareItem instanceof SupportMenuItem) {
+////            mShareActionProvider = (ShareActionProvider)((SupportMenuItem) shareItem).getSupportActionProvider();
+////        }
+////        mShareActionProvider.setShareIntent(intent);
+////        mShareActionProvider.setOnShareTargetSelectedListener(new ShareActionProvider.OnShareTargetSelectedListener() {
+////            @Override
+////            public boolean onShareTargetSelected(ShareActionProvider shareActionProvider, Intent i) {
+////                fetchImage();
+//////                Log.i("tag", "file://" + String.valueOf(Show_image_ActivityFragment.uri[((rxMutipleTouchViewPager)findViewById(R.id.tushuo_viewpager)).getCurrentItem()]));
+////                return false;
+////            }
+////        });
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//            Log.i("tag","share_____");
+//
+//        if (id == R.id.menu_item_share){
+//            fetchImage();
+//
+//            startActivity(Intent.createChooser(intent, "请选择"));
+//        }
+//
+//        //noinspection SimplifiableIfStatement
+////        if (id == android.R.id.home) {
+////            Intent upIntent = NavUtils.getParentActivityIntent(this);
+////            if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+////                TaskStackBuilder.create(getApplicationContext()) ///
+////                        .addNextIntentWithParentStack(upIntent)
+////                        .startActivities();
+////            } else {
+////                Log.i("tag", "nihao" + String.valueOf(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+////                upIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+////                NavUtils.navigateUpTo(this, upIntent);
+////            }
+////
+////            return true;
+////        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     private void fetchImage() {
         new Thread() {

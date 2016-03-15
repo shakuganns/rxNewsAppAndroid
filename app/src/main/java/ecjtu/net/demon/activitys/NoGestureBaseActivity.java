@@ -30,8 +30,6 @@ import ecjtu.net.demon.R;
  */
 public class NoGestureBaseActivity extends AppCompatActivity {
 
-    public static int WRITE_CONTACTS = 101;
-
     public static int themeID = -1;
     public static final int DEFAULT_THEME = 0;
     public static final int DARK_THEME = 1;

@@ -8,8 +8,8 @@
         android:id="@+id/menu_item_share"
         android:icon="@android:drawable/ic_menu_share"
         android:title="Share"
-        app:actionProviderClass="android.support.v7.widget.ShareActionProvider"
         app:showAsAction="ifRoom" />
 
+        <!--app:actionProviderClass="android.support.v7.widget.ShareActionProvider"-->
 
 </menu>
