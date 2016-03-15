@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -22,6 +23,7 @@ public class rxCommentsActivity extends BaseActivity {
     private WebView webView;
     private String title;
     private String url;
+    private ViewGroup webViewContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +33,10 @@ public class rxCommentsActivity extends BaseActivity {
         initActionBar();
         getSupportActionBar().setTitle("日新评论");
 
-        webView = (WebView) findViewById(R.id.webView);
+        webViewContainer = (ViewGroup) findViewById(R.id.webView);
+        webView = new WebView(getApplicationContext());
+        webViewContainer.addView(webView);
+
         final Intent intent = getIntent();
         url = intent.getStringExtra("url");
         Log.i("tag", url);
@@ -77,4 +82,11 @@ public class rxCommentsActivity extends BaseActivity {
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        webViewContainer.removeAllViews();
+        webView.destroy();
+        webView = null;
+    }
 }

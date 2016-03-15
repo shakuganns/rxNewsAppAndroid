@@ -46,28 +46,29 @@ public class Show_image_Activity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mShareActionProvider.reset();
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_show_image_, menu);
-//        mShareActionProvider = new ShareActionProvider(getApplicationContext());
-//        MenuItem shareItem = menu.findItem(R.id.menu_item_share);
-//        if (shareItem instanceof SupportMenuItem) {
-//            mShareActionProvider = (ShareActionProvider)((SupportMenuItem) shareItem).getSupportActionProvider();
-//        }
-//        mShareActionProvider.setShareIntent(intent);
-//        mShareActionProvider.setOnShareTargetSelectedListener(new ShareActionProvider.OnShareTargetSelectedListener() {
-//            @Override
-//            public boolean onShareTargetSelected(ShareActionProvider shareActionProvider, Intent i) {
-//                fetchImage();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_show_image_, menu);
+        mShareActionProvider = new ShareActionProvider(getApplicationContext());
+        MenuItem shareItem = menu.findItem(R.id.menu_item_share);
+        if (shareItem instanceof SupportMenuItem) {
+            mShareActionProvider = (ShareActionProvider)((SupportMenuItem) shareItem).getSupportActionProvider();
+        }
+        mShareActionProvider.setShareIntent(intent);
+        mShareActionProvider.setOnShareTargetSelectedListener(new ShareActionProvider.OnShareTargetSelectedListener() {
+            @Override
+            public boolean onShareTargetSelected(ShareActionProvider shareActionProvider, Intent i) {
+                fetchImage();
 //                Log.i("tag", "file://" + String.valueOf(Show_image_ActivityFragment.uri[((rxMutipleTouchViewPager)findViewById(R.id.tushuo_viewpager)).getCurrentItem()]));
-//                return false;
-//            }
-//        });
-//        return true;
-//    }
+                return false;
+            }
+        });
+        return true;
+    }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override

@@ -45,6 +45,8 @@ public class SettingThemeActivity extends BaseActivity {
                     return;
                 }
                 themeID = position;
+                NewMain.themeIsChange = true;
+                SettingActivity.themeIsChange = true;
                 switch (position) {
                     case DEFAULT_THEME: {
                         editor = preferences.edit();

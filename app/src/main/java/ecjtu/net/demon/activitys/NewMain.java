@@ -51,6 +51,7 @@ public class NewMain extends NoGestureBaseActivity {
 
     //所有的布尔类型init均表示应用启动后是否是第一次加载
 
+    public static boolean themeIsChange = false;
     private boolean isExit = false;
     public static UserEntity userEntity;
     public static boolean isUserInited = false;
@@ -124,30 +125,13 @@ public class NewMain extends NoGestureBaseActivity {
                 .build();
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        tabLayout.setBackgroundColor(themeColor);
-//        navigationHead.setBackgroundColor(themeColor);
-//    }
-
     @Override
     protected void onResume() {
         super.onResume();
-//        preferences = getSharedPreferences("phone", Context.MODE_PRIVATE);
-//        if (themeID != preferences.getInt("theme",0)) {
-//            Log.i("tag","------"+"change theme"+"------");
-//            themeID = preferences.getInt("theme",0);
-//            toolbar.setBackgroundColor(themeColor);
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                getWindow().setStatusBarColor(Color.parseColor("#00000000"));
-//            }
-////            finish();
-////            Intent intent = new Intent(NewMain.this,NewMain.class);
-////            startActivity(intent);
-////            isUserInited = false;
-////            return;
-//        }
+        if (themeIsChange) {
+            setTheme(themeID);
+            themeIsChange = false;
+        }
         tabLayout.setBackgroundColor(themeColor);
         drawerLayout.setStatusBarBackgroundColor(themeColorDark);
         navigationHead.setBackgroundColor(themeColor);

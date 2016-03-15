@@ -57,7 +57,6 @@ public class webview extends NoGestureBaseActivity {
         webView = new WebView(getApplicationContext());
         webViewContainer.addView(webView);
 
-
         Intent intent = getIntent();
         url = intent.getStringExtra("url");
         id = intent.getStringExtra("sid");

@@ -6,18 +6,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ExpandableListView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -43,6 +37,7 @@ import ecjtu.net.demon.view.CycleImageView;
  */
 public class SettingActivity extends BaseActivity {
 
+    public static boolean themeIsChange = false;
     private ExpandableListView settingList;
     private SettingListAdapter adapter;
     private CycleImageView headImage;
@@ -143,6 +138,15 @@ public class SettingActivity extends BaseActivity {
                 return false;
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (themeIsChange) {
+            setTheme(themeID);
+            themeIsChange = false;
+        }
     }
 
     private void turn2ActivityWithUrl(Class activity, String url) {
