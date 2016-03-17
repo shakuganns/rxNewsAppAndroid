@@ -53,7 +53,7 @@ public class NewMain extends NoGestureBaseActivity {
 
     //所有的布尔类型init均表示应用启动后是否是第一次加载
 
-    public static int appBarVerticalOffset = 0;
+    public static int appBarVerticalOffset = 0;     //appbar垂直隐藏坐标
     public static boolean themeIsChange = false;
     private boolean isExit = false;
     public static UserEntity userEntity;
@@ -97,13 +97,7 @@ public class NewMain extends NoGestureBaseActivity {
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                Log.i("tag",String.valueOf(verticalOffset)+"~~~~~~~~~");
                 appBarVerticalOffset = verticalOffset;
-                if (verticalOffset == 0) {
-                    pager.findViewById(R.id.fresh_layout).setEnabled(true);
-                } else {
-                    pager.findViewById(R.id.fresh_layout).setEnabled(false);
-                }
             }
         });
         NavigationView navigationView = (NavigationView) findViewById(R.id.drawer);

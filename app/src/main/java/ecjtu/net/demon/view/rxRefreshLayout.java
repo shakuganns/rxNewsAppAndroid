@@ -26,6 +26,11 @@ public class rxRefreshLayout extends SwipeRefreshLayout {
         super(context, attrs);
     }
 
+    /**
+     * appbar隐藏时不可刷新
+     * @param ev
+     * @return
+     */
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         switch (ev.getAction()) {
