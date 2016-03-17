@@ -248,6 +248,10 @@ public class NewMain extends NoGestureBaseActivity {
         }
     }
 
+    /**
+     * drawer menu点击事件处理
+     * @param id view的id
+     */
 
     @Override
     public void slidingMenuClickListen(int id) {

@@ -56,19 +56,11 @@
         </activity>
         <activity
             android:name=".activitys.ContentWebView"
-            android:label="@string/title_activity_newscontent"
-            android:parentActivityName=".activitys.NewMain">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activitys.NewMain" />
+            android:label="@string/title_activity_newscontent">
         </activity>
         <activity
             android:name=".activitys.webview"
-            android:label="@string/title_activity_webview"
-            android:parentActivityName=".activitys.NewMain">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activitys.NewMain" />
+            android:label="@string/title_activity_webview">
         </activity>
         <activity
             android:name=".activitys.LoginActivity"
@@ -179,27 +171,15 @@
         </activity>
         <activity
             android:name=".activitys.Show_image_Activity"
-            android:label="@string/title_activity_show_image_"
-            android:parentActivityName=".activitys.Tusho_show_card_activity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activitys.Tusho_show_card_activity" />
+            android:label="@string/title_activity_show_image_">
         </activity>
         <activity
             android:name=".activitys.Tusho_show_card_activity"
-            android:label="@string/title_activity_tusho_show_card_activity"
-            android:parentActivityName=".activitys.NewMain">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activitys.NewMain" />
+            android:label="@string/title_activity_tusho_show_card_activity">
         </activity>
         <activity
             android:name=".activitys.AboutActivity"
-            android:label="@string/about_activity"
-            android:parentActivityName=".activitys.SettingActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activitys.SettingActivity" />
+            android:label="@string/about_activity">
         </activity>
         <activity
             android:name=".activitys.CutImageActivity"
@@ -211,11 +191,7 @@
         </activity>
         <activity
             android:name=".activitys.SubCommentsActivity"
-            android:label="SubCommentsActivity"
-            android:parentActivityName=".activitys.SettingActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activitys.SettingActivity" />
+            android:label="SubCommentsActivity">
         </activity>
         <activity
             android:name=".activitys.rxCommentsActivity"

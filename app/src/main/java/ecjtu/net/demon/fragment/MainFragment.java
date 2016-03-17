@@ -1,6 +1,7 @@
 package ecjtu.net.demon.fragment;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
@@ -165,8 +166,8 @@ public class MainFragment extends Fragment {
                     }
 
                     @Override
-                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        ToastMsg.builder.display("网络环境好像不是很好呀！", duration);
+                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                        ToastMsg.builder.display("请求超时,请重新刷新！", duration);
                     }
 
                     @Override
@@ -239,11 +240,9 @@ public class MainFragment extends Fragment {
                 }
 
                 @Override
-                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    ToastMsg.builder.display("网络环境好像不是很好呀！", duration);
-                    if (!isRefresh) {
-//                    refreshLayout.setLoading(false);
-                    } else {
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    ToastMsg.builder.display("请求超时,网络环境好像不是很好呀！", duration);
+                    if (isRefresh) {
                         refreshLayout.setRefreshing(false);
                     }
                 }

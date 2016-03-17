@@ -1,16 +1,13 @@
 package ecjtu.net.demon.activitys;
 
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 
 import ecjtu.net.demon.R;
 
 /**
+ * 用于处理需要手势的activity
  * Created by homker on 2015/4/22.
  */
 public class BaseActivity extends NoGestureBaseActivity {
@@ -32,19 +29,6 @@ public class BaseActivity extends NoGestureBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            finish();
-            overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
-        }
-        return super.onOptionsItemSelected(item);
     }
 
 

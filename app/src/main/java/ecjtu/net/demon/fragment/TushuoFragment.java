@@ -148,8 +148,8 @@ public class TushuoFragment extends Fragment {
                     }
 
                     @Override
-                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        ToastMsg.builder.display("网络环境好像不是很好呀！", duration);
+                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                        ToastMsg.builder.display("请求超时,请重新刷新！", duration);
                     }
 
                     @Override
@@ -187,8 +187,8 @@ public class TushuoFragment extends Fragment {
                 }
 
                 @Override
-                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    ToastMsg.builder.display("网络环境好像不是很好呀！", duration);
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                    ToastMsg.builder.display("请求超时,网络环境好像不是很好呀！", duration);
                     swipeRefreshLayout.setRefreshing(false);
                 }
 

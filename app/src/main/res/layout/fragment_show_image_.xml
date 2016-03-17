@@ -5,8 +5,6 @@
     android:orientation="vertical"
     tools:context="ecjtu.net.demon.fragment.Show_image_ActivityFragment">
 
-    <include layout="@layout/tool_bar" />
-
     <ecjtu.net.demon.view.rxMutipleTouchViewPager
         android:id="@+id/tushuo_viewpager"
         android:background="#000000"

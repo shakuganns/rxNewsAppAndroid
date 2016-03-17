@@ -22,9 +22,11 @@
     </item>
     <group>
         <item
+            android:icon="@android:drawable/ic_menu_share"
             android:id="@+id/setting"
             android:title="设置"/>
         <item
+            android:icon="@android:drawable/ic_menu_camera"
             android:id="@+id/scran"
             android:title="扫一扫"/>
     </group>

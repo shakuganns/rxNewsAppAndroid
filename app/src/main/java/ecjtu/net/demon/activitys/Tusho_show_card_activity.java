@@ -51,7 +51,8 @@ public class Tusho_show_card_activity extends BaseActivity {
 
     private static final String url = "http://pic.ecjtu.net/api.php/post";
     private static final int duration = 100;
-    private Bitmap bitmap;
+    private boolean headIsSet = false;
+    private Bitmap bitmap;                                              //高斯模糊处理中使用
     private RecyclerView recyclerView;
     private tushuShowCardAdapter adapeter;
     private LinearLayoutManager linearLayoutManager;
@@ -97,15 +98,17 @@ public class Tusho_show_card_activity extends BaseActivity {
         super.onResume();
         toolbar.setBackgroundColor(Color.parseColor("#00000000"));
         layout.setStatusBarScrimColor(Color.parseColor("#00000000"));
-        if (Build.VERSION.SDK_INT > 16) {
+        if ((Build.VERSION.SDK_INT > 16)&&!headIsSet) {
             BlurTask blurTask = new BlurTask(tushuShowCardAdapter.headImage);
             blurTask.execute();
+            headIsSet = true;
 //            ((HeadViewHolder) holder).bg.setBackgroundColor(Color.GRAY);
-        } else {
+        } else if (!headIsSet) {
             BitmapDrawable bd = (BitmapDrawable) tushuShowCardAdapter.headImage;
             bitmap = bd.getBitmap();
             layout.setContentScrim(new BitmapDrawable(bitmap));
             toolbarImage.setImageDrawable(new BitmapDrawable(bitmap));
+            headIsSet = true;
         }
     }
 
@@ -194,20 +197,20 @@ public class Tusho_show_card_activity extends BaseActivity {
 
         //noinspection SimplifiableIfStatement
 
-        if (id == android.R.id.home) {
-            Intent upIntent = NavUtils.getParentActivityIntent(this);
-            if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-                TaskStackBuilder.create(this)
-                        .addNextIntentWithParentStack(upIntent)
-                        .startActivities();
-            } else {
-                Log.i("tag", "nihao" + String.valueOf(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                upIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                NavUtils.navigateUpTo(this, upIntent);
-            }
-
-            return true;
-        }
+//        if (id == android.R.id.home) {
+//            Intent upIntent = NavUtils.getParentActivityIntent(this);
+//            if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+//                TaskStackBuilder.create(this)
+//                        .addNextIntentWithParentStack(upIntent)
+//                        .startActivities();
+//            } else {
+//                Log.i("tag", "nihao" + String.valueOf(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+//                upIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                NavUtils.navigateUpTo(this, upIntent);
+//            }
+//
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -243,14 +246,15 @@ public class Tusho_show_card_activity extends BaseActivity {
         @Override
         protected Bitmap doInBackground(Void... params) {
             BitmapDrawable bd = (BitmapDrawable) drawable;
+            if (bd != null) {
+                int height = bd.getBitmap().getHeight() / 4;
+                int width = bd.getBitmap().getWidth() / 4;
+                int x = bd.getBitmap().getHeight() / 4;
+                int y = bd.getBitmap().getWidth() / 4;
 
-            int height = bd.getBitmap().getHeight()/4;
-            int width = bd.getBitmap().getWidth()/4;
-            int x = bd.getBitmap().getHeight()/4;
-            int y = bd.getBitmap().getWidth()/4;
-
-            bitmap = Bitmap.createBitmap(bd.getBitmap(), x, y, width, height);
-            bitmap = blur(bitmap,layout,20);
+                bitmap = Bitmap.createBitmap(bd.getBitmap(), x, y, width, height);
+                bitmap = blur(bitmap, layout, 20);
+            }
             return bitmap;
         }
 

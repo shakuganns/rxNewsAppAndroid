@@ -1,15 +1,11 @@
 package ecjtu.net.demon.activitys;
 
-import android.annotation.TargetApi;
-import android.app.TaskStackBuilder;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.support.v4.internal.view.SupportMenuItem;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.ShareActionProvider;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,13 +18,13 @@ import java.io.InputStream;
 
 import ecjtu.net.demon.R;
 import ecjtu.net.demon.fragment.Show_image_ActivityFragment;
-import ecjtu.net.demon.utils.ToastMsg;
 import ecjtu.net.demon.view.rxMutipleTouchViewPager;
 
 
 public class Show_image_Activity extends BaseActivity {
 
-    private ShareActionProvider mShareActionProvider;
+//    private ShareActionProvider mShareActionProvider;
+    private CoordinatorLayout layout;
     private File file;
     private Intent intent;
 
@@ -37,11 +33,19 @@ public class Show_image_Activity extends BaseActivity {
 //        setContentViewLayout(R.layout.activity_show_image_);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_image_);
+        layout = (CoordinatorLayout) findViewById(R.id.main_container);
         intent = new Intent(Intent.ACTION_SEND);
         intent.setType("image/*");
         intent.putExtra(Intent.EXTRA_STREAM,Uri.fromFile(new File(getApplicationContext().getExternalFilesDir("share") + "/" + "share.jpg")));
         initActionBar();
         getSupportActionBar().setTitle("图说");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        toolbar.setBackgroundColor(Color.parseColor("#000000"));
+        layout.setStatusBarBackgroundColor(Color.parseColor("#000000"));
     }
 
     @Override
@@ -60,10 +64,9 @@ public class Show_image_Activity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        Log.i("tag","share_____");
         if (id == R.id.menu_item_share){
+            Log.i("tag","share_____");
             fetchImage();
-
             startActivity(Intent.createChooser(intent, "请选择"));
         }
         return super.onOptionsItemSelected(item);

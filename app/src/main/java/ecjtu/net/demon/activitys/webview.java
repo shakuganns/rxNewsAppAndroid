@@ -153,28 +153,11 @@ public class webview extends NoGestureBaseActivity {
         if (id == R.id.share){
             share(url,title);
         }
-        if (id == R.id.homeAsUp) {
-            finish();
-            return true;
-        }
         if (id == R.id.comments) {
             Intent intent = new Intent(webview.this,rxCommentsActivity.class);
             String url = "http://app.ecjtu.net/api/v1/article/"+this.id+"/comments";
             intent.putExtra("url",url);
             startActivity(intent);
-        }
-        if (id == android.R.id.home) {
-            Intent upIntent = NavUtils.getParentActivityIntent(webview.this);
-            if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-                TaskStackBuilder.create(this)
-                        .addNextIntentWithParentStack(upIntent)
-                        .startActivities();
-            } else {
-                Log.i("tag", "nihao" + String.valueOf(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                upIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                NavUtils.navigateUpTo(this, upIntent);
-            }
-            return true;
         }
         return super.onOptionsItemSelected(item);
     }
