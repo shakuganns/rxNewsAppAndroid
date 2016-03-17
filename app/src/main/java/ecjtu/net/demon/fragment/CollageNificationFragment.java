@@ -46,7 +46,7 @@ public class CollageNificationFragment extends Fragment {
     private rxRefreshLayout swipeRefreshLayout;
 //    private ArrayList<ArrayMap<String, Object>> content = new ArrayList<>();
     private View mContentView;
-    private ACache tushuoListCache;
+    private ACache cnListCache;
     private boolean isBottom;
 
     @Override
@@ -114,9 +114,9 @@ public class CollageNificationFragment extends Fragment {
         if (lastId != null) {
             url = url + "?until=" + lastId;
         }
-        tushuoListCache = ACache.get(getActivity());
+        cnListCache = ACache.get(getActivity());
         if (isInit) {
-            JSONObject cache = tushuoListCache.getAsJSONObject("CNList");
+            JSONObject cache = cnListCache.getAsJSONObject("CNList");
             if (cache != null) {//判断缓存是否为空
                 Log.i("tag", "我们使用了缓存~！collage");
                 try {
@@ -137,8 +137,8 @@ public class CollageNificationFragment extends Fragment {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         if (lastId == null) {//只缓存最新的内容列表
-                            tushuoListCache.remove("CNList");
-                            tushuoListCache.put("CNList", response, 7 * ACache.TIME_DAY);
+                            cnListCache.remove("CNList");
+                            cnListCache.put("CNList", response, 7 * ACache.TIME_DAY);
                         }
                         try {
                             JSONArray list = response.getJSONArray("articles");
@@ -168,8 +168,8 @@ public class CollageNificationFragment extends Fragment {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     if (lastId == null) {//只缓存最新的内容列表
-                        tushuoListCache.remove("CNList");
-                        tushuoListCache.put("CNList", response, 7 * ACache.TIME_DAY);
+                        cnListCache.remove("CNList");
+                        cnListCache.put("CNList", response, 7 * ACache.TIME_DAY);
                     }
                     try {
                         if (response.getInt("count") == 0) {

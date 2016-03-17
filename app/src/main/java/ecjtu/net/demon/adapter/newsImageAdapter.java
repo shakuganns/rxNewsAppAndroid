@@ -17,6 +17,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.nostra13.universalimageloader.utils.L;
 
 import java.util.ArrayList;
 
@@ -32,7 +33,7 @@ public class newsImageAdapter extends PagerAdapter {
     private ArrayList<ArrayMap<String,String>> newsHeadImageViewListS;
     private Context context;
     private DisplayImageOptions options;
-    private boolean[] isComplete = {false,false,false};
+    private boolean[] isComplete = {false,false,false,false,false};
 
     public ArrayList<ArrayMap<String,String>> getNewsHeadImageViewListS() {
         return newsHeadImageViewListS;
@@ -42,9 +43,15 @@ public class newsImageAdapter extends PagerAdapter {
         this.newsHeadImageViewList = newsHeadImageViewList;
     }
     public newsImageAdapter(ArrayList<ArrayMap<String,String>> newsHeadImageViewListS,Context context){
-        newsHeadImageViewList = new ArrayList<>();
+
         this.newsHeadImageViewListS = newsHeadImageViewListS;
         this.context = context;
+
+        newsHeadImageViewList = new ArrayList<>();
+        //防止下面从position=1开始生成视图时产生数组越界错误
+        for (int i = 0;i<getCount();i++) {
+            newsHeadImageViewList.add(new ImageView(context));
+        }
 
         options = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.thumb_default)
@@ -56,22 +63,24 @@ public class newsImageAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
+        Log.i("tag",String.valueOf(position)+"~~~~~~~");
         String url = newsHeadImageViewListS.get(position).get("url");
         String id = newsHeadImageViewListS.get(position).get("id");
+        Log.i("url",url+"~~~~~~");
+        Log.i("id",id+"~~~~~~");
         ImageView imageView = null;
         if (position<newsHeadImageViewList.size()){
-            if (newsHeadImageViewList.get(position) != null){
+            Log.i("tag","---a---");
+            if (newsHeadImageViewList.get(position) != null) {
+                Log.i("tag","---b---");
                 imageView = newsHeadImageViewList.get(position);
             }
-        }
-        if(imageView == null){
-            imageView = new ImageView(context);
         }
         imageView.setImageResource(R.drawable.thumb_default);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setOnClickListener(new slidePageClickerListener(id));
-        newsHeadImageViewList.add(imageView);
-        container.addView(newsHeadImageViewList.get(position));
+//        newsHeadImageViewList.add(position,imageView);
+        container.addView(imageView);
         ImageLoader.getInstance().displayImage(url, imageView, options, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {

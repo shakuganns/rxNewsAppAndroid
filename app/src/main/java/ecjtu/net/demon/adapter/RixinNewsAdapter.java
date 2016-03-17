@@ -39,7 +39,7 @@ public class RixinNewsAdapter extends RecyclerView.Adapter {
     private ArrayList<ArrayMap<String,Object>> slide_articles = new ArrayList<>();// 轮转图的arralist
     private LayoutInflater listContainer;
     private newsImageAdapter newsImageAdapter;
-    private boolean isInit = false;
+    private boolean isInited = false;
     private ArrayList<ArrayMap<String,String>> myTopViewS;
     private ArrayList<ImageView> points;//标识点的list
     private DisplayImageOptions options;
@@ -197,20 +197,34 @@ public class RixinNewsAdapter extends RecyclerView.Adapter {
             ImageLoader.getInstance().displayImage(url, ((ItemViewHolder) holder).image, options);
         }
         if(holder instanceof HeadViewHolder) {
-            if(!isInit) {
+            if(!isInited) {
                 int height = (int) context.getResources().getDimension(R.dimen.news_content_image_height);
                 FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
                 lp.gravity = Gravity.TOP;
                 ((HeadViewHolder) holder).myViewPager.setLayoutParams(lp);
+                ArrayMap<String, String> arrayMap = new ArrayMap<>();
+                arrayMap.put("url", (String) slide_articles.get(slide_articles.size() - 1).get("thumb"));
+                arrayMap.put("id", String.valueOf(slide_articles.get(slide_articles.size() - 1).get("id")));
+                Log.i("slide_articles",String.valueOf(arrayMap));
+                myTopViewS.add(arrayMap);
                 for (int i = 0; i < slide_articles.size(); i++) {
-                    ArrayMap<String, String> ArrayMap = new ArrayMap<>();
-                    ArrayMap.put("url", (String) slide_articles.get(i).get("thumb"));
-                    ArrayMap.put("id", String.valueOf(slide_articles.get(i).get("id")));
-                    myTopViewS.add(ArrayMap);
+                    arrayMap = new ArrayMap<>();
+                    arrayMap.put("url", (String) slide_articles.get(i).get("thumb"));
+                    arrayMap.put("id", String.valueOf(slide_articles.get(i).get("id")));
+                    myTopViewS.add(arrayMap);
+                    Log.i("slide_articles",String.valueOf(arrayMap));
                 }
+                arrayMap = new ArrayMap<>();
+                arrayMap.put("url", (String) slide_articles.get(0).get("thumb"));
+                arrayMap.put("id", String.valueOf(slide_articles.get(0).get("id")));
+                myTopViewS.add(arrayMap);
+                Log.i("slide_articles",String.valueOf(arrayMap));
+
+                Log.i("exNewsA",String.valueOf(myTopViewS)+"-------");
+
                 newsImageAdapter = new newsImageAdapter(myTopViewS, context);
                 ((HeadViewHolder) holder).myViewPager.setAdapter(newsImageAdapter);
-                ((HeadViewHolder) holder).myViewPager.setCurrentItem(0);
+                ((HeadViewHolder) holder).myViewPager.setCurrentItem(1);
                 ((HeadViewHolder) holder).myViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                     @Override
                     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -218,6 +232,16 @@ public class RixinNewsAdapter extends RecyclerView.Adapter {
 
                     @Override
                     public void onPageSelected(int position) {
+                        if(position < 1) {
+                            position = newsImageAdapter.getCount() - 3;
+                            ((HeadViewHolder) holder).myViewPager.setCurrentItem(newsImageAdapter.getCount() - 2,false);
+                        } else if (position == newsImageAdapter.getCount() - 1) {
+                            position = 0;
+                            ((HeadViewHolder) holder).myViewPager.setCurrentItem(1,false);
+                        } else {
+                            position--;
+                        }
+                        Log.i("position",String.valueOf(position)+"~~~~~~~~");
                         draw_point(position, (HeadViewHolder) holder);
                     }
 
@@ -227,18 +251,27 @@ public class RixinNewsAdapter extends RecyclerView.Adapter {
                     }
                 });
                 initPoint((HeadViewHolder) holder);
-                isInit = true;
+                isInited = true;
             } else if(isRefresh) {
                 myTopViewS.clear();
+
+                ArrayMap<String, String> arrayMap = new ArrayMap<>();
+                arrayMap.put("url", (String) slide_articles.get(slide_articles.size() - 1).get("thumb"));
+                arrayMap.put("id", String.valueOf(slide_articles.get(slide_articles.size() - 1).get("id")));
+                myTopViewS.add(arrayMap);
                 for (int i = 0; i < slide_articles.size(); i++) {
-                    ArrayMap<String, String> ArrayMap = new ArrayMap<>();
-                    ArrayMap.put("title", (String) slide_articles.get(i).get("title"));
-                    ArrayMap.put("url", (String) slide_articles.get(i).get("thumb"));
-                    ArrayMap.put("id", String.valueOf(slide_articles.get(i).get("id")));
-                    myTopViewS.add(ArrayMap);
+                    arrayMap = new ArrayMap<>();
+                    arrayMap.put("url", (String) slide_articles.get(i).get("thumb"));
+                    arrayMap.put("id", String.valueOf(slide_articles.get(i).get("id")));
+                    myTopViewS.add(arrayMap);
                 }
+                arrayMap = new ArrayMap<>();
+                arrayMap.put("url", (String) slide_articles.get(0).get("thumb"));
+                arrayMap.put("id", String.valueOf(slide_articles.get(0).get("id")));
+                myTopViewS.add(arrayMap);
+
                 newsImageAdapter.notifyDataSetChanged();
-                ((HeadViewHolder) holder).myViewPager.setCurrentItem(0);
+                ((HeadViewHolder) holder).myViewPager.setCurrentItem(1);
                 draw_point(0, (HeadViewHolder) holder);
                 isRefresh = false;
             }
@@ -253,7 +286,7 @@ public class RixinNewsAdapter extends RecyclerView.Adapter {
     private void initPoint(HeadViewHolder holder){
         points = new ArrayList<>();
         ImageView imageView;
-        for (int i = 0 ; i < myTopViewS.size();i++){
+        for (int i = 0 ; i < myTopViewS.size()-2;i++){
             imageView = new ImageView(context);
             imageView.setImageResource(R.drawable.indicator);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -271,7 +304,7 @@ public class RixinNewsAdapter extends RecyclerView.Adapter {
     }
 
     private void draw_point(int position,HeadViewHolder holder){
-        for (int i = 0; i<myTopViewS.size();i++){
+        for (int i = 0; i<myTopViewS.size()-2;i++){
             points.get(i).setImageResource(R.drawable.indicator);
         }
         points.get(position).setImageResource(R.drawable.indicator_focused);
