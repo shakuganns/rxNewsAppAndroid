@@ -27,6 +27,7 @@ import ecjtu.net.demon.adapter.CollageNificationAdapter;
 import ecjtu.net.demon.utils.ACache;
 import ecjtu.net.demon.utils.HttpAsync;
 import ecjtu.net.demon.utils.ToastMsg;
+import ecjtu.net.demon.view.rxRefreshLayout;
 
 /**
  * Created by homker on 2015/5/4.
@@ -42,7 +43,7 @@ public class CollageNificationFragment extends Fragment {
     private LinearLayoutManager linearLayoutManager;
     private int lastVisibleItem;
     private static String lastId;
-    private SwipeRefreshLayout swipeRefreshLayout;
+    private rxRefreshLayout swipeRefreshLayout;
 //    private ArrayList<ArrayMap<String, Object>> content = new ArrayList<>();
     private View mContentView;
     private ACache tushuoListCache;
@@ -62,7 +63,7 @@ public class CollageNificationFragment extends Fragment {
 
         linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
-        swipeRefreshLayout = (SwipeRefreshLayout) mContentView.findViewById(R.id.collage_nification_fresh);
+        swipeRefreshLayout = (rxRefreshLayout) mContentView.findViewById(R.id.collage_nification_fresh);
 //        swipeRefreshLayout.setColorSchemeColors(R.color.link_text_material_light);
         adapter = new CollageNificationAdapter(getActivity());
         recyclerView.setAdapter(adapter);

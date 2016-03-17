@@ -10,11 +10,13 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -51,12 +53,14 @@ public class NewMain extends NoGestureBaseActivity {
 
     //所有的布尔类型init均表示应用启动后是否是第一次加载
 
+    public static int appBarVerticalOffset = 0;
     public static boolean themeIsChange = false;
     private boolean isExit = false;
     public static UserEntity userEntity;
     public static boolean isUserInited = false;
     private String studentID;
     private String userName;
+    private AppBarLayout appBarLayout;
     private CycleImageView headImage;
     private TabLayout tabLayout;
     private ViewPager pager;
@@ -89,6 +93,19 @@ public class NewMain extends NoGestureBaseActivity {
         initActionBarNewMain();
         initViewPager();
         checkVersionAsync();
+        appBarLayout = (AppBarLayout) findViewById(R.id.app_bar_layout);
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                Log.i("tag",String.valueOf(verticalOffset)+"~~~~~~~~~");
+                appBarVerticalOffset = verticalOffset;
+                if (verticalOffset == 0) {
+                    pager.findViewById(R.id.fresh_layout).setEnabled(true);
+                } else {
+                    pager.findViewById(R.id.fresh_layout).setEnabled(false);
+                }
+            }
+        });
         NavigationView navigationView = (NavigationView) findViewById(R.id.drawer);
         navigationHead = navigationView.getHeaderView(0);
         headImage = (CycleImageView) navigationHead.findViewById(R.id.UserImage);

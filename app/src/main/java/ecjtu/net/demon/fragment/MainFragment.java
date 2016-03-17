@@ -29,6 +29,7 @@ import ecjtu.net.demon.adapter.RixinNewsAdapter;
 import ecjtu.net.demon.utils.ACache;
 import ecjtu.net.demon.utils.HttpAsync;
 import ecjtu.net.demon.utils.ToastMsg;
+import ecjtu.net.demon.view.rxRefreshLayout;
 
 public class MainFragment extends Fragment {
 
@@ -38,7 +39,7 @@ public class MainFragment extends Fragment {
     private RixinNewsAdapter rixinNewsAdapter;
     private RecyclerView newslist;
     private LinearLayoutManager linearLayoutManager;
-    private SwipeRefreshLayout refreshLayout;
+    private rxRefreshLayout refreshLayout;
 //    private ArrayMap<String, Object> list = new ArrayMap<>();
     private boolean isbottom;  //是否还有更多的数据
     private int lastVisibleItem;
@@ -59,7 +60,7 @@ public class MainFragment extends Fragment {
         newslist = (RecyclerView) mContentView.findViewById(R.id.newslist);
         newslist.setLayoutManager(linearLayoutManager);
         //初始化ListView
-        refreshLayout = (SwipeRefreshLayout) mContentView.findViewById(R.id.fresh_layout);
+        refreshLayout = (rxRefreshLayout) mContentView.findViewById(R.id.fresh_layout);
 
         rixinNewsAdapter = new RixinNewsAdapter(getActivity());
         newslist.setAdapter(rixinNewsAdapter);

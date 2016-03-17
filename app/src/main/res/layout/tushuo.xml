@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <ecjtu.net.demon.view.rxRefreshLayout
         android:id="@+id/tushuo_fresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </ecjtu.net.demon.view.rxRefreshLayout>
 
     <ViewStub
         android:id="@+id/loading_container"

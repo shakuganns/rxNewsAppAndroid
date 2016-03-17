@@ -27,6 +27,7 @@ import ecjtu.net.demon.adapter.TushuoAdapter;
 import ecjtu.net.demon.utils.ACache;
 import ecjtu.net.demon.utils.HttpAsync;
 import ecjtu.net.demon.utils.ToastMsg;
+import ecjtu.net.demon.view.rxRefreshLayout;
 
 /**
  * Created by homker on 2015/5/5.
@@ -37,7 +38,7 @@ public class TushuoFragment extends Fragment {
     private static final int duration = 100;
 //    private ArrayList<ArrayMap<String, Object>> content = new ArrayList<>();
     private RecyclerView recyclerView;
-    private SwipeRefreshLayout swipeRefreshLayout;
+    private rxRefreshLayout swipeRefreshLayout;
     private final static String url = "http://pic.ecjtu.net/api.php/list";
     private static String lastId;
     private TushuoAdapter adapter;
@@ -62,7 +63,7 @@ public class TushuoFragment extends Fragment {
         adapter = new TushuoAdapter(getActivity());
         recyclerView.setAdapter(adapter);
 
-        swipeRefreshLayout = (SwipeRefreshLayout) mContentView.findViewById(R.id.tushuo_fresh);
+        swipeRefreshLayout = (rxRefreshLayout) mContentView.findViewById(R.id.tushuo_fresh);
 //        swipeRefreshLayout.setColorSchemeColors(R.color.link_text_material_light);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
