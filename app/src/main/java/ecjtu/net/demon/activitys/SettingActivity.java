@@ -16,21 +16,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 
-import cz.msebera.android.httpclient.Header;
 import ecjtu.net.demon.R;
 import ecjtu.net.demon.adapter.SettingListAdapter;
-import ecjtu.net.demon.utils.HttpAsync;
 import ecjtu.net.demon.utils.OkHttp;
 import ecjtu.net.demon.utils.SharedPreUtil;
 import ecjtu.net.demon.utils.ToastMsg;

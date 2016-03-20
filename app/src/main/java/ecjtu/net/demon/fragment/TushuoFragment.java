@@ -16,11 +16,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.nostra13.universalimageloader.core.ImageLoader;
-
-import cz.msebera.android.httpclient.Header;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,7 +28,6 @@ import ecjtu.net.demon.R;
 import ecjtu.net.demon.activitys.NewMain;
 import ecjtu.net.demon.adapter.TushuoAdapter;
 import ecjtu.net.demon.utils.ACache;
-import ecjtu.net.demon.utils.HttpAsync;
 import ecjtu.net.demon.utils.OkHttp;
 import ecjtu.net.demon.utils.ToastMsg;
 import ecjtu.net.demon.view.rxRefreshLayout;
@@ -118,103 +112,6 @@ public class TushuoFragment extends Fragment {
         swipeRefreshLayout.setRefreshing(true);
     }
 
-/*
-    private void loadData(String url, final String lastId, boolean isInit, final boolean isRefresh) {
-
-        if (lastId != null) {
-            url = url + "?before=" + lastId;
-        }
-        tushuoListCache = ACache.get(getActivity());
-        if (isInit) {
-            JSONObject cache = tushuoListCache.getAsJSONObject("tushuoList");
-            if (cache != null) {//判断缓存是否为空
-                Log.i("tag", "我们使用了缓存~！tushuo");
-                try {
-                    JSONArray array = cache.getJSONArray("list");
-                    adapter.getContent().addAll(jsonArray2Arraylist(array));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                adapter.notifyDataSetChanged();
-                setContentShown(true);
-            } else {
-                Log.i("tag", "初始化tushuo");
-                HttpAsync.get(url, new JsonHttpResponseHandler() {
-                    @Override
-                    public void onStart() {
-
-                    }
-
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        if (lastId == null) {//只缓存最新的内容列表
-                            tushuoListCache.remove("tushuoList");
-                            tushuoListCache.put("tushuoList", response, 7 * ACache.TIME_DAY);
-                        }
-                        try {
-                            JSONArray list = response.getJSONArray("list");
-                            adapter.getContent().addAll(jsonArray2Arraylist(list));
-                            adapter.notifyDataSetChanged();
-                            setContentShown(true);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                        ToastMsg.builder.display("请求超时,请重新刷新！", duration);
-                    }
-
-                    @Override
-                    public void onFinish() {
-
-                    }
-                });
-            }
-        } else {
-            HttpAsync.get(url, new JsonHttpResponseHandler() {
-                @Override
-                public void onStart() {
-
-                }
-
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    if (lastId == null) {//只缓存最新的内容列表
-                        tushuoListCache.remove("tushuoList");
-                        tushuoListCache.put("tushuoList", response, 7 * ACache.TIME_DAY);
-                    }
-                    try {
-                        JSONArray list = response.getJSONArray("list");
-                        if (isRefresh) {
-                            swipeRefreshLayout.setRefreshing(false);
-                            adapter.getContent().clear();
-                        }
-                        adapter.getContent().addAll(jsonArray2Arraylist(list));
-                        adapter.notifyDataSetChanged();
-                        setContentShown(true);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                    ToastMsg.builder.display("请求超时,网络环境好像不是很好呀！", duration);
-                    swipeRefreshLayout.setRefreshing(false);
-                }
-
-                @Override
-                public void onFinish() {
-
-                }
-            });
-        }
-        Log.i("tag", "初始化wancengtushuo");
-    }*/
 
     private void loadData(String url, final String lastId, boolean isInit, final boolean isRefresh) {
         if (lastId != null) {

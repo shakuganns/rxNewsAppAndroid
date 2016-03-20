@@ -7,18 +7,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -27,12 +23,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
-import cz.msebera.android.httpclient.Header;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -78,7 +72,6 @@ public class NewMain extends NoGestureBaseActivity {
     private int duration = 300;
     public static MainAdapter mainAdapter;
     public MainFragment mainFragment;
-//    private ChatFragment chatFragment;
     public CollageNificationFragment collageNificationFragment;
     public TushuoFragment tushoFragment;
     private boolean[] isInit = {true,true,true};
@@ -90,7 +83,6 @@ public class NewMain extends NoGestureBaseActivity {
     public void initFragment() {
         mainFragment = new MainFragment();
         collageNificationFragment = new CollageNificationFragment();
-//        chatFragment = new ChatFragment();
         tushoFragment = new TushuoFragment();
     }
 

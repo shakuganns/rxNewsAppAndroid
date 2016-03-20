@@ -1,15 +1,10 @@
 package ecjtu.net.demon.utils;
 
-
-import com.loopj.android.http.RequestParams;
-
-import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -19,14 +14,13 @@ import okhttp3.RequestBody;
  */
 public class OkHttp {
 
-    public static final String IMGUR_CLIENT_ID = "9199fdef135c122";
     public static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
-    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+//    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     private static final OkHttpClient client = new OkHttpClient();
 
     static {
-        client.newBuilder().connectTimeout(30, TimeUnit.SECONDS);
+        client.newBuilder().connectTimeout(20, TimeUnit.SECONDS);
     }
 
     public static void get(String url, Callback callback) {

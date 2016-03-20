@@ -1,10 +1,7 @@
 package ecjtu.net.demon.activitys;
 
 import android.annotation.TargetApi;
-import android.app.TaskStackBuilder;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -12,40 +9,36 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.renderscript.Allocation;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.app.NavUtils;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
-
-import cz.msebera.android.httpclient.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import ecjtu.net.demon.R;
 import ecjtu.net.demon.adapter.tushuShowCardAdapter;
-import ecjtu.net.demon.utils.HttpAsync;
+import ecjtu.net.demon.utils.OkHttp;
 import ecjtu.net.demon.utils.ToastMsg;
-import ecjtu.net.demon.view.CycleImageView;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class Tusho_show_card_activity extends BaseActivity {
 
@@ -65,7 +58,13 @@ public class Tusho_show_card_activity extends BaseActivity {
     private TextView click;
     private TextView count;
     private TextView title;
+    private String authorS;
+    private String clickS;
+    private String countS;
+    private String titleS;
     private ImageView toolbarImage;
+
+    private RxHandler handler;
 
     public static void setPid(String pid) {
         Tusho_show_card_activity.pid = pid;
@@ -75,6 +74,7 @@ public class Tusho_show_card_activity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tusho_show_card_activity);
+        handler = new RxHandler(this);
         loadData(url);
         initActionBarTushuo();
         getSupportActionBar().setTitle("图说");
@@ -127,57 +127,43 @@ public class Tusho_show_card_activity extends BaseActivity {
 
     private void loadData(String url) {
         urlList.clear();
-            url = url + "/" + pid;
-            HttpAsync.get(url, new JsonHttpResponseHandler() {
-                @Override
-                public void onStart() {
-                    super.onStart();
-                }
+        url = url + "/" + pid;
+        OkHttp.get(url, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                ToastMsg.builder.display("加载失败，请稍后重试。", duration);
+            }
 
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    super.onSuccess(statusCode, headers, response);
-                    try {
-//                        adapeter.headInfo.add(0, response.get("title").toString());
-//                        adapeter.headInfo.add(1, response.get("author").toString());
-//                        adapeter.headInfo.add(2, response.get("count").toString());
-//                        adapeter.headInfo.add(3, response.get("click").toString());
-//                        adapeter.setHeadText();
-
-                        title.setText(response.get("title").toString());
-                        author.setText(response.get("author").toString());
-                        count.setText(response.get("count").toString());
-                        click.setText(response.get("click").toString());
-                        JSONArray jsonArray = response.getJSONArray("pictures");
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            ArrayMap<String, Object> item = new ArrayMap<>();
-                            JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            String url = "http://pic.ecjtu.net/" + jsonObject.getString("url");
-                            urlList.add(i, url);
-                            item.put("url", url);
-                            String info = jsonObject.getString("detail");
-                            item.put("detail", info);
-                            infoList.add(i, info);
-                            adapeter.getContent().add(item);
-                        }
-                        adapeter.notifyDataChanged();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+            @Override
+            public void onResponse(Call call, Response res) throws IOException {
+                try {
+                    JSONObject response = new JSONObject(res.body().string());
+//                    title.setText(response.get("title").toString());
+//                    author.setText(response.get("author").toString());
+//                    count.setText(response.get("count").toString());
+//                    click.setText(response.get("click").toString());
+                    titleS = response.get("title").toString();
+                    authorS = response.get("author").toString();
+                    countS = response.get("count").toString();
+                    clickS = response.get("click").toString();
+                    JSONArray jsonArray = response.getJSONArray("pictures");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        ArrayMap<String, Object> item = new ArrayMap<>();
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        String url = "http://pic.ecjtu.net/" + jsonObject.getString("url");
+                        urlList.add(i, url);
+                        item.put("url", url);
+                        String info = jsonObject.getString("detail");
+                        item.put("detail", info);
+                        infoList.add(i, info);
+                        adapeter.getContent().add(item);
                     }
+                    handler.sendEmptyMessage(0);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    super.onFailure(statusCode, headers, responseString, throwable);
-                    ToastMsg.builder.display("加载失败，请稍后重试。", duration);
-                }
-
-                @Override
-                public void onFinish() {
-                    super.onFinish();
-
-                }
-            });
+            }
+        });
     }
 
     @Override
@@ -263,6 +249,25 @@ public class Tusho_show_card_activity extends BaseActivity {
         protected void onPostExecute(Bitmap bitmap) {
             layout.setContentScrim(new BitmapDrawable(bitmap));
             toolbarImage.setImageDrawable(new BitmapDrawable(bitmap));
+        }
+    }
+
+    private static class RxHandler extends Handler {
+
+        WeakReference thisActivity;
+
+        public RxHandler(Tusho_show_card_activity activity) {
+            thisActivity = new WeakReference(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            Tusho_show_card_activity activity = (Tusho_show_card_activity) thisActivity.get();
+            activity.title.setText(activity.titleS);
+            activity.author.setText(activity.authorS);
+            activity.count.setText(activity.countS);
+            activity.click.setText(activity.clickS);
+            activity.adapeter.notifyDataChanged();
         }
     }
 }

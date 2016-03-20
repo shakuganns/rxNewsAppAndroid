@@ -1,6 +1,5 @@
 package ecjtu.net.demon.fragment;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,9 +15,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
-
-import cz.msebera.android.httpclient.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,7 +27,6 @@ import ecjtu.net.demon.R;
 import ecjtu.net.demon.activitys.NewMain;
 import ecjtu.net.demon.adapter.CollageNificationAdapter;
 import ecjtu.net.demon.utils.ACache;
-import ecjtu.net.demon.utils.HttpAsync;
 import ecjtu.net.demon.utils.OkHttp;
 import ecjtu.net.demon.utils.ToastMsg;
 import ecjtu.net.demon.view.rxRefreshLayout;
@@ -120,111 +115,6 @@ public class CollageNificationFragment extends Fragment {
         loadData(url, null, false, true);
         swipeRefreshLayout.setRefreshing(true);
     }
-
-    /*private void loadData(String url , final String lastId , boolean isInit, final boolean isRefresh) {
-
-        if (lastId != null) {
-            url = url + "?until=" + lastId;
-        }
-        cnListCache = ACache.get(getActivity());
-        if (isInit) {
-            JSONObject cache = cnListCache.getAsJSONObject("CNList");
-            if (cache != null) {//判断缓存是否为空
-                Log.i("tag", "我们使用了缓存~！collage");
-                try {
-                    JSONArray array = cache.getJSONArray("articles");
-                    adapter.getContent().addAll(jsonArray2Arraylist(array));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                adapter.notifyDataSetChanged();
-                setContentShown(true);
-            } else {
-                HttpAsync.get(url, new JsonHttpResponseHandler() {
-                    @Override
-                    public void onStart() {
-
-                    }
-
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        if (lastId == null) {//只缓存最新的内容列表
-                            cnListCache.remove("CNList");
-                            cnListCache.put("CNList", response, 7 * ACache.TIME_DAY);
-                        }
-                        try {
-                            JSONArray list = response.getJSONArray("articles");
-                            adapter.getContent().addAll(jsonArray2Arraylist(list));
-                            adapter.notifyDataSetChanged();
-                            setContentShown(true);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                        ToastMsg.builder.display("请求超时,请重新刷新！", duration);
-                    }
-
-                    @Override
-                    public void onFinish() {
-
-                    }
-                });
-            }
-        }
-        else {
-            HttpAsync.get(url, new JsonHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    if (lastId == null) {//只缓存最新的内容列表
-                        cnListCache.remove("CNList");
-                        cnListCache.put("CNList", response, 7 * ACache.TIME_DAY);
-                    }
-                    try {
-                        if (response.getInt("count") == 0) {
-                            isBottom = true;
-                            TextView bottom = (TextView) mContentView.findViewById(R.id.pull_to_refresh_loadmore_text);
-                            ProgressBar bottomProgressBar = (ProgressBar) mContentView.findViewById(R.id.pull_to_refresh_load_progress);
-                            if ( bottomProgressBar == null) {
-                                isBottom = false;
-                            } else {
-                                bottomProgressBar.setVisibility(View.GONE);
-                                bottom.setText("已经到底啦");
-                            }
-                        }
-                        else {
-                            JSONArray list = response.getJSONArray("articles");
-                            if (isRefresh) {
-                                adapter.getContent().clear();
-                            }
-                            adapter.getContent().addAll(jsonArray2Arraylist(list));
-                            adapter.notifyDataSetChanged();
-                            setContentShown(true);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    if(isRefresh) {
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                    ToastMsg.builder.display("请求超时,网络环境好像不是很好呀~！", duration);
-                    swipeRefreshLayout.setRefreshing(false);
-                }
-
-                @Override
-                public void onFinish() {
-
-                }
-            });
-        }
-    }*/
 
     public void loadData(String url , final String lastId , boolean isInit, final boolean isRefresh) {
         if (lastId != null) {

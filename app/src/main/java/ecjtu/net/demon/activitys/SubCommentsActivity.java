@@ -8,15 +8,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
+import java.io.IOException;
 
-import org.json.JSONObject;
-
-import cz.msebera.android.httpclient.Header;
 import ecjtu.net.demon.R;
-import ecjtu.net.demon.utils.HttpAsync;
+import ecjtu.net.demon.utils.OkHttp;
 import ecjtu.net.demon.utils.ToastMsg;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * 意见反馈
@@ -59,20 +60,21 @@ public class SubCommentsActivity extends BaseActivity {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RequestParams params = new RequestParams();
-                params.add("username", NewMain.userEntity.getStudentID());
-                params.add("content", String.valueOf(commentsText.getText()));
-                HttpAsync.post("http://app.ecjtu.net/api/v1/feedback", params, new JsonHttpResponseHandler() {
-
+                RequestBody requestBody = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("username",NewMain.userEntity.getStudentID())
+                        .addFormDataPart("content", String.valueOf(commentsText.getText()))
+                        .build();
+                OkHttp.post("http://app.ecjtu.net/api/v1/feedback", requestBody, new Callback() {
                     @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        ToastMsg.builder.display("提交成功,感谢您的反馈", 500);
-                        finish();
+                    public void onFailure(Call call, IOException e) {
+                        ToastMsg.builder.display("提交失败", 500);
                     }
 
                     @Override
-                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        ToastMsg.builder.display("提交失败", 500);
+                    public void onResponse(Call call, Response response) throws IOException {
+                        ToastMsg.builder.display("提交成功,感谢您的反馈", 500);
+                        finish();
                     }
                 });
             }

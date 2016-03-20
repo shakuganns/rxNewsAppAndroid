@@ -1,7 +1,6 @@
 package ecjtu.net.demon.fragment;
 
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
@@ -29,7 +28,6 @@ import ecjtu.net.demon.R;
 import ecjtu.net.demon.activitys.NewMain;
 import ecjtu.net.demon.adapter.RixinNewsAdapter;
 import ecjtu.net.demon.utils.ACache;
-import ecjtu.net.demon.utils.HttpAsync;
 import ecjtu.net.demon.utils.OkHttp;
 import ecjtu.net.demon.utils.ToastMsg;
 import ecjtu.net.demon.view.rxRefreshLayout;
@@ -121,148 +119,6 @@ public class MainFragment extends Fragment {
      * @param isInit app启动第一次加载数据
      *
      */
-/*
-    public void loadData(String url, final String lastId,final boolean isInit, final boolean isRefresh) {
-        isbottom = false;
-        if (lastId != null) {
-            url = url + "?until=" + lastId;
-        }
-        Log.i("tag", "请求链接：" + url);
-        final ACache newsListCache = ACache.get(getActivity());
-        if (isInit) {
-            final JSONObject cache = newsListCache.getAsJSONObject("newsList");
-            if (cache != null) {//判断缓存是否为空
-                Log.i("tag", "我们使用了缓存~！");
-                try {
-                    JSONObject slide_article = cache.getJSONObject("slide_article");
-                    JSONArray slide_articles = slide_article.getJSONArray("articles");
-                    JSONObject normal_article = cache.getJSONObject("normal_article");
-                    JSONArray normal_articles = normal_article.getJSONArray("articles");
-                    rixinNewsAdapter.setSlide_articles(jsonArray2Arraylist(slide_articles));
-                    rixinNewsAdapter.setListItem(jsonArray2Arraylist(normal_articles));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                rixinNewsAdapter.updateInfo(isRefresh);
-                setContentShown(true);
-            } else {
-                HttpAsync.get(url, new JsonHttpResponseHandler() {
-
-                    @Override
-                    public void onStart() {
-                    }
-
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        if (lastId == null) {//只缓存最新的内容列表
-                            newsListCache.remove("newsList");
-                            newsListCache.put("newsList", response, 7 * ACache.TIME_DAY);
-                        }
-                        try {
-                            JSONObject slide_article = response.getJSONObject("slide_article");
-                            JSONArray slide_articles = slide_article.getJSONArray("articles");
-                            JSONObject normal_article = response.getJSONObject("normal_article");
-                            JSONArray normal_articles = normal_article.getJSONArray("articles");
-                            rixinNewsAdapter.setSlide_articles(jsonArray2Arraylist(slide_articles));
-                            rixinNewsAdapter.setListItem(jsonArray2Arraylist(normal_articles));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Log.i("tag", "更新线程执行成功");
-                        rixinNewsAdapter.updateInfo(isRefresh);
-                        setContentShown(true);
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                        ToastMsg.builder.display("请求超时,请重新刷新！", duration);
-                    }
-
-                    @Override
-                    public void onFinish() {
-
-                    }
-
-                });
-            }
-        } else {
-            HttpAsync.get(url, new JsonHttpResponseHandler() {
-                @Override
-                public void onStart() {
-
-                }
-
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    if (lastId == null) {//只缓存最新的内容列表
-                        newsListCache.remove("newsList");
-                        newsListCache.put("newsList", response, 7 * ACache.TIME_DAY);
-                    }
-                    JSONArray slide_articles;
-                    JSONArray normal_articles = null;
-                    try {
-                        JSONObject slide_article = response.getJSONObject("slide_article");
-                        slide_articles = slide_article.getJSONArray("articles");
-                        JSONObject normal_article = response.getJSONObject("normal_article");
-                        normal_articles = normal_article.getJSONArray("articles");
-                        if (normal_article.getInt("count") == 0) {
-                            isbottom = true;
-                            TextView bottom = (TextView) mContentView.findViewById(R.id.pull_to_refresh_loadmore_text);
-                            ProgressBar bottomProgressBar = (ProgressBar) mContentView.findViewById(R.id.pull_to_refresh_load_progress);
-                            if (bottomProgressBar == null) {
-                                isbottom = false;
-                            } else {
-                                bottomProgressBar.setVisibility(View.GONE);
-                                bottom.setText("已经到底啦");
-                            }
-                        } else {
-                            if (isRefresh) {
-                                if (rixinNewsAdapter.getListItem() != null) {
-                                    rixinNewsAdapter.getListItem().clear();
-                                    rixinNewsAdapter.getListItem().addAll(jsonArray2Arraylist(normal_articles));
-                                }
-                                if (rixinNewsAdapter.getSlide_articles() != null) {
-                                    rixinNewsAdapter.getSlide_articles().clear();
-                                    rixinNewsAdapter.getSlide_articles().addAll(jsonArray2Arraylist(slide_articles));
-                                }
-                                rixinNewsAdapter.updateInfo(isRefresh);
-                                refreshLayout.setRefreshing(false);
-                            }
-//                        list.put("slide_articles", rixinNewsAdapter.getSlide_articles());
-//                        list.put("normal_articles", rixinNewsAdapter.getListItem());
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    Log.i("tag", "更新线程执行成功");
-                    if (!isRefresh) {
-//                    Log.i("tag", "list is " + String.valueOf(list));
-                        if (!isbottom) {
-//                        rixinNewsAdapter.getContent().putAll(list);
-                            rixinNewsAdapter.getListItem().addAll(jsonArray2Arraylist(normal_articles));
-                            rixinNewsAdapter.updateInfo(isRefresh);
-                        }
-//                    refreshLayout.setLoading(false);
-                    }
-                    setContentShown(true);
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                    ToastMsg.builder.display("请求超时,网络环境好像不是很好呀！", duration);
-                    if (isRefresh) {
-                        refreshLayout.setRefreshing(false);
-                    }
-                }
-
-                @Override
-                public void onFinish() {
-
-                }
-
-            });
-        }
-    }*/
 
     public void loadData(String url, final String lastId,final boolean isInit, final boolean isRefresh) {
         isbottom = false;

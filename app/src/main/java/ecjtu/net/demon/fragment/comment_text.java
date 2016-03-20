@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -16,35 +18,36 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-
-import cz.msebera.android.httpclient.Header;
-import org.json.JSONObject;
+import java.io.IOException;
+import java.lang.ref.WeakReference;
 
 import ecjtu.net.demon.R;
 import ecjtu.net.demon.activitys.NewMain;
 import ecjtu.net.demon.activitys.rxCommentsActivity;
 import ecjtu.net.demon.activitys.webview;
-import ecjtu.net.demon.utils.HttpAsync;
+import ecjtu.net.demon.utils.OkHttp;
 import ecjtu.net.demon.utils.ToastMsg;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 
 public class comment_text extends Fragment {
 
     private View view;
-    private Context context;
     public EditText commentText;
     public InputMethodManager imm;
     public FragmentManager fragmentManager;
     private String url;
     private comment_btn commentBtn;
+    private RxHandler handler;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         webview.isComment = true;
-        context = getActivity();
         view = inflater.inflate(R.layout.comment_text, container, false);
         return view;
     }
@@ -52,6 +55,7 @@ public class comment_text extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        handler = new RxHandler((webview) getActivity());
         Button submitBtn = (Button) view.findViewById(R.id.submitBtn);
         commentText = (EditText) view.findViewById(R.id.commentText);
         fragmentManager = getFragmentManager();
@@ -61,42 +65,20 @@ public class comment_text extends Fragment {
                 if (!commentText.getText().toString().equals("")) {
                     url = "http://app.ecjtu.net/api/v1/article/";
                     url = url + getActivity().getIntent().getStringExtra("sid") + "/comment";
-                    Log.i("tag", url);
-                    RequestParams params = new RequestParams();
-                    params.put("sid", NewMain.userEntity.getStudentID());
-                    params.put("content", commentText.getText());
-                    Log.i("tag", String.valueOf(params));
-                    HttpAsync.post(url, params, new JsonHttpResponseHandler() {
-
+                    RequestBody requestBody = new MultipartBody.Builder()
+                            .setType(MultipartBody.FORM)
+                            .addFormDataPart("sid", NewMain.userEntity.getStudentID())
+                            .addFormDataPart("content", String.valueOf(commentText.getText()))
+                            .build();
+                    OkHttp.post(url, requestBody, new Callback() {
                         @Override
-                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                            commentText.setText("");
-                            // 构造对话框
-                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                            builder.setMessage("要去看看评论吗？");
-                            builder.setPositiveButton("好的", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                    Intent intent = new Intent(context, rxCommentsActivity.class);
-                                    String url = comment_text.this.url + "s";
-                                    intent.putExtra("url", url);
-                                    context.startActivity(intent);
-                                }
-                            });
-                            builder.setNegativeButton("不用了", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                            AlertDialog noticeDialog = builder.create();
-                            noticeDialog.show();
+                        public void onFailure(Call call, IOException e) {
+                            ToastMsg.builder.display("提交失败,请重试", 300);
                         }
 
                         @Override
-                        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                            ToastMsg.builder.display("提交失败,请重试" + statusCode, 300);
+                        public void onResponse(Call call, Response response) throws IOException {
+                            handler.sendEmptyMessage(0);
                         }
                     });
                 }
@@ -115,7 +97,6 @@ public class comment_text extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        context = null;
     }
 
     public boolean onKeyDown(int keyCode) {
@@ -129,6 +110,42 @@ public class comment_text extends Fragment {
 
     public void setReplaceView(comment_btn view) {
         commentBtn = view;
+    }
+
+    private static class RxHandler extends Handler {
+
+        WeakReference thisActivity;
+
+        public RxHandler(webview activity) {
+            thisActivity = new WeakReference(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            final webview activity = (webview) thisActivity.get();
+            activity.commentText.commentText.setText("");
+            // 构造对话框
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            builder.setMessage("要去看看评论吗？");
+            builder.setPositiveButton("好的", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    Intent intent = new Intent(activity, rxCommentsActivity.class);
+                    String url = activity.commentText.url + "s";
+                    intent.putExtra("url", url);
+                    activity.startActivity(intent);
+                }
+            });
+            builder.setNegativeButton("不用了", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog noticeDialog = builder.create();
+            noticeDialog.show();
+        }
     }
 
 }
