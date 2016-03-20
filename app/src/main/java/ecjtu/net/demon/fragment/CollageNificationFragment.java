@@ -1,6 +1,9 @@
 package ecjtu.net.demon.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -20,14 +23,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import ecjtu.net.demon.R;
+import ecjtu.net.demon.activitys.NewMain;
 import ecjtu.net.demon.adapter.CollageNificationAdapter;
 import ecjtu.net.demon.utils.ACache;
 import ecjtu.net.demon.utils.HttpAsync;
+import ecjtu.net.demon.utils.OkHttp;
 import ecjtu.net.demon.utils.ToastMsg;
 import ecjtu.net.demon.view.rxRefreshLayout;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 /**
  * Created by homker on 2015/5/4.
@@ -48,6 +58,7 @@ public class CollageNificationFragment extends Fragment {
     private View mContentView;
     private ACache cnListCache;
     private boolean isBottom;
+    private RxHandler handler;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,6 +70,7 @@ public class CollageNificationFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        handler = new RxHandler((NewMain) getActivity());
         recyclerView = (RecyclerView) mContentView.findViewById(R.id.collage_nification);
 
         linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -109,7 +121,7 @@ public class CollageNificationFragment extends Fragment {
         swipeRefreshLayout.setRefreshing(true);
     }
 
-    private void loadData(String url , final String lastId , boolean isInit, final boolean isRefresh) {
+    /*private void loadData(String url , final String lastId , boolean isInit, final boolean isRefresh) {
 
         if (lastId != null) {
             url = url + "?until=" + lastId;
@@ -212,6 +224,87 @@ public class CollageNificationFragment extends Fragment {
                 }
             });
         }
+    }*/
+
+    public void loadData(String url , final String lastId , boolean isInit, final boolean isRefresh) {
+        if (lastId != null) {
+            url = url + "?until=" + lastId;
+        }
+        cnListCache = ACache.get(getActivity());
+        if (isInit) {
+            JSONObject cache = cnListCache.getAsJSONObject("CNList");
+            if (cache != null) {//判断缓存是否为空
+                Log.i("tag", "我们使用了缓存~！collage");
+                try {
+                    JSONArray array = cache.getJSONArray("articles");
+                    adapter.getContent().addAll(jsonArray2Arraylist(array));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                adapter.notifyDataSetChanged();
+                setContentShown(true);
+            } else {
+                OkHttp.get(url, new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        ToastMsg.builder.display("请求超时,请重新刷新！", duration);
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response res) throws IOException {
+                        try {
+                            JSONObject response = new JSONObject(res.body().string());
+                            JSONArray list = response.getJSONArray("articles");
+                            adapter.getContent().addAll(jsonArray2Arraylist(list));
+                            if (lastId == null) {//只缓存最新的内容列表
+                                cnListCache.remove("CNList");
+                                cnListCache.put("CNList", response, 7 * ACache.TIME_DAY);
+                            }
+                            handler.sendEmptyMessage(0);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        }
+        else {
+            OkHttp.get(url, new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+
+                }
+
+                @Override
+                public void onResponse(Call call, Response res) throws IOException {
+                    try {
+                        JSONObject response = new JSONObject(res.body().string());
+                        if (lastId == null) {//只缓存最新的内容列表
+                            cnListCache.remove("CNList");
+                            cnListCache.put("CNList", response, 7 * ACache.TIME_DAY);
+                        }
+                        if (response.getInt("count") == 0) {
+                            isBottom = true;
+                            handler.sendEmptyMessage(2);
+                        }
+                        else {
+                            JSONArray list = response.getJSONArray("articles");
+                            if (isRefresh) {
+                                adapter.getContent().clear();
+                            }
+                            adapter.getContent().addAll(jsonArray2Arraylist(list));
+                            if (isRefresh) {
+                                handler.sendEmptyMessage(1);
+                            } else {
+                                handler.sendEmptyMessage(0);
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
     }
 
     public void setContentShown(boolean shown) {
@@ -219,7 +312,6 @@ public class CollageNificationFragment extends Fragment {
             recyclerView.setVisibility(View.VISIBLE);
         }
     }
-
 
     /**
      * 将json数组变成arraylist
@@ -246,6 +338,33 @@ public class CollageNificationFragment extends Fragment {
             }
         }
         return arrayList;
+    }
+
+    private static class RxHandler extends Handler {
+
+        private WeakReference newMain;
+
+         public RxHandler(NewMain newMain) {
+             this.newMain = new WeakReference(newMain);
+         }
+
+        @Override
+        public void handleMessage(Message msg) {
+            CollageNificationFragment theFragment = ((NewMain) newMain.get()).collageNificationFragment;
+            if (msg.what == 0) {
+                theFragment.adapter.updateInfo(false);
+                theFragment.setContentShown(true);
+            } else if (msg.what == 1) {
+                theFragment.adapter.updateInfo(true);
+                theFragment.swipeRefreshLayout.setRefreshing(false);
+                theFragment.setContentShown(true);
+            } else {
+                TextView bottom = (TextView) theFragment.getView().findViewById(R.id.pull_to_refresh_loadmore_text);
+                ProgressBar bottomProgressBar = (ProgressBar) theFragment.getView().findViewById(R.id.pull_to_refresh_load_progress);
+                bottomProgressBar.setVisibility(View.GONE);
+                bottom.setText("已经没有更多新闻啦");
+            }
+        }
     }
 
 }

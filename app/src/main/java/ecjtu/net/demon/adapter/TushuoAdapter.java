@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -32,6 +33,7 @@ public class TushuoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private LayoutInflater layoutInflater;
     private DisplayImageOptions options;
     private Context context;
+    private boolean isRefreshFoot = false;
 
     public TushuoAdapter(Context context) {
         this.context = context;
@@ -63,6 +65,11 @@ public class TushuoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
+    public void updateInfo(boolean isRefresh) {
+        isRefreshFoot = isRefresh;
+        notifyDataSetChanged();
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         Log.i("TAG","生成图说card------------");
@@ -77,16 +84,20 @@ public class TushuoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder normalTextViewHolder, int position) {
-        if (normalTextViewHolder instanceof NormalTextViewHolder) {
-
-            ((NormalTextViewHolder) normalTextViewHolder).pid.setText((String) content.get(position).get("pid"));
-                ((NormalTextViewHolder) normalTextViewHolder).title.setText((String) content.get(position).get("title"));
-                ((NormalTextViewHolder) normalTextViewHolder).info.setText((String) content.get(position).get("info"));
-                ((NormalTextViewHolder) normalTextViewHolder).click.setText((String) content.get(position).get("click"));
-                ((NormalTextViewHolder) normalTextViewHolder).time.setText((String) content.get(position).get("time"));
-                ((NormalTextViewHolder) normalTextViewHolder).imageView.setImageResource(R.drawable.thumb_default);
-                ImageLoader.getInstance().displayImage((String) content.get(position).get("image"), ((NormalTextViewHolder) normalTextViewHolder).imageView, options);
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof NormalTextViewHolder) {
+            ((NormalTextViewHolder) holder).pid.setText((String) content.get(position).get("pid"));
+            ((NormalTextViewHolder) holder).title.setText((String) content.get(position).get("title"));
+            ((NormalTextViewHolder) holder).info.setText((String) content.get(position).get("info"));
+            ((NormalTextViewHolder) holder).click.setText((String) content.get(position).get("click"));
+            ((NormalTextViewHolder) holder).time.setText((String) content.get(position).get("time"));
+            ((NormalTextViewHolder) holder).imageView.setImageResource(R.drawable.thumb_default);
+            ImageLoader.getInstance().displayImage((String) content.get(position).get("image"), ((NormalTextViewHolder) holder).imageView, options);
+        } else {
+            if (isRefreshFoot) {
+                ((FooterViewHolder) holder).progressBar.setVisibility(View.VISIBLE);
+                ((FooterViewHolder) holder).textView.setText("加载中……");
+            }
         }
     }
 
@@ -96,15 +107,18 @@ public class TushuoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return content == null ? 0 : content.size() +1;
     }
 
-    class FooterViewHolder extends RecyclerView.ViewHolder {
+    private class FooterViewHolder extends RecyclerView.ViewHolder {
+        private ProgressBar progressBar;
+        private TextView textView;
 
         public FooterViewHolder(View view) {
             super(view);
+            progressBar = (ProgressBar) itemView.findViewById(R.id.pull_to_refresh_load_progress);
+            textView = (TextView) itemView.findViewById(R.id.pull_to_refresh_loadmore_text);
         }
-
     }
 
-    public class NormalTextViewHolder extends RecyclerView.ViewHolder {
+    private class NormalTextViewHolder extends RecyclerView.ViewHolder {
 
         private TextView title;
         private TextView info;

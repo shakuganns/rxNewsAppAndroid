@@ -3,6 +3,7 @@ package ecjtu.net.demon.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.UiThread;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -44,6 +46,7 @@ public class RixinNewsAdapter extends RecyclerView.Adapter {
     private ArrayList<ImageView> points;//标识点的list
     private DisplayImageOptions options;
     private boolean isRefresh = false;
+    private boolean isRefreshFoot = false;
 
     public RixinNewsAdapter(Context context) {
         this.context = context;
@@ -63,18 +66,15 @@ public class RixinNewsAdapter extends RecyclerView.Adapter {
                 .cacheOnDisk(true)
                 .build();
 
-//        slide_articles = (ArrayList<ArrayMap<String, Object>>) content.get("slide_articles");
-//        listItem = (ArrayList<ArrayMap<String, Object>>) content.get("normal_articles");
     }
 
     public void updateInfo(boolean isRefresh) {
         this.isRefresh = isRefresh;
-//        slide_articles = (ArrayList<ArrayMap<String, Object>>) content.get("slide_articles");
-//        listItem = (ArrayList<ArrayMap<String, Object>>) content.get("normal_articles");
-        super.notifyDataSetChanged();
+        isRefreshFoot = isRefresh;
+        notifyDataSetChanged();
     }
 
-    public class ItemViewHolder extends RecyclerView.ViewHolder {
+    private class ItemViewHolder extends RecyclerView.ViewHolder {
         public ImageView image;
         public TextView title;
         public TextView info;
@@ -131,7 +131,7 @@ public class RixinNewsAdapter extends RecyclerView.Adapter {
 //        this.content = content;
 //    }
 
-    public class HeadViewHolder extends RecyclerView.ViewHolder {
+    private class HeadViewHolder extends RecyclerView.ViewHolder {
 
         private ViewPager myViewPager;
         private LinearLayout myPointView;//pointView 的容器
@@ -145,10 +145,15 @@ public class RixinNewsAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public class FooterViewHolder extends RecyclerView.ViewHolder {
+    private class FooterViewHolder extends RecyclerView.ViewHolder {
+
+        private ProgressBar progressBar;
+        private TextView textView;
 
         public FooterViewHolder(View itemView) {
             super(itemView);
+            progressBar = (ProgressBar) itemView.findViewById(R.id.pull_to_refresh_load_progress);
+            textView = (TextView) itemView.findViewById(R.id.pull_to_refresh_loadmore_text);
         }
     }
 
@@ -195,8 +200,7 @@ public class RixinNewsAdapter extends RecyclerView.Adapter {
             ((ItemViewHolder)holder).click.setText(listItem.get(position - 1).get("click")+"点击");
             ((ItemViewHolder)holder).itemView.setTag(String.valueOf(listItem.get(position - 1).get("id")));
             ImageLoader.getInstance().displayImage(url, ((ItemViewHolder) holder).image, options);
-        }
-        if(holder instanceof HeadViewHolder) {
+        } else if(holder instanceof HeadViewHolder) {
             if(!isInited) {
                 int height = (int) context.getResources().getDimension(R.dimen.news_content_image_height);
                 FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
@@ -274,6 +278,12 @@ public class RixinNewsAdapter extends RecyclerView.Adapter {
                 ((HeadViewHolder) holder).myViewPager.setCurrentItem(1);
                 draw_point(0, (HeadViewHolder) holder);
                 isRefresh = false;
+            }
+        } else if (holder instanceof FooterViewHolder) {
+            if (isRefreshFoot) {
+                ((FooterViewHolder) holder).progressBar.setVisibility(View.VISIBLE);
+                ((FooterViewHolder) holder).textView.setText("加载中……");
+                isRefreshFoot = false;
             }
         }
     }

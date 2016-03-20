@@ -2,6 +2,8 @@ package ecjtu.net.demon.fragment;
 
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
@@ -15,21 +17,25 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
-
-import cz.msebera.android.httpclient.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import ecjtu.net.demon.R;
+import ecjtu.net.demon.activitys.NewMain;
 import ecjtu.net.demon.adapter.RixinNewsAdapter;
 import ecjtu.net.demon.utils.ACache;
 import ecjtu.net.demon.utils.HttpAsync;
+import ecjtu.net.demon.utils.OkHttp;
 import ecjtu.net.demon.utils.ToastMsg;
 import ecjtu.net.demon.view.rxRefreshLayout;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class MainFragment extends Fragment {
 
@@ -43,6 +49,7 @@ public class MainFragment extends Fragment {
 //    private ArrayMap<String, Object> list = new ArrayMap<>();
     private boolean isbottom;  //是否还有更多的数据
     private int lastVisibleItem;
+    private RxHandler handler;
 
     @Nullable
     @Override
@@ -56,6 +63,7 @@ public class MainFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         isbottom = false;
+        handler = new RxHandler((NewMain) getActivity());
         linearLayoutManager = new LinearLayoutManager(getActivity());
         newslist = (RecyclerView) mContentView.findViewById(R.id.newslist);
         newslist.setLayoutManager(linearLayoutManager);
@@ -113,7 +121,7 @@ public class MainFragment extends Fragment {
      * @param isInit app启动第一次加载数据
      *
      */
-
+/*
     public void loadData(String url, final String lastId,final boolean isInit, final boolean isRefresh) {
         isbottom = false;
         if (lastId != null) {
@@ -146,7 +154,6 @@ public class MainFragment extends Fragment {
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        super.onSuccess(statusCode, headers, response);
                         if (lastId == null) {//只缓存最新的内容列表
                             newsListCache.remove("newsList");
                             newsListCache.put("newsList", response, 7 * ACache.TIME_DAY);
@@ -255,11 +262,120 @@ public class MainFragment extends Fragment {
 
             });
         }
-    }
+    }*/
 
-    public void setContentShown(boolean shown) {
-        if (shown) {
-            newslist.setVisibility(View.VISIBLE);
+    public void loadData(String url, final String lastId,final boolean isInit, final boolean isRefresh) {
+        isbottom = false;
+        if (lastId != null) {
+            url = url + "?until=" + lastId;
+        }
+        Log.i("tag", "请求链接：" + url);
+        final ACache newsListCache = ACache.get(getActivity());
+        if (isInit) {
+            final JSONObject cache = newsListCache.getAsJSONObject("newsList");
+            if (cache != null) {//判断缓存是否为空
+                Log.i("tag", "我们使用了缓存~！");
+                try {
+                    JSONObject slide_article = cache.getJSONObject("slide_article");
+                    JSONArray slide_articles = slide_article.getJSONArray("articles");
+                    JSONObject normal_article = cache.getJSONObject("normal_article");
+                    JSONArray normal_articles = normal_article.getJSONArray("articles");
+                    rixinNewsAdapter.setSlide_articles(jsonArray2Arraylist(slide_articles));
+                    rixinNewsAdapter.setListItem(jsonArray2Arraylist(normal_articles));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                rixinNewsAdapter.updateInfo(false);
+                setContentShown(true);
+            } else {
+                OkHttp.get(url, new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        ToastMsg.builder.display("请求超时,请重新刷新！", duration);
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response res) throws IOException {
+                        try {
+                            JSONObject response = new JSONObject(res.body().string());
+                            JSONObject slide_article = response.getJSONObject("slide_article");
+                            JSONArray slide_articles = slide_article.getJSONArray("articles");
+                            JSONObject normal_article = response.getJSONObject("normal_article");
+                            JSONArray normal_articles = normal_article.getJSONArray("articles");
+                            rixinNewsAdapter.setSlide_articles(jsonArray2Arraylist(slide_articles));
+                            rixinNewsAdapter.setListItem(jsonArray2Arraylist(normal_articles));
+                            if (lastId == null) {//只缓存最新的内容列表
+                                newsListCache.remove("newsList");
+                                newsListCache.put("newsList", response, 7 * ACache.TIME_DAY);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.i("tag", "更新线程执行成功");
+                        handler.sendEmptyMessage(0);
+                    }
+                });
+            }
+        } else {
+            OkHttp.get(url, new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    ToastMsg.builder.display("请求超时,网络环境好像不是很好呀！", duration);
+                    if (isRefresh) {
+                        refreshLayout.setRefreshing(false);
+                    }
+                }
+
+                @Override
+                public void onResponse(Call call, Response res) throws IOException {
+                    JSONArray slide_articles;
+                    JSONArray normal_articles = null;
+                    try {
+                        JSONObject response = new JSONObject(res.body().string());
+                        JSONObject slide_article = response.getJSONObject("slide_article");
+                        slide_articles = slide_article.getJSONArray("articles");
+                        JSONObject normal_article = response.getJSONObject("normal_article");
+                        normal_articles = normal_article.getJSONArray("articles");
+                        if (lastId == null) {//只缓存最新的内容列表
+                            newsListCache.remove("newsList");
+                            newsListCache.put("newsList", response, 7 * ACache.TIME_DAY);
+                        }
+                        if (normal_article.getInt("count") == 0) {
+                            isbottom = true;
+                            handler.sendEmptyMessage(2);
+                        } else {
+                            if (isRefresh) {
+                                if (rixinNewsAdapter.getListItem() != null) {
+                                    rixinNewsAdapter.getListItem().clear();
+                                    rixinNewsAdapter.getListItem().addAll(jsonArray2Arraylist(normal_articles));
+                                }
+                                if (rixinNewsAdapter.getSlide_articles() != null) {
+                                    rixinNewsAdapter.getSlide_articles().clear();
+                                    rixinNewsAdapter.getSlide_articles().addAll(jsonArray2Arraylist(slide_articles));
+                                }
+                                handler.sendEmptyMessage(1);
+//                                rixinNewsAdapter.updateInfo(isRefresh);
+//                                refreshLayout.setRefreshing(false);
+                            }
+//                        list.put("slide_articles", rixinNewsAdapter.getSlide_articles());
+//                        list.put("normal_articles", rixinNewsAdapter.getListItem());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Log.i("tag", "更新线程执行成功");
+                    if (!isRefresh) {
+//                    Log.i("tag", "list is " + String.valueOf(list));
+                        if (!isbottom) {
+//                        rixinNewsAdapter.getContent().putAll(list);
+                            rixinNewsAdapter.getListItem().addAll(jsonArray2Arraylist(normal_articles));
+//                            rixinNewsAdapter.updateInfo(isRefresh);
+                            handler.sendEmptyMessage(0);
+                        }
+//                    refreshLayout.setLoading(false);
+                    }
+                }
+            });
         }
     }
 
@@ -291,4 +407,37 @@ public class MainFragment extends Fragment {
         return arrayList;
     }
 
+    public void setContentShown(boolean shown) {
+        if (shown) {
+            newslist.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private static class RxHandler extends Handler {
+
+        WeakReference mActivity;
+        MainFragment theFragment;
+
+        RxHandler(NewMain activity) {
+            mActivity = new WeakReference(activity);
+            theFragment = ((NewMain) mActivity.get()).mainFragment;
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == 0) {
+                theFragment.rixinNewsAdapter.updateInfo(false);
+                theFragment.setContentShown(true);
+            } else if (msg.what == 1){
+                theFragment.rixinNewsAdapter.updateInfo(true);
+                theFragment.refreshLayout.setRefreshing(false);
+                theFragment.setContentShown(true);
+            } else {
+                TextView bottom = (TextView) theFragment.getView().findViewById(R.id.pull_to_refresh_loadmore_text);
+                ProgressBar bottomProgressBar = (ProgressBar) theFragment.getView().findViewById(R.id.pull_to_refresh_load_progress);
+                bottomProgressBar.setVisibility(View.GONE);
+                bottom.setText("已经没有更多新闻啦");
+            }
+        }
+    }
 }

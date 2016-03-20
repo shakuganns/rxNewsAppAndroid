@@ -2,6 +2,8 @@ package ecjtu.net.demon.fragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -11,8 +13,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -20,14 +25,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import ecjtu.net.demon.R;
+import ecjtu.net.demon.activitys.NewMain;
 import ecjtu.net.demon.adapter.TushuoAdapter;
 import ecjtu.net.demon.utils.ACache;
 import ecjtu.net.demon.utils.HttpAsync;
+import ecjtu.net.demon.utils.OkHttp;
 import ecjtu.net.demon.utils.ToastMsg;
 import ecjtu.net.demon.view.rxRefreshLayout;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 /**
  * Created by homker on 2015/5/5.
@@ -46,6 +58,7 @@ public class TushuoFragment extends Fragment {
     private int lastVisibleItem;
     private View mContentView;
     private ACache tushuoListCache;
+    private RxHandler handler;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,6 +70,7 @@ public class TushuoFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        handler = new RxHandler((NewMain) getActivity());
         recyclerView = (RecyclerView) mContentView.findViewById(R.id.tushuo);
         linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -104,7 +118,7 @@ public class TushuoFragment extends Fragment {
         swipeRefreshLayout.setRefreshing(true);
     }
 
-
+/*
     private void loadData(String url, final String lastId, boolean isInit, final boolean isRefresh) {
 
         if (lastId != null) {
@@ -200,6 +214,83 @@ public class TushuoFragment extends Fragment {
             });
         }
         Log.i("tag", "初始化wancengtushuo");
+    }*/
+
+    private void loadData(String url, final String lastId, boolean isInit, final boolean isRefresh) {
+        if (lastId != null) {
+            url = url + "?before=" + lastId;
+        }
+        tushuoListCache = ACache.get(getActivity());
+        if (isInit) {
+            JSONObject cache = tushuoListCache.getAsJSONObject("tushuoList");
+            if (cache != null) {//判断缓存是否为空
+                Log.i("tag", "我们使用了缓存~！tushuo");
+                try {
+                    JSONArray array = cache.getJSONArray("list");
+                    adapter.getContent().addAll(jsonArray2Arraylist(array));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                adapter.notifyDataSetChanged();
+                setContentShown(true);
+            } else {
+                Log.i("tag", "初始化tushuo");
+                OkHttp.get(url, new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        ToastMsg.builder.display("请求超时,请重新刷新！", duration);
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response res) throws IOException {
+                        try {
+                            JSONObject response = new JSONObject(res.body().string());
+                            if (lastId == null) {//只缓存最新的内容列表
+                                tushuoListCache.remove("tushuoList");
+                                tushuoListCache.put("tushuoList", response, 7 * ACache.TIME_DAY);
+                            }
+                            JSONArray list = response.getJSONArray("list");
+                            adapter.getContent().addAll(jsonArray2Arraylist(list));
+                            handler.sendEmptyMessage(0);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        } else {
+            OkHttp.get(url, new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    ToastMsg.builder.display("请求超时,网络环境好像不是很好呀！", duration);
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+
+                @Override
+                public void onResponse(Call call, Response res) throws IOException {
+                    try {
+                        JSONObject response = new JSONObject(res.body().string());
+                        if (lastId == null) {//只缓存最新的内容列表
+                            tushuoListCache.remove("tushuoList");
+                            tushuoListCache.put("tushuoList", response, 7 * ACache.TIME_DAY);
+                        }
+                        JSONArray list = response.getJSONArray("list");
+                        if (isRefresh) {
+                            adapter.getContent().clear();
+                        }
+                        adapter.getContent().addAll(jsonArray2Arraylist(list));
+                        if (isRefresh) {
+                            handler.sendEmptyMessage(1);
+                        } else {
+                            handler.sendEmptyMessage(0);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+        Log.i("tag", "初始化wancengtushuo");
     }
 
     public void setContentShown(boolean shown) {
@@ -244,6 +335,34 @@ public class TushuoFragment extends Fragment {
         Long timestamp = Long.parseLong(timestampString) * 1000;
         @SuppressLint("SimpleDateFormat") String date = new java.text.SimpleDateFormat(formats).format(new java.util.Date(timestamp));
         return date;
+    }
+
+    private static class RxHandler extends Handler {
+
+        WeakReference newMain;
+        TushuoFragment theFragment;
+
+        public RxHandler(NewMain newMain) {
+            this.newMain = new WeakReference(newMain);
+            theFragment = newMain.tushoFragment;
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == 0) {
+                theFragment.adapter.updateInfo(false);
+                theFragment.setContentShown(true);
+            } else if (msg.what == 1){
+                theFragment.adapter.updateInfo(true);
+                theFragment.swipeRefreshLayout.setRefreshing(false);
+                theFragment.setContentShown(true);
+            } else {
+                TextView bottom = (TextView) theFragment.getView().findViewById(R.id.pull_to_refresh_loadmore_text);
+                ProgressBar bottomProgressBar = (ProgressBar) theFragment.getView().findViewById(R.id.pull_to_refresh_load_progress);
+                bottomProgressBar.setVisibility(View.GONE);
+                bottom.setText("已经没有更多啦");
+            }
+        }
     }
 
 }

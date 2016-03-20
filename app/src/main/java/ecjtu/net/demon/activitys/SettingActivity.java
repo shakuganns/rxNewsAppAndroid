@@ -9,6 +9,8 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -22,20 +24,31 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.lang.ref.WeakReference;
 
 import cz.msebera.android.httpclient.Header;
 import ecjtu.net.demon.R;
 import ecjtu.net.demon.adapter.SettingListAdapter;
 import ecjtu.net.demon.utils.HttpAsync;
+import ecjtu.net.demon.utils.OkHttp;
 import ecjtu.net.demon.utils.SharedPreUtil;
 import ecjtu.net.demon.utils.ToastMsg;
 import ecjtu.net.demon.utils.UserEntity;
 import ecjtu.net.demon.view.CycleImageView;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Created by Shakugan on 15/12/5.
  */
 public class SettingActivity extends BaseActivity {
+
+    private static final int VERSION_DIALOG = 0;
+    private static final int UPLOAD_HEADIMAGE = 1;
 
     public static boolean themeIsChange = false;
     private ExpandableListView settingList;
@@ -46,12 +59,14 @@ public class SettingActivity extends BaseActivity {
     private String VersionUrl = "http://app.ecjtu.net/api/v1/version";
     private int duration = 500;
     private String md5 = null;
+    private RxHandler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 //        setContentViewLayout(R.layout.activity_setting);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        handler = new RxHandler(this);
         initActionBar();
         getSupportActionBar().setTitle("设置");
 
@@ -161,20 +176,20 @@ public class SettingActivity extends BaseActivity {
     }
 
     private void checkVersionAsync(){
-        HttpAsync.get(VersionUrl, new JsonHttpResponseHandler() {
+        OkHttp.get(updateUrl, new Callback() {
             @Override
-            public void onStart() {
-                Log.i("tag", "it start");
+            public void onFailure(Call call, IOException e) {
+                ToastMsg.builder.display("网络好像出了点问题", duration);
             }
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Log.i("tag",String.valueOf(response));
+            public void onResponse(Call call, Response res) throws IOException {
                 try {
+                    JSONObject response = new JSONObject(res.body().string());
                     int versionCode = response.getInt("version_code");
                     if (versionCode > getVersionCode()) {
                         Log.i("tag", "需要更新");
-                        showNoticeDialog();
+                        handler.sendEmptyMessage(VERSION_DIALOG);
                     } else {
                         Log.i("tag", "我们不需要更新");
                         ToastMsg.builder.display("已是最新版本，无需更新", duration);
@@ -184,13 +199,6 @@ public class SettingActivity extends BaseActivity {
                     e.printStackTrace();
                 }
             }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                ToastMsg.builder.display("网络请求失败", duration);
-                //Toast.makeText(Setting.this, "网络请求失败", Toast.LENGTH_SHORT).show();
-            }
-
         });
     }
 
@@ -256,21 +264,24 @@ public class SettingActivity extends BaseActivity {
 
     public void uplaodHeadImage() {
         File file = new File(getApplicationContext().getExternalFilesDir("headImage") + "/" + userEntity.getStudentID() + ".png");
-        RequestParams params = new RequestParams();
-        params.put("token", userEntity.getToken());
-        try {
-            params.put("avatar",file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        Log.i("TAG", String.valueOf(file.exists()));
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("token", userEntity.getToken())
+                .addFormDataPart("avatar", file.getName(),
+                        RequestBody.create(OkHttp.MEDIA_TYPE_PNG, file))
+                .build();
 
-        HttpAsync.post("http://user.ecjtu.net/api/user/" + userEntity.getStudentID() + "/avatar", params, new JsonHttpResponseHandler() {
+        OkHttp.post("http://user.ecjtu.net/api/user/" + userEntity.getStudentID() + "/avatar", requestBody, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                ToastMsg.builder.display("头像上传失败，网络有点不给力呀", duration);
+            }
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            public void onResponse(Call call, Response res) throws IOException {
                 try {
-                    if (response.getBoolean("result") == false) {
+                    JSONObject response = new JSONObject(res.body().string());
+                    if (!response.getBoolean("result")) {
                         userEntity.updataToken();
                         ToastMsg.builder.display("上传头像失败，请重试", duration);
                     } else {
@@ -283,13 +294,6 @@ public class SettingActivity extends BaseActivity {
                     e.printStackTrace();
                 }
             }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                ToastMsg.builder.display("头像上传失败，网络有点不给力呀", duration);
-                Log.i("TAG", String.valueOf(responseString));
-                Log.i("TAG", String.valueOf(statusCode));
-            }
         });
     }
 
@@ -299,6 +303,22 @@ public class SettingActivity extends BaseActivity {
         intent.putExtra("string", string);
         intent.putExtra("data",data);
         startActivityForResult(intent, requestCode);
+    }
+
+    private static class RxHandler extends Handler {
+
+        WeakReference thisActivity;
+
+        public RxHandler(SettingActivity activity) {
+            thisActivity = new WeakReference(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == VERSION_DIALOG) {
+                ((SettingActivity)thisActivity.get()).showNoticeDialog();
+            }
+        }
     }
 
 }

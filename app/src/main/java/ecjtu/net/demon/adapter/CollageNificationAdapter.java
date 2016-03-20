@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class CollageNificationAdapter extends RecyclerView.Adapter<RecyclerView.
     private ArrayList<ArrayMap<String, Object>> content = new ArrayList<>();
     private Context context;
     private LayoutInflater layoutInflater;
+    private boolean isRefreshFoot = false;
 
     public CollageNificationAdapter(Context context) {
         this.context = context;
@@ -45,26 +47,35 @@ public class CollageNificationAdapter extends RecyclerView.Adapter<RecyclerView.
         }
     }
 
+    public void updateInfo(boolean isRefresh) {
+        isRefreshFoot = isRefresh;
+        notifyDataSetChanged();
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         if (viewType == TYPE_ITEM) {
             return new NormalTextViewHolder(layoutInflater.inflate(R.layout.collage_item, viewGroup, false));
-        } else if (viewType == TYPE_FOOTER) {
+        } else {
             View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.listview_footer, null);
             view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             return new FooterViewHolder(view);
         }
-        return null;
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder normalTextViewHolder, int position) {
-        if (normalTextViewHolder instanceof NormalTextViewHolder) {
-            ((NormalTextViewHolder) normalTextViewHolder).title.setText((String) content.get(position).get("title"));
-            ((NormalTextViewHolder) normalTextViewHolder).info.setText((String) content.get(position).get("info"));
-            ((NormalTextViewHolder) normalTextViewHolder).click.setText((String) content.get(position).get("click"));
-            ((NormalTextViewHolder) normalTextViewHolder).time.setText((String) content.get(position).get("time"));
-            ((NormalTextViewHolder) normalTextViewHolder).id = (String) content.get(position).get("id");
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof NormalTextViewHolder) {
+            ((NormalTextViewHolder) holder).title.setText((String) content.get(position).get("title"));
+            ((NormalTextViewHolder) holder).info.setText((String) content.get(position).get("info"));
+            ((NormalTextViewHolder) holder).click.setText((String) content.get(position).get("click"));
+            ((NormalTextViewHolder) holder).time.setText((String) content.get(position).get("time"));
+            ((NormalTextViewHolder) holder).id = (String) content.get(position).get("id");
+        } else {
+            if (isRefreshFoot) {
+                ((FooterViewHolder) holder).progressBar.setVisibility(View.VISIBLE);
+                ((FooterViewHolder) holder).textView.setText("加载中……");
+            }
         }
     }
 
@@ -74,15 +85,20 @@ public class CollageNificationAdapter extends RecyclerView.Adapter<RecyclerView.
         return content == null ? 0 : content.size() + 1;
     }
 
-    class FooterViewHolder extends RecyclerView.ViewHolder {
+    private class FooterViewHolder extends RecyclerView.ViewHolder {
+
+        private ProgressBar progressBar;
+        private TextView textView;
 
         public FooterViewHolder(View view) {
             super(view);
+            progressBar = (ProgressBar) itemView.findViewById(R.id.pull_to_refresh_load_progress);
+            textView = (TextView) itemView.findViewById(R.id.pull_to_refresh_loadmore_text);
         }
 
     }
 
-    public class NormalTextViewHolder extends RecyclerView.ViewHolder {
+    private class NormalTextViewHolder extends RecyclerView.ViewHolder {
 
         private TextView title;
         private TextView info;

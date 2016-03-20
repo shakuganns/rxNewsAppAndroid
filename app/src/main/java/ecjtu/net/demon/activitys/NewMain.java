@@ -10,6 +10,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
@@ -33,6 +35,8 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import cz.msebera.android.httpclient.Header;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -42,14 +46,19 @@ import ecjtu.net.demon.adapter.MainAdapter;
 import ecjtu.net.demon.fragment.CollageNificationFragment;
 import ecjtu.net.demon.fragment.MainFragment;
 import ecjtu.net.demon.fragment.TushuoFragment;
-import ecjtu.net.demon.utils.HttpAsync;
+import ecjtu.net.demon.utils.OkHttp;
 import ecjtu.net.demon.utils.SharedPreUtil;
 import ecjtu.net.demon.utils.ToastMsg;
 import ecjtu.net.demon.utils.UserEntity;
 import ecjtu.net.demon.view.CycleImageView;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 
 public class NewMain extends NoGestureBaseActivity {
+
+    private static final int VERSION_DIALOG = 0;
 
     //所有的布尔类型init均表示应用启动后是否是第一次加载
 
@@ -68,14 +77,15 @@ public class NewMain extends NoGestureBaseActivity {
     private String updateUrl = "http://app.ecjtu.net/";
     private int duration = 300;
     public static MainAdapter mainAdapter;
-    private MainFragment mainFragment;
+    public MainFragment mainFragment;
 //    private ChatFragment chatFragment;
-    private CollageNificationFragment collageNificationFragment;
-    private TushuoFragment tushoFragment;
+    public CollageNificationFragment collageNificationFragment;
+    public TushuoFragment tushoFragment;
     private boolean[] isInit = {true,true,true};
     private DisplayImageOptions options;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
+    private Rxhandler handler;
 
     public void initFragment() {
         mainFragment = new MainFragment();
@@ -89,6 +99,7 @@ public class NewMain extends NoGestureBaseActivity {
 //        setContentViewLayout(R.layout.activity_new_main);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawlayout);
+        handler = new Rxhandler(this);
         initFragment();
         initActionBarNewMain();
         initViewPager();
@@ -371,23 +382,23 @@ public class NewMain extends NoGestureBaseActivity {
 
     private void checkVersionAsync(){
         String versionUrl = "http://app.ecjtu.net/api/v1/version";
-        HttpAsync.get(versionUrl, new JsonHttpResponseHandler() {
-
+        OkHttp.get(versionUrl, new Callback() {
             @Override
-            public void onStart() {
-                Log.i("tag", "it start");
+            public void onFailure(Call call, IOException e) {
+
             }
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            public void onResponse(Call call, Response res) throws IOException {
                 preferences = getSharedPreferences("phone", Context.MODE_PRIVATE);
                 if (preferences.getBoolean("update", true)) {
                     try {
+                        JSONObject response = new JSONObject(res.body().string());
                         int versionCode = response.getInt("version_code");
                         if (versionCode > getVersionCode()) {
                             Log.i("tag", "需要更新");
                             ToastMsg.builder.display("有新版本了，快更新吧!", duration);
-                            showNoticeDialog();
+                            handler.sendEmptyMessage(VERSION_DIALOG);
                         } else {
                             Log.i("tag", "我们不需要更新");
                         }
@@ -395,10 +406,6 @@ public class NewMain extends NoGestureBaseActivity {
                         e.printStackTrace();
                     }
                 }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
             }
         });
     }
@@ -437,6 +444,22 @@ public class NewMain extends NoGestureBaseActivity {
             exitInBack2();
         }
         return true;
+    }
+
+    private static class Rxhandler extends Handler {
+
+        WeakReference newMain;
+
+        public Rxhandler(NewMain newMain) {
+            this.newMain = new WeakReference(newMain);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == VERSION_DIALOG) {
+                ((NewMain)newMain.get()).showNoticeDialog();
+            }
+        }
     }
 
 }
