@@ -19,7 +19,6 @@ public class AboutActivity extends NoGestureBaseActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-//        setContentViewLayout(R.layout.activity_about);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         versionCode = (TextView) findViewById(R.id.tv_version);

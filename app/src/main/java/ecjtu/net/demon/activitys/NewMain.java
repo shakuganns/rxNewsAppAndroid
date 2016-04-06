@@ -47,6 +47,8 @@ import ecjtu.net.demon.utils.UserEntity;
 import ecjtu.net.demon.view.CycleImageView;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 
@@ -56,7 +58,7 @@ public class NewMain extends NoGestureBaseActivity {
 
     //所有的布尔类型init均表示应用启动后是否是第一次加载
 
-    public static int appBarVerticalOffset = 0;     //appbar垂直隐藏坐标
+    public static int appBarVerticalOffset = 0;     //appbar垂直方向不可见部分的距离
     public static boolean themeIsChange = false;
     private boolean isExit = false;
     public static UserEntity userEntity;
@@ -78,7 +80,7 @@ public class NewMain extends NoGestureBaseActivity {
     private DisplayImageOptions options;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
-    private Rxhandler handler;
+    private RxHandler handler;
 
     public void initFragment() {
         mainFragment = new MainFragment();
@@ -88,10 +90,9 @@ public class NewMain extends NoGestureBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        setContentViewLayout(R.layout.activity_new_main);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawlayout);
-        handler = new Rxhandler(this);
+        handler = new RxHandler(this);
         initFragment();
         initActionBarNewMain();
         initViewPager();
@@ -144,11 +145,11 @@ public class NewMain extends NoGestureBaseActivity {
         super.onResume();
         if (themeIsChange) {
             setTheme(themeID);
+            tabLayout.setBackgroundColor(themeColor);
+            drawerLayout.setStatusBarBackgroundColor(themeColorDark);
+            navigationHead.setBackgroundColor(themeColor);
             themeIsChange = false;
         }
-        tabLayout.setBackgroundColor(themeColor);
-        drawerLayout.setStatusBarBackgroundColor(themeColorDark);
-        navigationHead.setBackgroundColor(themeColor);
         if (!isUserInited) {
             initUserInfo();
             TextView userNameView = (TextView) navigationHead.findViewById(R.id.UserName);
@@ -231,6 +232,24 @@ public class NewMain extends NoGestureBaseActivity {
 
             @Override
             public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+    private void signIn() {
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("sid",studentID)
+                .build();
+        OkHttp.post("http://app.ecjtu.net/api/v1/check", requestBody, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                ToastMsg.builder.display("签到失败,请检查网络",duration);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
 
             }
         });
@@ -438,11 +457,11 @@ public class NewMain extends NoGestureBaseActivity {
         return true;
     }
 
-    private static class Rxhandler extends Handler {
+    private static class RxHandler extends Handler {
 
         WeakReference newMain;
 
-        public Rxhandler(NewMain newMain) {
+        public RxHandler(NewMain newMain) {
             this.newMain = new WeakReference(newMain);
         }
 

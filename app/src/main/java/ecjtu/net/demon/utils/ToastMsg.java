@@ -8,7 +8,7 @@ import android.widget.Toast;
 /**
  * Created by homker on 2015/4/11.
  */
-public enum  ToastMsg {
+public enum ToastMsg {
     builder;
     private View view;
     private Toast toast;

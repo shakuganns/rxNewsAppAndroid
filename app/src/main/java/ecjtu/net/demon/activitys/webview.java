@@ -44,7 +44,6 @@ public class webview extends NoGestureBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        setContentViewLayout(R.layout.activity_webview);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
         isComment = false;
@@ -91,11 +90,11 @@ public class webview extends NoGestureBaseActivity {
         ws.setDomStorageEnabled(true);
         String cachepath = getFilesDir().getAbsolutePath()+"/ws/";
         ws.setAppCachePath(cachepath);
-        ws.setAppCacheMaxSize(8 * 1024 * 1024);
-        ws.setDatabasePath(cachepath);
+//        ws.setAppCacheMaxSize(8 * 1024 * 1024);
+//        ws.setDatabasePath(cachepath);
         ws.setAppCacheEnabled(true);
         ws.setDatabaseEnabled(true);
-        ws.setRenderPriority(WebSettings.RenderPriority.HIGH);
+//        ws.setRenderPriority(WebSettings.RenderPriority.HIGH);
 
         webView.setWebViewClient(new WebViewClient() {
             @Override

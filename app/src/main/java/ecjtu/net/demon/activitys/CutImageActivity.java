@@ -53,7 +53,6 @@ public class CutImageActivity extends NoGestureBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        setContentViewLayout(R.layout.activity_cutimage);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cutimage);
 
@@ -74,45 +73,6 @@ public class CutImageActivity extends NoGestureBaseActivity {
             dialog.show();
             LoadImageTask task = new LoadImageTask();
             task.execute();
-//            mUri = Uri.parse(getIntent().getStringExtra("data")).toString();
-////            ImageLoader.getInstance().displayImage(mUri,cutImageView,options);
-//            ImageLoader.getInstance().loadImage(mUri, new ImageLoadingListener() {
-//
-//                @Override
-//                public void onLoadingStarted(String imageUri, View view) {
-//                    dialog = new ProgressDialog(CutImageActivity.this);
-//                    dialog.setProgressStyle(R.attr.progressBarStyle);
-//                    dialog.setMessage("加载中...");
-//                    dialog.setIndeterminate(true);              //设置进度条是否为不明确
-//                    dialog.setCancelable(false);                //设置进度条是否可以按退回键取消
-//                    dialog.setCanceledOnTouchOutside(false);    //设置点击进度对话框外的区域对话框不消失
-//                    dialog.show();
-//                }
-//
-//                @Override
-//                public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-//                    ToastMsg.builder.display("图片加载失败", 500);
-//                    finish();
-//                }
-//
-//                @Override
-//                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-//                    try {
-//                        saveFileImageLoader(loadedImage);
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                    Log.i("tag", "uri = " + mUri);
-//                    cutImageView.setImageBitmap(getDiskBitmap(getRealFilePath(CutImageActivity.this, Uri.parse(getApplicationContext()
-//                            .getExternalFilesDir("headImage") + "/" + getIntent().getStringExtra("string") + "2" + ".png"))));
-//                    dialog.dismiss();
-//                }
-//
-//                @Override
-//                public void onLoadingCancelled(String imageUri, View view) {
-//
-//                }
-//            });
         } else {
             //拍照取得的图片
             cutImageView.setImageBitmap(

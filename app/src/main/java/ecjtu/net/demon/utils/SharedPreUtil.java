@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.io.IOException;
-import java.io.StreamCorruptedException;
 
 
 /**
@@ -16,7 +15,7 @@ public class SharedPreUtil {
     // 用户名key
     public final static String KEY_NAME = "ecjtu.net";
 
-    public final static String KEY_LEVEL = "debug";
+//    public final static String KEY_LEVEL = "debug";
 
 
     private static SharedPreUtil s_SharedPreUtil;
@@ -27,7 +26,7 @@ public class SharedPreUtil {
 
     public SharedPreUtil(Context context) {
         msp = context.getSharedPreferences("SharedPreUtil",
-                Context.MODE_PRIVATE | Context.MODE_APPEND);
+                Context.MODE_APPEND);
     }
 
     // 初始化，一般在应用启动之后就要初始化
@@ -40,7 +39,7 @@ public class SharedPreUtil {
     /**
      * 获取唯一的instance
      *
-     * @return
+     * @return instance
      */
     public static synchronized SharedPreUtil getInstance() {
         return s_SharedPreUtil;
@@ -58,7 +57,7 @@ public class SharedPreUtil {
             e.printStackTrace();
         }
         editor.putString(KEY_NAME, str);
-        editor.commit();
+        editor.apply();
 
         s_User = user;
     }
@@ -77,9 +76,6 @@ public class SharedPreUtil {
                     s_User = (UserEntity) obj;
                 }
 
-            } catch (StreamCorruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -93,7 +89,7 @@ public class SharedPreUtil {
         SharedPreferences.Editor editor = msp.edit();
         editor.putString(KEY_NAME, "");
 
-        editor.commit();
+        editor.apply();
         s_User = null;
     }
 

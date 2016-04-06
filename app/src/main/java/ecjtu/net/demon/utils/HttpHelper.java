@@ -143,6 +143,8 @@ public class HttpHelper {
             while ((line = bufferedReader.readLine()) != null) {
                 result.append(line);
             }
+            bufferedReader.close();
+            inStream.close();
         } catch (MalformedURLException e) {
 
         } catch (ProtocolException e) {

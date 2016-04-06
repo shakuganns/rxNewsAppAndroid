@@ -57,7 +57,6 @@ public class SettingActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        setContentViewLayout(R.layout.activity_setting);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         handler = new RxHandler(this);

@@ -8,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -59,11 +61,11 @@ public class rxCommentsActivity extends BaseActivity {
         ws.setDomStorageEnabled(true);
         String cachepath = getFilesDir().getAbsolutePath()+"/ws/";
         ws.setAppCachePath(cachepath);
-        ws.setAppCacheMaxSize(8 * 1024 * 1024);
-        ws.setDatabasePath(cachepath);
+//        ws.setAppCacheMaxSize(8 * 1024 * 1024);
+//        ws.setDatabasePath(cachepath);
         ws.setAppCacheEnabled(true);
         ws.setDatabaseEnabled(true);
-        ws.setRenderPriority(WebSettings.RenderPriority.HIGH);
+//        ws.setRenderPriority(WebSettings.RenderPriority.HIGH);
         webView.addJavascriptInterface(new JavaScriptInterface(this), "interface");
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -73,11 +75,9 @@ public class rxCommentsActivity extends BaseActivity {
             }
 
             @Override
-            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                super.onReceivedError(view, errorCode, description, failingUrl);
-//                if(errorCode == 404){
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                super.onReceivedError(view, request, error);
                 view.loadUrl("file:///android_asset/404/404.htm");
-//                }
             }
         });
     }

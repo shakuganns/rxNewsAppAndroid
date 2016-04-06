@@ -31,7 +31,6 @@ public class SubCommentsActivity extends BaseActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-//        setContentViewLayout(R.layout.activity_subcomments);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subcomments);
         initActionBar();
