@@ -164,10 +164,8 @@ public class HttpHelper {
             }
             bufferedReader.close();
             inStream.close();
-        } catch (MalformedURLException e) {
+        } catch (MalformedURLException ignored) {
 
-        } catch (ProtocolException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -179,11 +177,11 @@ public class HttpHelper {
     /**
      * 账户密码检查
      *
-     * @param userName
-     * @param passWord
-     * @return
+     * @param userName id
+     * @param passWord 密码
+     * @return token
      */
-    public String passwordcheck(String userName, String passWord,String url) {
+    private String passwordcheck(String userName, String passWord,String url) {
         String token = null;
         boolean flag = false;
         url = url+"login";
@@ -206,10 +204,10 @@ public class HttpHelper {
     /**
      * 获取用户信息
      *
-     * @param studentID
-     * @return
+     * @param studentID 学号
+     * @return  用户信息
      */
-    public UserEntity getUserContent(String studentID,String token,String url) {
+    private UserEntity getUserContent(String studentID,String token,String url) {
         Log.i("tag", "getUserContent works");
         JSONObject person = null;
         boolean status = false;

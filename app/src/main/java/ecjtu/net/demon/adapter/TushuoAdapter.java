@@ -38,11 +38,6 @@ public class TushuoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public TushuoAdapter(Context context) {
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
-//        ImageLoaderConfiguration configuration = ImageLoaderConfiguration
-//                .createDefault(context);
-//
-//        //Initialize ImageLoader with configuration.
-//        ImageLoader.getInstance().init(configuration);
 
         options = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.thumb_default)

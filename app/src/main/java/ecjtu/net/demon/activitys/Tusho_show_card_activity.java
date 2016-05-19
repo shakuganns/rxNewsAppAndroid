@@ -84,7 +84,7 @@ public class Tusho_show_card_activity extends BaseActivity {
                 author.setText(authorS);
                 count.setText(countS);
                 click.setText(clickS);
-                adapeter.notifyDataChanged();
+                adapeter.notifyDataSetChanged();
             }
         });
         loadData(url);

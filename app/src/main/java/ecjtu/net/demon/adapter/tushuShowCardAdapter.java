@@ -43,9 +43,9 @@ public class tushuShowCardAdapter extends RecyclerView.Adapter<RecyclerView.View
                 .build();
     }
 
-    public void notifyDataChanged() {
-        notifyDataSetChanged();
-    }
+//    public void notifyDataChanged() {
+//        notifyDataSetChanged();
+//    }
 
     public ArrayList<ArrayMap<String, Object>> getContent() {
         return content;
@@ -62,7 +62,6 @@ public class tushuShowCardAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-
         return new NormalTextViewHolder(layoutInflater.inflate(R.layout.show_card_item, viewGroup, false));
     }
 
@@ -82,7 +81,6 @@ public class tushuShowCardAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 
     public class NormalTextViewHolder extends RecyclerView.ViewHolder {
-
 
         private ImageView image;
         private int position;

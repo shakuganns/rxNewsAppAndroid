@@ -1,8 +1,6 @@
 package ecjtu.net.demon.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +10,6 @@ import android.widget.TextView;
 
 import ecjtu.net.demon.R;
 import ecjtu.net.demon.activitys.BaseActivity;
-import ecjtu.net.demon.view.CycleImageView;
 
 /**
  * Created by Shakugan on 15/12/5.
@@ -58,7 +55,7 @@ public class ThemeListAdapter extends BaseAdapter {
         ImageView imageView = (ImageView) convertView.findViewById(R.id.themeColor);
         imageView.setBackgroundResource(colorDrawble[position]);
         textView.setText(themeList[position]);
-        textView.setTextColor(convertView.getResources().getColor(colors[position]));
+        textView.setTextColor(convertView.getResources().getColor(colors[position],null));
         return convertView;
     }
 

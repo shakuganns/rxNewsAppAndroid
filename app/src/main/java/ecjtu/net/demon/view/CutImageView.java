@@ -99,7 +99,7 @@ public class CutImageView extends ImageView implements ViewTreeObserver.OnGlobal
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setStrokeWidth(2);
         mPaint.setAntiAlias(true);
-        mPaint.setColor(getResources().getColor(R.color.cutimageview_bg));
+        mPaint.setColor(getResources().getColor(R.color.cutimageview_bg,null));
     }
 
     private float getScale() {
@@ -323,7 +323,7 @@ public class CutImageView extends ImageView implements ViewTreeObserver.OnGlobal
         }
         canvas.restoreToCount(sc);
         mPaint.setXfermode(null);
-        mPaint.setColor(getResources().getColor(R.color.cutimageview_bg));
+        mPaint.setColor(getResources().getColor(R.color.cutimageview_bg,null));
     }
 
     @Override
