@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,6 +16,9 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -41,6 +45,7 @@ import ecjtu.net.demon.fragment.CollageNificationFragment;
 import ecjtu.net.demon.fragment.MainFragment;
 import ecjtu.net.demon.fragment.TushuoFragment;
 import ecjtu.net.demon.utils.OkHttp;
+import ecjtu.net.demon.utils.RxHandler;
 import ecjtu.net.demon.utils.SharedPreUtil;
 import ecjtu.net.demon.utils.ToastMsg;
 import ecjtu.net.demon.utils.UserEntity;
@@ -55,6 +60,7 @@ import okhttp3.Response;
 public class NewMain extends NoGestureBaseActivity {
 
     private static final int VERSION_DIALOG = 0;
+    private static final String TAG = "NewMain";
 
     //所有的布尔类型init均表示应用启动后是否是第一次加载
 
@@ -92,9 +98,15 @@ public class NewMain extends NoGestureBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawlayout);
-        handler = new RxHandler(this);
+        handler = new RxHandler();
+        handler.setOnHandleMessageListener(new RxHandler.OnHandleMessageListener() {
+            @Override
+            public void onHanleMessage(Message msg) {
+                showNoticeDialog();
+            }
+        });
         initFragment();
-        initActionBarNewMain();
+        initActionBar();
         initViewPager();
         checkVersionAsync();
         appBarLayout = (AppBarLayout) findViewById(R.id.app_bar_layout);
@@ -110,7 +122,7 @@ public class NewMain extends NoGestureBaseActivity {
         headImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("TAG", "TouchImage-----");
+                Log.i(TAG, "TouchImage-----");
                 slidingMenuClickListen(R.id.UserImage);
             }
         });
@@ -118,7 +130,7 @@ public class NewMain extends NoGestureBaseActivity {
 //        headImage.setOnClickListener(new rxOnClickListener() {
 //            @Override
 //            public void rxClick(View v) {
-//                Log.i("tag","this is rxClick");
+//                Log.i(TAG,"this is rxClick");
 //            }
 //        });
         userEntity = SharedPreUtil.getInstance().getUser();
@@ -156,12 +168,12 @@ public class NewMain extends NoGestureBaseActivity {
             TextView studentIdView = (TextView) navigationHead.findViewById(R.id.studentId);
             headImage = (CycleImageView) navigationHead.findViewById(R.id.UserImage);
             if (userName != null) {
-                Log.i("tag","userdata is not null~~");
+                Log.i(TAG,"userdata is not null~~");
                 userNameView.setText(userName);
                 studentIdView.setText(studentID);
                 ImageLoader.getInstance().displayImage("http://" + userEntity.getHeadImagePath(), headImage, options);
             } else {
-                Log.i("tag", "userdata is null~~");
+                Log.i(TAG, "userdata is null~~");
                 userNameView.setText(R.string.UserName);
                 studentIdView.setText("");
                 headImage.setImageResource(R.drawable.userimage);
@@ -211,18 +223,18 @@ public class NewMain extends NoGestureBaseActivity {
 
             @Override
             public void onPageSelected(int position) {
-                Log.i("TAG", "---------" + position + "------------");
+                Log.i(TAG, "---------" + position + "------------");
                 switch (position) {
                     case 1:
                         if (isInit[1]) {
-                            Log.i("TAG", "---------setfragment2------------");
+                            Log.i(TAG, "---------setfragment2------------");
                             collageNificationFragment.updateData();
                             isInit[1] = false;
                         }
                         break;
                     case 2:
                         if (isInit[2]) {
-                            Log.i("TAG", "---------setfragment3------------");
+                            Log.i(TAG, "---------setfragment3------------");
                             tushoFragment.updateData();
                             isInit[2] = false;
                         }
@@ -237,7 +249,7 @@ public class NewMain extends NoGestureBaseActivity {
         });
     }
 
-    private void signIn() {
+    private void dayCheck() {
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("sid",studentID)
@@ -245,12 +257,49 @@ public class NewMain extends NoGestureBaseActivity {
         OkHttp.post("http://app.ecjtu.net/api/v1/check", requestBody, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                ToastMsg.builder.display("签到失败,请检查网络",duration);
+//                ToastMsg.builder.display("签到失败,请检查网络",duration);
+                Log.i(TAG,"check");
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                Log.i(TAG,"sucess check");
+            }
+        });
+    }
 
+    @Override
+    protected void initActionBar() {
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        drawerLayout = (DrawerLayout) findViewById(R.id.DrawLayout);
+        drawer = (NavigationView) findViewById(R.id.drawer);
+        toolbar.setTitle("首页");
+        toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.tool_bar_open, R.string.tool_bar_close) {
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                invalidateOptionsMenu();
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                invalidateOptionsMenu();
+            }
+        };
+        actionBarDrawerToggle.syncState();
+
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        drawer.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                slidingMenuClickListen(menuItem.getItemId());
+                return false;
             }
         });
     }
@@ -285,17 +334,15 @@ public class NewMain extends NoGestureBaseActivity {
      * drawer menu点击事件处理
      * @param id view的id
      */
-
-    @Override
     public void slidingMenuClickListen(int id) {
         String url = null;
         if (!TextUtils.isEmpty(studentID)) {
             switch (id) {
                 case R.id.UserImage:
-                    turn2ActivityWithUrl(SettingActivity.class,null);
+                    turn2Activity(this,SettingActivity.class);
                     break;
                 case R.id.scran:
-                    turn2ActivityWithUrl(CaptureActivity.class, null);
+                    turn2Activity(this,CaptureActivity.class);
                     break;
                 case R.id.score:
                     url = "file:///android_asset/RixinScoreQuery/scoreQuery.html";
@@ -308,7 +355,7 @@ public class NewMain extends NoGestureBaseActivity {
 //                    url = "file:///android_asset/RixinCardQuery/cardQuery.html";
                     break;
                 case R.id.setting:
-                    turn2ActivityWithUrl(SettingActivity.class, null);
+                    turn2Activity(this,SettingActivity.class);
                     break;
                 case R.id.bookquery:
                     ToastMsg.builder.display("开发中...", duration);
@@ -317,31 +364,31 @@ public class NewMain extends NoGestureBaseActivity {
                     break;
             }
             if (url != null) {
-                turn2ActivityWithUrl(ContentWebView.class, url);
+                turn2ActivityWithUrl(this,ContentWebView.class, url);
             }
         } else {
             switch (id) {
                 case R.id.scran:
-                    turn2ActivityWithUrl(CaptureActivity.class, null);
+                    turn2Activity(this,CaptureActivity.class);
                     break;
                 default: {
-                    turn2ActivityWithUrl(LoginActivity.class, null);
+                    turn2Activity(this,LoginActivity.class);
                     ToastMsg.builder.display("请先行登入", duration);
                 }
             }
         }
     }
 
-    private void turn2ActivityWithUrl(Class activity, String url) {
-        Intent intent = new Intent();
-        intent.setClass(NewMain.this, activity);
-        if (url != null) {
-            Bundle bundle = new Bundle();
-            bundle.putString("url", url);
-            intent.putExtras(bundle);
-        }
-        startActivity(intent);
-    }
+//    private void turn2ActivityWithUrl(Class activity, String url) {
+//        Intent intent = new Intent();
+//        intent.setClass(NewMain.this, activity);
+//        if (url != null) {
+//            Bundle bundle = new Bundle();
+//            bundle.putString("url", url);
+//            intent.putExtras(bundle);
+//        }
+//        startActivity(intent);
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -372,7 +419,7 @@ public class NewMain extends NoGestureBaseActivity {
             {
                 dialog.dismiss();
                 // 显示下载对话框
-                turn2ActivityWithUrl(ContentWebView.class,updateUrl);
+                turn2ActivityWithUrl(NewMain.this,ContentWebView.class,updateUrl);
             }
         });
         // 稍后更新
@@ -407,11 +454,11 @@ public class NewMain extends NoGestureBaseActivity {
                         JSONObject response = new JSONObject(res.body().string());
                         int versionCode = response.getInt("version_code");
                         if (versionCode > getVersionCode()) {
-                            Log.i("tag", "需要更新");
+                            Log.i(TAG, "需要更新");
                             ToastMsg.builder.display("有新版本了，快更新吧!", duration);
                             handler.sendEmptyMessage(VERSION_DIALOG);
                         } else {
-                            Log.i("tag", "我们不需要更新");
+                            Log.i(TAG, "我们不需要更新");
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -420,6 +467,7 @@ public class NewMain extends NoGestureBaseActivity {
             }
         });
     }
+
     private int getVersionCode() throws Exception{
         //获取packagemanager的实例
         PackageManager packageManager = getPackageManager();
@@ -455,22 +503,6 @@ public class NewMain extends NoGestureBaseActivity {
             exitInBack2();
         }
         return true;
-    }
-
-    private static class RxHandler extends Handler {
-
-        WeakReference newMain;
-
-        public RxHandler(NewMain newMain) {
-            this.newMain = new WeakReference(newMain);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.what == VERSION_DIALOG) {
-                ((NewMain)newMain.get()).showNoticeDialog();
-            }
-        }
     }
 
 }

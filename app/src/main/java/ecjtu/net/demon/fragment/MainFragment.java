@@ -1,5 +1,6 @@
 package ecjtu.net.demon.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -29,6 +30,7 @@ import ecjtu.net.demon.activitys.NewMain;
 import ecjtu.net.demon.adapter.RixinNewsAdapter;
 import ecjtu.net.demon.utils.ACache;
 import ecjtu.net.demon.utils.OkHttp;
+import ecjtu.net.demon.utils.RxHandler;
 import ecjtu.net.demon.utils.ToastMsg;
 import ecjtu.net.demon.view.rxRefreshLayout;
 import okhttp3.Call;
@@ -61,7 +63,25 @@ public class MainFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         isbottom = false;
-        handler = new RxHandler((NewMain) getActivity());
+        handler = new RxHandler();
+        handler.setOnHandleMessageListener(new RxHandler.OnHandleMessageListener() {
+            @Override
+            public void onHanleMessage(Message msg) {
+                if (msg.what == 0) {
+                    rixinNewsAdapter.updateInfo(false);
+                    setContentShown(true);
+                } else if (msg.what == 1){
+                    rixinNewsAdapter.updateInfo(true);
+                    refreshLayout.setRefreshing(false);
+                    setContentShown(true);
+                } else {
+                    TextView bottom = (TextView) mContentView.findViewById(R.id.pull_to_refresh_loadmore_text);
+                    ProgressBar bottomProgressBar = (ProgressBar) mContentView.findViewById(R.id.pull_to_refresh_load_progress);
+                    bottomProgressBar.setVisibility(View.GONE);
+                    bottom.setText("已经没有更多新闻啦");
+                }
+            }
+        });
         linearLayoutManager = new LinearLayoutManager(getActivity());
         newslist = (RecyclerView) mContentView.findViewById(R.id.newslist);
         newslist.setLayoutManager(linearLayoutManager);
@@ -266,34 +286,6 @@ public class MainFragment extends Fragment {
     public void setContentShown(boolean shown) {
         if (shown) {
             newslist.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private static class RxHandler extends Handler {
-
-        WeakReference mActivity;
-        MainFragment theFragment;
-
-        RxHandler(NewMain activity) {
-            mActivity = new WeakReference(activity);
-            theFragment = ((NewMain) mActivity.get()).mainFragment;
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.what == 0) {
-                theFragment.rixinNewsAdapter.updateInfo(false);
-                theFragment.setContentShown(true);
-            } else if (msg.what == 1){
-                theFragment.rixinNewsAdapter.updateInfo(true);
-                theFragment.refreshLayout.setRefreshing(false);
-                theFragment.setContentShown(true);
-            } else {
-                TextView bottom = (TextView) theFragment.getView().findViewById(R.id.pull_to_refresh_loadmore_text);
-                ProgressBar bottomProgressBar = (ProgressBar) theFragment.getView().findViewById(R.id.pull_to_refresh_load_progress);
-                bottomProgressBar.setVisibility(View.GONE);
-                bottom.setText("已经没有更多新闻啦");
-            }
         }
     }
 }

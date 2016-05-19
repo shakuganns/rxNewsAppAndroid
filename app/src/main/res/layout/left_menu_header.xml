@@ -41,6 +41,7 @@
             android:layout_height="wrap_content" />
 
         <Button
+            android:visibility="gone"
             android:layout_marginRight="8dp"
             android:layout_gravity="end"
             android:text="签到"

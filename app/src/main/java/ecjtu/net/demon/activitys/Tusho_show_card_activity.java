@@ -18,6 +18,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,6 +36,7 @@ import java.util.ArrayList;
 import ecjtu.net.demon.R;
 import ecjtu.net.demon.adapter.tushuShowCardAdapter;
 import ecjtu.net.demon.utils.OkHttp;
+import ecjtu.net.demon.utils.RxHandler;
 import ecjtu.net.demon.utils.ToastMsg;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -74,9 +76,19 @@ public class Tusho_show_card_activity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tusho_show_card_activity);
-        handler = new RxHandler(this);
+        handler = new RxHandler();
+        handler.setOnHandleMessageListener(new RxHandler.OnHandleMessageListener() {
+            @Override
+            public void onHanleMessage(Message msg) {
+                title.setText(titleS);
+                author.setText(authorS);
+                count.setText(countS);
+                click.setText(clickS);
+                adapeter.notifyDataChanged();
+            }
+        });
         loadData(url);
-        initActionBarTushuo();
+        initActionBar();
         getSupportActionBar().setTitle("图说");
 
         toolbarImage = (ImageView) findViewById(R.id.toolbar_image);
@@ -123,6 +135,17 @@ public class Tusho_show_card_activity extends BaseActivity {
             bitmap.recycle();
             bitmap = null;
         }
+    }
+
+    @Override
+    protected void initActionBar() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
+
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void loadData(String url) {
@@ -249,25 +272,6 @@ public class Tusho_show_card_activity extends BaseActivity {
         protected void onPostExecute(Bitmap bitmap) {
             layout.setContentScrim(new BitmapDrawable(bitmap));
             toolbarImage.setImageDrawable(new BitmapDrawable(bitmap));
-        }
-    }
-
-    private static class RxHandler extends Handler {
-
-        WeakReference thisActivity;
-
-        public RxHandler(Tusho_show_card_activity activity) {
-            thisActivity = new WeakReference(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            Tusho_show_card_activity activity = (Tusho_show_card_activity) thisActivity.get();
-            activity.title.setText(activity.titleS);
-            activity.author.setText(activity.authorS);
-            activity.count.setText(activity.countS);
-            activity.click.setText(activity.clickS);
-            activity.adapeter.notifyDataChanged();
         }
     }
 }

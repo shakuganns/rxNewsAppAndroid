@@ -30,33 +30,33 @@ import ecjtu.net.demon.utils.SharedPreUtil;
  *欢迎界面
  **/
 
-public class New_login extends Activity {
+public class New_login extends NoGestureBaseActivity {
 
     private ImageView site;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     boolean mFirst = false;
 
-    private void turn2mianActivity(Bundle bundle) {
-        Intent intent = new Intent();
-        if (bundle != null) {
-            intent.putExtras(bundle);
-        }
-        intent.setClass(this, NewMain.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.push_center_in,R.anim.push_center_out);
-        finish();
-    }
-
-    private void turn2WelcomeActivity(Bundle bundle) {
-        Intent intent = new Intent();
-        if (bundle != null) {
-            intent.putExtras(bundle);
-        }
-        intent.setClass(this, WelcomeActivity.class);
-        startActivity(intent);
-        finish();
-    }
+//    private void turn2mianActivity(Bundle bundle) {
+//        Intent intent = new Intent();
+//        if (bundle != null) {
+//            intent.putExtras(bundle);
+//        }
+//        intent.setClass(this, NewMain.class);
+//        startActivity(intent);
+//        overridePendingTransition(R.anim.push_center_in,R.anim.push_center_out);
+//        finish();
+//    }
+//
+//    private void turn2WelcomeActivity(Bundle bundle) {
+//        Intent intent = new Intent();
+//        if (bundle != null) {
+//            intent.putExtras(bundle);
+//        }
+//        intent.setClass(this, WelcomeActivity.class);
+//        startActivity(intent);
+//        finish();
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +73,7 @@ public class New_login extends Activity {
             editor = preferences.edit();
             //将登录标志位设置为false，下次登录时不在显示首次登录界面
             editor.putBoolean("firststart", false);
-            editor.commit();
+            editor.apply();
         }
         site = (ImageView) findViewById(R.id.site);
         propertyValuesHolder(site);
@@ -107,10 +107,12 @@ public class New_login extends Activity {
             @Override
             public void onAnimationEnd(Animator animation) {
                 if (mFirst) {
-                    turn2WelcomeActivity(null);
+                    turn2Activity(New_login.this,WelcomeActivity.class);
                 } else {
-                    turn2mianActivity(null);
+                    turn2Activity(New_login.this,NewMain.class);
+                    overridePendingTransition(R.anim.push_center_in,R.anim.push_center_out);
                 }
+                finish();
             }
 
             @Override

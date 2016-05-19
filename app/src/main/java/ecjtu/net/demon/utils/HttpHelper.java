@@ -16,7 +16,11 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+
+import ecjtu.net.demon.activitys.LoginActivity;
+import ecjtu.net.demon.activitys.NewMain;
 
 
 /**
@@ -24,16 +28,31 @@ import java.util.HashMap;
  */
 public class HttpHelper {
 
+
+    private static HttpHelper instance;
+    public final static String LOGIN_URL = "http://user.ecjtu.net/api/";
     private String result = null;
     private URL url1 = null;
     private HttpURLConnection connection = null;
     private InputStreamReader in = null;
-    public static String password;
+    public String password;
     private HttpURLConnection conn;
 
-    public HttpHelper() {
+    private HttpHelper() {
 
     }
+
+    public static HttpHelper getInstance() {
+        if (instance == null) {
+            synchronized (HttpHelper.class) {
+                if (instance == null) {
+                    instance = new HttpHelper();
+                }
+            }
+        }
+        return instance;
+    }
+
 
     /**
      * 系统级别的get调用 不建议使用
@@ -222,6 +241,21 @@ public class HttpHelper {
             return userEntity;
         }else{
             return null;
+        }
+    }
+
+    public boolean getUserToken(String id, String password) {
+        Log.i("TAG", "get token!");
+        HttpHelper httpHelper = getInstance();
+        String token = httpHelper.passwordcheck(id, password, LOGIN_URL);
+        if (token != null) {
+            Log.i("TAG","get token successed!");
+            UserEntity userEntity = httpHelper.getUserContent(id, token, LOGIN_URL);
+            SharedPreUtil.getInstance().putUser(userEntity);
+            return true;
+        } else {
+            Log.i("TAG","get token failed!");
+            return false;
         }
     }
 }

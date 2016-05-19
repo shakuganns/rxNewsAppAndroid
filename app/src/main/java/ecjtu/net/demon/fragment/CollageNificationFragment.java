@@ -28,6 +28,7 @@ import ecjtu.net.demon.activitys.NewMain;
 import ecjtu.net.demon.adapter.CollageNificationAdapter;
 import ecjtu.net.demon.utils.ACache;
 import ecjtu.net.demon.utils.OkHttp;
+import ecjtu.net.demon.utils.RxHandler;
 import ecjtu.net.demon.utils.ToastMsg;
 import ecjtu.net.demon.view.rxRefreshLayout;
 import okhttp3.Call;
@@ -65,7 +66,25 @@ public class CollageNificationFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        handler = new RxHandler((NewMain) getActivity());
+        handler = new RxHandler();
+        handler.setOnHandleMessageListener(new RxHandler.OnHandleMessageListener() {
+            @Override
+            public void onHanleMessage(Message msg) {
+                if (msg.what == 0) {
+                    adapter.updateInfo(false);
+                    setContentShown(true);
+                } else if (msg.what == 1) {
+                    adapter.updateInfo(true);
+                    swipeRefreshLayout.setRefreshing(false);
+                    setContentShown(true);
+                } else {
+                    TextView bottom = (TextView) mContentView.findViewById(R.id.pull_to_refresh_loadmore_text);
+                    ProgressBar bottomProgressBar = (ProgressBar) mContentView.findViewById(R.id.pull_to_refresh_load_progress);
+                    bottomProgressBar.setVisibility(View.GONE);
+                    bottom.setText("已经没有更多新闻啦");
+                }
+            }
+        });
         recyclerView = (RecyclerView) mContentView.findViewById(R.id.collage_nification);
 
         linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -228,33 +247,6 @@ public class CollageNificationFragment extends Fragment {
             }
         }
         return arrayList;
-    }
-
-    private static class RxHandler extends Handler {
-
-        private WeakReference newMain;
-
-         public RxHandler(NewMain newMain) {
-             this.newMain = new WeakReference(newMain);
-         }
-
-        @Override
-        public void handleMessage(Message msg) {
-            CollageNificationFragment theFragment = ((NewMain) newMain.get()).collageNificationFragment;
-            if (msg.what == 0) {
-                theFragment.adapter.updateInfo(false);
-                theFragment.setContentShown(true);
-            } else if (msg.what == 1) {
-                theFragment.adapter.updateInfo(true);
-                theFragment.swipeRefreshLayout.setRefreshing(false);
-                theFragment.setContentShown(true);
-            } else {
-                TextView bottom = (TextView) theFragment.getView().findViewById(R.id.pull_to_refresh_loadmore_text);
-                ProgressBar bottomProgressBar = (ProgressBar) theFragment.getView().findViewById(R.id.pull_to_refresh_load_progress);
-                bottomProgressBar.setVisibility(View.GONE);
-                bottom.setText("已经没有更多新闻啦");
-            }
-        }
     }
 
 }

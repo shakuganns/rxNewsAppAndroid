@@ -52,7 +52,6 @@ public class RixinNewsAdapter extends RecyclerView.Adapter {
         this.context = context;
         listContainer = LayoutInflater.from(context);
         myTopViewS = new ArrayList<>();
-
 //        ImageLoaderConfiguration configuration = ImageLoaderConfiguration
 //                .createDefault(context);
 //

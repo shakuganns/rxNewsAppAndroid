@@ -1,6 +1,7 @@
 package ecjtu.net.demon.activitys;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -45,7 +46,6 @@ public class NoGestureBaseActivity extends AppCompatActivity {
     public static int themeColorDark;
 
     public SharedPreferences preferences;
-    private CollapsingToolbarLayout mCollapsingToolbarLayout;
     public NavigationView drawer;
     public DrawerLayout drawerLayout;
     public Toolbar toolbar;
@@ -114,71 +114,34 @@ public class NoGestureBaseActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    protected void initActionBarTushuo() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
-
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    protected void initActionBarAbout() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        mCollapsingToolbarLayout.setTitle("关于我们");
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    protected void initActionBarNewMain() {
-        toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        drawerLayout = (DrawerLayout) findViewById(R.id.DrawLayout);
-        drawer = (NavigationView) findViewById(R.id.drawer);
-        toolbar.setTitle("首页");
-        toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.tool_bar_open, R.string.tool_bar_close) {
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                invalidateOptionsMenu();
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-                invalidateOptionsMenu();
-            }
-        };
-        actionBarDrawerToggle.syncState();
-
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
-        drawer.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                slidingMenuClickListen(menuItem.getItemId());
-                return false;
-            }
-        });
-    }
-
-    /**
-     * NewMain.java中重写的方法
-     * @param id view的id
-     */
-    public void slidingMenuClickListen(int id) {}
-
     @Override
     public void onLowMemory() {
         super.onLowMemory();
         Log.i("lowmemory", "clearMemoryCache0-----------");
         ImageLoader.getInstance().clearMemoryCache();
+    }
+
+    public void turn2Activity(Context context,Class dest) {
+        Intent intent = new Intent(context,dest);
+        startActivity(intent);
+    }
+
+    public void turn2Activity(Context context,Class dest,Bundle bundle) {
+        Intent intent = new Intent(context,dest);
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
+        intent.setClass(this, WelcomeActivity.class);
+        startActivity(intent);
+    }
+
+    public void turn2ActivityWithUrl(Context context,Class dest, String url) {
+        Intent intent = new Intent(context, dest);
+        if (url != null) {
+            Bundle bundle = new Bundle();
+            bundle.putString("url", url);
+            intent.putExtras(bundle);
+        }
+        startActivity(intent);
     }
 }

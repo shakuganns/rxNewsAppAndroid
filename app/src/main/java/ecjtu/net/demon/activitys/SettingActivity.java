@@ -9,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -21,11 +20,11 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 
 import ecjtu.net.demon.R;
 import ecjtu.net.demon.adapter.SettingListAdapter;
 import ecjtu.net.demon.utils.OkHttp;
+import ecjtu.net.demon.utils.RxHandler;
 import ecjtu.net.demon.utils.SharedPreUtil;
 import ecjtu.net.demon.utils.ToastMsg;
 import ecjtu.net.demon.utils.UserEntity;
@@ -59,7 +58,15 @@ public class SettingActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-        handler = new RxHandler(this);
+        handler = new RxHandler();
+        handler.setOnHandleMessageListener(new RxHandler.OnHandleMessageListener() {
+            @Override
+            public void onHanleMessage(Message msg) {
+                if (msg.what == VERSION_DIALOG) {
+                    showNoticeDialog();
+                }
+            }
+        });
         initActionBar();
         getSupportActionBar().setTitle("设置");
 
@@ -116,11 +123,11 @@ public class SettingActivity extends BaseActivity {
                     case 2: {
                         switch (childPosition) {
                             case 0: {
-                                turn2ActivityWithUrl(SettingThemeActivity.class,null);
+                                turn2Activity(SettingActivity.this,SettingThemeActivity.class);
                                 break;
                             }
                             case 1: {
-                                turn2ActivityWithUrl(SubCommentsActivity.class,null);
+                                turn2Activity(SettingActivity.this,SubCommentsActivity.class);
                                 break;
                             }
                             case 2: {
@@ -128,7 +135,7 @@ public class SettingActivity extends BaseActivity {
                                 break;
                             }
                             case 3: {
-                                turn2ActivityWithUrl(AboutActivity.class,null);
+                                turn2Activity(SettingActivity.this,AboutActivity.class);
                                 break;
                             }
                         }
@@ -137,8 +144,7 @@ public class SettingActivity extends BaseActivity {
                     case 3: {
                         SharedPreUtil.getInstance().DeleteUser();
                         NewMain.isUserInited = false;
-                        Intent intent = new Intent(SettingActivity.this,NewMain.class);
-                        startActivity(intent);
+                        turn2Activity(SettingActivity.this,NewMain.class);
                         finish();
                         break;
                     }
@@ -155,17 +161,6 @@ public class SettingActivity extends BaseActivity {
             setTheme(themeID);
             themeIsChange = false;
         }
-    }
-
-    private void turn2ActivityWithUrl(Class activity, String url) {
-        Intent intent = new Intent();
-        intent.setClass(SettingActivity.this, activity);
-        if (url != null) {
-            Bundle bundle = new Bundle();
-            bundle.putString("url", url);
-            intent.putExtras(bundle);
-        }
-        startActivity(intent);
     }
 
     private void checkVersionAsync(){
@@ -207,7 +202,7 @@ public class SettingActivity extends BaseActivity {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 // 显示下载对话框
-                turn2ActivityWithUrl(ContentWebView.class, updateUrl);
+                turn2ActivityWithUrl(SettingActivity.this,ContentWebView.class, updateUrl);
 
             }
         });
@@ -233,12 +228,8 @@ public class SettingActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 10 && resultCode == Activity.RESULT_OK) {
-//            headImage.setImageDrawable(Drawable.createFromPath(getApplicationContext()
-//                    .getExternalFilesDir("headImage") + "/" + studentID + ".png"));
-//            headImageUrl = studentID+".png";
-//            userEntity.setHeadImage(headImageUrl);
             turn2ActivityWithStringForResult(CutImageActivity.class, userEntity.getStudentID(),null,12);
-        }else if (requestCode == 11 && resultCode == Activity.RESULT_OK) {
+        } else if (requestCode == 11 && resultCode == Activity.RESULT_OK) {
             Log.i("TAG", String.valueOf(data.getData()));
             turn2ActivityWithStringForResult(CutImageActivity.class, userEntity.getStudentID(), String.valueOf(data.getData()), 12);
             Log.i("TAG", "settingHead----->");
@@ -296,22 +287,6 @@ public class SettingActivity extends BaseActivity {
         intent.putExtra("string", string);
         intent.putExtra("data",data);
         startActivityForResult(intent, requestCode);
-    }
-
-    private static class RxHandler extends Handler {
-
-        WeakReference thisActivity;
-
-        public RxHandler(SettingActivity activity) {
-            thisActivity = new WeakReference(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.what == VERSION_DIALOG) {
-                ((SettingActivity)thisActivity.get()).showNoticeDialog();
-            }
-        }
     }
 
 }

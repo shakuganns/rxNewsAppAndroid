@@ -108,9 +108,7 @@ public class CaptureActivity extends NoGestureBaseActivity implements Callback {
 	private void initCamera(SurfaceHolder surfaceHolder) {
 		try {
 			CameraManager.get().openDriver(surfaceHolder);
-		} catch (IOException ioe) {
-			return;
-		} catch (RuntimeException e) {
+		} catch (IOException | RuntimeException ioe) {
 			return;
 		}
 		if (handler == null) {
@@ -176,7 +174,8 @@ public class CaptureActivity extends NoGestureBaseActivity implements Callback {
 //							handler.restartPreviewAndDecode();
 //						return;
 //					}
-					turn2webview(resultString);
+					turn2ActivityWithUrl(CaptureActivity.this,ContentWebView.class,resultString);
+					finish();
 				}
 			});
 
@@ -192,15 +191,15 @@ public class CaptureActivity extends NoGestureBaseActivity implements Callback {
 		}
 	}
 
-	void turn2webview(String url){
-		Intent intent = new Intent();
-		intent.setClass(CaptureActivity.this,ContentWebView.class);
-		Bundle bundle = new Bundle();
-		bundle.putString("url", url);
-		intent.putExtras(bundle);
-		startActivity(intent);
-		this.finish();
-	}
+//	void turn2webview(String url){
+//		Intent intent = new Intent();
+//		intent.setClass(CaptureActivity.this,ContentWebView.class);
+//		Bundle bundle = new Bundle();
+//		bundle.putString("url", url);
+//		intent.putExtras(bundle);
+//		startActivity(intent);
+//		this.finish();
+//	}
 
 //	private boolean isLegalUrl(String resultString) {
 //		Pattern p = Pattern.compile("^(http|www|ftp|)?(://)?(\\w+(-\\w+)*)(\\.(\\w+(-\\w+)*))*((:\\d+)?)(/(\\w+(-\\w+)*))*(\\.?(\\w)*)(\\?)?(((\\w*%)*(\\w*\\?)*(\\w*:)*(\\w*\\+)*(\\w*\\.)*(\\w*&)*(\\w*-)*(\\w*=)*(\\w*%)*(\\w*\\?)*(\\w*:)*(\\w*\\+)*(\\w*\\.)*(\\w*&)*(\\w*-)*(\\w*=)*)*(\\w*)*)$", Pattern.CASE_INSENSITIVE );

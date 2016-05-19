@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -26,6 +27,7 @@ import ecjtu.net.demon.activitys.NewMain;
 import ecjtu.net.demon.activitys.rxCommentsActivity;
 import ecjtu.net.demon.activitys.webview;
 import ecjtu.net.demon.utils.OkHttp;
+import ecjtu.net.demon.utils.RxHandler;
 import ecjtu.net.demon.utils.ToastMsg;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -55,7 +57,34 @@ public class comment_text extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        handler = new RxHandler((webview) getActivity());
+        handler = new RxHandler();
+        handler.setOnHandleMessageListener(new RxHandler.OnHandleMessageListener() {
+            @Override
+            public void onHanleMessage(Message msg) {
+                commentText.setText("");
+                // 构造对话框
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("要去看看评论吗？");
+                builder.setPositiveButton("好的", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        Intent intent = new Intent(getContext(), rxCommentsActivity.class);
+                        String url_ = url + "s";
+                        intent.putExtra("url", url_);
+                        getContext().startActivity(intent);
+                    }
+                });
+                builder.setNegativeButton("不用了", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog noticeDialog = builder.create();
+                noticeDialog.show();
+            }
+        });
         Button submitBtn = (Button) view.findViewById(R.id.submitBtn);
         commentText = (EditText) view.findViewById(R.id.commentText);
         fragmentManager = getFragmentManager();
@@ -110,42 +139,6 @@ public class comment_text extends Fragment {
 
     public void setReplaceView(comment_btn view) {
         commentBtn = view;
-    }
-
-    private static class RxHandler extends Handler {
-
-        WeakReference thisActivity;
-
-        public RxHandler(webview activity) {
-            thisActivity = new WeakReference(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            final webview activity = (webview) thisActivity.get();
-            activity.commentText.commentText.setText("");
-            // 构造对话框
-            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-            builder.setMessage("要去看看评论吗？");
-            builder.setPositiveButton("好的", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    Intent intent = new Intent(activity, rxCommentsActivity.class);
-                    String url = activity.commentText.url + "s";
-                    intent.putExtra("url", url);
-                    activity.startActivity(intent);
-                }
-            });
-            builder.setNegativeButton("不用了", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog noticeDialog = builder.create();
-            noticeDialog.show();
-        }
     }
 
 }

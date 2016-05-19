@@ -25,6 +25,10 @@ public class OkHttp {
         client.newBuilder().connectTimeout(20, TimeUnit.SECONDS);
     }
 
+    private OkHttp() {
+
+    }
+
     public static void get(String url, Callback callback) {
         Request request = new Request.Builder().url(url).build();
         Call call = client.newCall(request);
@@ -46,7 +50,7 @@ public class OkHttp {
     }
 
     public static Response postSync(String url, RequestBody requestBody) throws IOException {
-        Request request = new Request.Builder().url(url).build();
+        Request request = new Request.Builder().url(url).post(requestBody).build();
         return client.newCall(request).execute();
     }
 }

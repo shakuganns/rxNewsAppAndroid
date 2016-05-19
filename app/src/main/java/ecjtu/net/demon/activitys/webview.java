@@ -153,10 +153,8 @@ public class webview extends NoGestureBaseActivity {
             share(url,title);
         }
         if (id == R.id.comments) {
-            Intent intent = new Intent(webview.this,rxCommentsActivity.class);
             String url = "http://app.ecjtu.net/api/v1/article/"+this.id+"/comments";
-            intent.putExtra("url",url);
-            startActivity(intent);
+            turn2ActivityWithUrl(webview.this,rxCommentsActivity.class,url);
         }
         return super.onOptionsItemSelected(item);
     }

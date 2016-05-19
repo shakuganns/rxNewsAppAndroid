@@ -23,9 +23,14 @@ public class UserEntity implements Serializable {
 
     public void updataToken() {
         Log.i("tag",studentID+"&"+password);
-        HttpHelper.password = password;
-        UserLoginTask mAuthTask = new UserLoginTask(studentID,password);
-        mAuthTask.execute();
+        AsyncTask<Void,Void,Boolean> task = new AsyncTask<>();
+        task.setOnDoInBackgroundListener(new AsyncTask.OnDoInBackgroundListener<Boolean>() {
+            @Override
+            public Boolean onDoInBackground() {
+                return HttpHelper.getInstance().getUserToken(studentID,password);
+            }
+        });
+        task.execute();
     }
 
     public String getToken(){

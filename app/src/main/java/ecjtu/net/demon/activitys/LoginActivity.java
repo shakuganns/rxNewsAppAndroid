@@ -4,24 +4,19 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
-import java.util.Arrays;
-
 import ecjtu.net.demon.R;
+import ecjtu.net.demon.utils.AsyncTask;
 import ecjtu.net.demon.utils.HttpHelper;
-import ecjtu.net.demon.utils.SharedPreUtil;
-import ecjtu.net.demon.utils.UserEntity;
 
 
 /**
@@ -29,17 +24,18 @@ import ecjtu.net.demon.utils.UserEntity;
  */
 public class LoginActivity extends BaseActivity {
 
-
-    public final static String url = "http://user.ecjtu.net/api/";
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private UserLoginTask mAuthTask = null;
+    private AsyncTask<Void,Void,Boolean> mAuthTask = null;
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+
+    private String mEmail;
+    private String mPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,26 +75,26 @@ public class LoginActivity extends BaseActivity {
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        mEmail = mEmailView.getText().toString();
+        mPassword = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (!TextUtils.isEmpty(mEmail) && !isPasswordValid(mPassword)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
         }
 
         // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
+        if (TextUtils.isEmpty(mEmail)) {
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
-        } else if (!isUserNameValid(email)) {
+        } else if (!isUserNameValid(mEmail)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
@@ -112,7 +108,38 @@ public class LoginActivity extends BaseActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
+            mAuthTask = new AsyncTask<>();
+            mAuthTask.setOnDoInBackgroundListener(new AsyncTask.OnDoInBackgroundListener<Boolean>() {
+                @Override
+                public Boolean onDoInBackground() {
+                    return HttpHelper.getInstance().getUserToken(mEmail,mPassword);
+                }
+            });
+            mAuthTask.setOnPostExecuteListener(new AsyncTask.OnPostExecuteListener<Boolean>() {
+                @Override
+                public void onPostExecute(Boolean success) {
+                    mAuthTask = null;
+                    showProgress(false);
+
+                    if (success) {
+                        Intent intent = new Intent();
+                        intent.setClass(LoginActivity.this, SettingActivity.class);
+                        NewMain.isUserInited = false;
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        mPasswordView.setError(getString(R.string.error_incorrect_password));
+                        mPasswordView.requestFocus();
+                    }
+                }
+            });
+            mAuthTask.setOnCancelledListener(new AsyncTask.OnCancelledListener() {
+                @Override
+                public void onCancelled() {
+                    mAuthTask = null;
+                    showProgress(false);
+                }
+            });
             mAuthTask.execute((Void) null);
         }
     }
@@ -162,11 +189,11 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-
-    /**
+/*
+    *//**
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
-     */
+     *//*
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mEmail;
@@ -221,7 +248,7 @@ public class LoginActivity extends BaseActivity {
             mAuthTask = null;
             showProgress(false);
         }
-    }
+    }*/
 }
 
 
